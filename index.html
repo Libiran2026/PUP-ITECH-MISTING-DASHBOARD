@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PUP ITECH Automated Misting System – Environmental Monitoring</title>
+<meta name="description" content="Live environmental monitoring dashboard for the roof-mounted misting system at PUP ITECH.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --maroon:#7a0c14;
+  --maroon-dark:#560910;
+  --red:#b0192a;
+  --ink:#1f2226;
+  --muted:#5f666d;
+  --line:#dcdee1;
+  --bg:#f3f3f4;
+  --card:#ffffff;
+  --ok:#1d7a3f;
+  --ok-bg:#e5f3ea;
+  --bad:#b0192a;
+  --bad-bg:#fbe9eb;
+  --warn:#8a5a00;
+  --warn-bg:#fdf1d8;
+  --off:#6b7076;
+  --off-bg:#eceef0;
+  --sans:"Source Sans 3","Segoe UI",system-ui,-apple-system,Arial,sans-serif;
+  --serif:"Source Serif 4",Georgia,"Times New Roman",serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:var(--sans);color:var(--ink);background:var(--bg);font-size:16px;line-height:1.5;font-variant-numeric:tabular-nums}
+h1,h2,h3{font-family:var(--serif);margin:0;line-height:1.2}
+a{color:var(--maroon)}
+:focus-visible{outline:3px solid #e8a0a8;outline-offset:2px}
+
+/* Header */
+header.site{background:var(--ink);color:#fff;border-bottom:4px solid var(--maroon)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
+.brand{display:flex;align-items:center;gap:14px;padding:14px 0 10px}
+.mark{flex:none;width:46px;height:46px;border-radius:50%;background:var(--maroon);border:2px solid #fff;display:grid;place-items:center;font-family:var(--serif);font-weight:700;font-size:15px;letter-spacing:.5px}
+.brand h1{font-size:1.15rem;font-weight:600}
+.brand p{margin:0;font-size:.85rem;color:#c9ccd0}
+nav.tabs{display:flex;gap:2px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+nav.tabs::-webkit-scrollbar{display:none}
+nav.tabs button{flex:none;background:none;border:0;color:#d5d8db;font:inherit;font-weight:500;padding:11px 16px;cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-1px}
+nav.tabs button:hover{color:#fff}
+nav.tabs button[aria-selected="true"]{color:#fff;border-bottom-color:#e5646f}
+
+main{padding:22px 0 40px}
+.view{display:none}
+.view.active{display:block}
+
+/* Status line */
+.statusline{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:16px}
+.statusline h2{font-size:1.45rem;margin-right:auto}
+.chip{display:inline-flex;align-items:center;gap:7px;padding:4px 11px;border-radius:999px;font-weight:600;font-size:.88rem;background:var(--off-bg);color:var(--off)}
+.chip::before{content:"";width:9px;height:9px;border-radius:50%;background:currentColor}
+.chip.ok{background:var(--ok-bg);color:var(--ok)}
+.chip.bad{background:var(--bad-bg);color:var(--bad)}
+.chip.warn{background:var(--warn-bg);color:var(--warn)}
+.updated{color:var(--muted);font-size:.92rem}
+.banner{display:none;background:var(--warn-bg);color:var(--warn);border:1px solid #ecd49a;padding:10px 14px;border-radius:6px;margin-bottom:16px;font-weight:500}
+.banner.show{display:block}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--line);border-radius:8px;box-shadow:0 1px 2px rgba(0,0,0,.05)}
+.card h3{font-size:1.05rem;padding:14px 18px 0}
+.card .body{padding:12px 18px 18px}
+
+.readings{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;margin-bottom:18px}
+.reading{padding:16px 18px;border-top:4px solid var(--maroon);position:relative}
+.reading .lab{color:var(--muted);font-weight:600;font-size:.92rem}
+.reading .val{font-family:var(--serif);font-size:2.6rem;font-weight:700;line-height:1.1;margin-top:4px;white-space:nowrap}
+.reading .val small{font-family:var(--sans);font-size:1.05rem;font-weight:600;color:var(--muted);margin-left:3px}
+.reading .sub{margin-top:6px;font-size:.88rem;color:var(--muted);min-height:1.3em}
+.reading.mist.on{border-top-color:var(--ok);background:linear-gradient(0deg,#fff,#fff)}
+.reading.mist .val{font-size:1.9rem;display:flex;align-items:center;gap:10px;margin-top:10px}
+.dot{width:16px;height:16px;border-radius:50%;background:var(--off);flex:none}
+.dot.on{background:var(--ok)} .dot.off{background:var(--bad)}
+.mist.on .val{color:var(--ok)} .mist.off .val{color:var(--bad)} .mist.nodata .val{color:var(--off)}
+
+.grid2{display:grid;grid-template-columns:3fr 2fr;gap:18px;margin-bottom:18px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+
+/* Decision */
+table.plain{width:100%;border-collapse:collapse}
+table.plain th,table.plain td{padding:9px 6px;text-align:left;border-bottom:1px solid var(--line)}
+table.plain th{font-weight:600;color:var(--muted);font-size:.88rem}
+table.plain td.num{font-weight:600}
+.pass{color:var(--ok);font-weight:700}
+.fail{color:var(--bad);font-weight:700}
+.na{color:var(--off);font-weight:600}
+.decision{margin-top:14px;padding:14px 16px;border-radius:6px;background:var(--off-bg)}
+.decision .big{font-family:var(--serif);font-size:1.35rem;font-weight:700;display:flex;align-items:center;gap:10px}
+.decision.on{background:var(--ok-bg);color:var(--ok)}
+.decision.off{background:var(--bad-bg);color:var(--bad)}
+.decision.rest{background:var(--warn-bg);color:var(--warn)}
+.decision p{margin:6px 0 0;color:var(--ink);font-size:.95rem}
+
+/* Health */
+ul.health{list-style:none;margin:0;padding:0}
+ul.health li{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line)}
+ul.health li:last-child{border-bottom:0}
+.hnote{font-size:.86rem;color:var(--muted);margin:10px 0 0}
+
+/* Thresholds */
+.thr{padding:14px 18px}
+.thr .t{color:var(--muted);font-weight:600;font-size:.92rem}
+.thr .v{font-family:var(--serif);font-size:1.7rem;font-weight:700;color:var(--maroon)}
+
+/* Live bars */
+.meter{margin:14px 0 22px}
+.meter .row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:600}
+.meter .track{position:relative;height:14px;background:var(--off-bg);border-radius:7px;margin-top:8px;overflow:visible}
+.meter .zone{position:absolute;top:0;bottom:0;background:#cfe8d8;border-radius:7px}
+.meter .mark{position:absolute;top:-5px;width:4px;height:24px;background:var(--ink);border-radius:2px;transform:translateX(-50%)}
+.meter .scale{display:flex;justify-content:space-between;font-size:.8rem;color:var(--muted);margin-top:7px}
+
+.charts{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+.chartbox{padding:14px 16px 12px}
+.chartbox h3{padding:0 0 8px;font-size:1rem}
+.chartbox .cv{position:relative;height:240px}
+.chartbox.wide{grid-column:1/-1}
+
+/* Controls */
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;padding:14px 18px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
+.seg button{background:#fff;border:0;border-right:1px solid var(--line);font:inherit;padding:8px 14px;cursor:pointer;font-weight:500}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--maroon);color:#fff}
+label.f{display:flex;flex-direction:column;font-size:.85rem;font-weight:600;color:var(--muted);gap:3px}
+input[type=datetime-local]{font:inherit;padding:7px 9px;border:1px solid var(--line);border-radius:6px;color:var(--ink)}
+.btn{font:inherit;font-weight:600;background:var(--maroon);color:#fff;border:0;border-radius:6px;padding:9px 18px;cursor:pointer}
+.btn:hover{background:var(--maroon-dark)}
+.btn.ghost{background:#fff;color:var(--maroon);border:1px solid var(--maroon)}
+.tablewrap{overflow:auto;max-height:420px;border-top:1px solid var(--line)}
+.tablewrap table{width:100%;border-collapse:collapse;font-size:.92rem}
+.tablewrap th{position:sticky;top:0;background:#f7f7f8;text-align:left;padding:8px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.tablewrap td{padding:7px 12px;border-bottom:1px solid #eee;white-space:nowrap}
+.note{color:var(--muted);font-size:.9rem;padding:0 18px 12px}
+
+/* Prose */
+.prose{max-width:760px}
+.prose h2{font-size:1.5rem;margin:0 0 10px}
+.prose h3{padding:0;margin:22px 0 6px;font-size:1.15rem}
+.prose p,.prose li{max-width:70ch}
+.rule{font-size:1.1rem;padding:14px 18px;background:#fbf5f5;border-left:5px solid var(--maroon);border-radius:0 6px 6px 0;margin:12px 0;font-weight:500}
+.flow{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.flow span.s{padding:7px 12px;border:1px solid var(--line);background:#fff;border-radius:6px;font-weight:600;font-size:.92rem}
+.flow span.a{color:var(--muted)}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+
+footer{border-top:1px solid var(--line);color:var(--muted);font-size:.88rem;padding:18px 0 28px;background:#fff}
+
+@media (max-width:1020px){
+  .readings{grid-template-columns:repeat(3,1fr)}
+  .grid2{grid-template-columns:1fr}
+}
+@media (max-width:720px){
+  .readings{grid-template-columns:repeat(2,1fr);gap:10px}
+  .reading{padding:12px 14px}
+  .reading .val{font-size:2.1rem}
+  .reading.mist{grid-column:1/-1}
+  .grid3,.charts,.two{grid-template-columns:1fr}
+  .brand h1{font-size:1rem}
+  .statusline h2{font-size:1.25rem;flex-basis:100%}
+  .chartbox .cv{height:220px}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<header class="site">
+  <div class="wrap">
+    <div class="brand">
+      <div class="mark" aria-hidden="true">PUP</div>
+      <div>
+        <h1>Automated Roof-Mounted Misting System</h1>
+        <p>Polytechnic University of the Philippines – Institute of Technology</p>
+      </div>
+    </div>
+    <nav class="tabs" role="tablist" aria-label="Main sections">
+      <button role="tab" data-view="home" aria-selected="true">Dashboard</button>
+      <button role="tab" data-view="live" aria-selected="false">Live data</button>
+      <button role="tab" data-view="history" aria-selected="false">Historical data</button>
+      <button role="tab" data-view="system" aria-selected="false">System information</button>
+      <button role="tab" data-view="about" aria-selected="false">About</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+<div class="wrap">
+
+<!-- ================= DASHBOARD ================= -->
+<section id="view-home" class="view active" aria-labelledby="h-home">
+  <div class="statusline">
+    <h2 id="h-home">Live environmental monitoring</h2>
+    <span class="chip" id="linkChip">Connecting…</span>
+    <span class="updated" id="updatedHome">Last updated: –</span>
+  </div>
+  <div class="banner" id="errBanner"></div>
+
+  <div class="readings">
+    <div class="card reading"><div class="lab">Temperature</div><div class="val"><span data-v="temp">–</span><small>°C</small></div><div class="sub" data-s="temp"></div></div>
+    <div class="card reading"><div class="lab">Relative humidity</div><div class="val"><span data-v="rh">–</span><small>%</small></div><div class="sub" data-s="rh"></div></div>
+    <div class="card reading"><div class="lab">Heat index</div><div class="val"><span data-v="hi">–</span><small>°C</small></div><div class="sub" data-s="hi"></div></div>
+    <div class="card reading"><div class="lab">Wind speed</div><div class="val"><span data-v="wind">–</span><small>m/s</small></div><div class="sub" data-s="wind"></div></div>
+    <div class="card reading mist nodata" id="mistCard"><div class="lab">Misting status</div><div class="val"><span class="dot" id="mistDot"></span><span id="mistText">No data</span></div><div class="sub" id="mistSub"></div></div>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Misting decision</h3>
+      <div class="body" id="decisionHome"></div>
+    </div>
+    <div class="card">
+      <h3>System health</h3>
+      <div class="body" id="healthHome"></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:18px">
+    <h3>Misting thresholds</h3>
+    <div class="body">
+      <div class="grid3">
+        <div class="thr card"><div class="t">Temperature</div><div class="v">≥ 31 °C</div></div>
+        <div class="thr card"><div class="t">Relative humidity</div><div class="v">&lt; 70%</div></div>
+        <div class="thr card"><div class="t">Wind speed</div><div class="v">0.5–4.0 m/s</div></div>
+      </div>
+      <p class="hnote">Misting runs only when all three conditions are met. The pump then runs for 30 seconds and rests for 3 minutes before conditions are checked again.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= LIVE ================= -->
+<section id="view-live" class="view" aria-labelledby="h-live">
+  <div class="statusline">
+    <h2 id="h-live">Live data</h2>
+    <span class="chip" id="linkChip2">Connecting…</span>
+    <span class="updated" id="updatedLive">Last updated: –</span>
+  </div>
+
+  <div class="grid2">
+    <div class="card">
+      <h3>Threshold indicators</h3>
+      <div class="body" id="meters"></div>
+    </div>
+    <div>
+      <div class="card" style="margin-bottom:18px"><h3>Misting decision</h3><div class="body" id="decisionLive"></div></div>
+      <div class="card"><h3>Sensor health</h3><div class="body" id="healthLive"></div></div>
+    </div>
+  </div>
+
+  <div class="charts">
+    <div class="card chartbox"><h3>Temperature and heat index (°C)</h3><div class="cv"><canvas id="cLiveTemp"></canvas></div></div>
+    <div class="card chartbox"><h3>Relative humidity (%)</h3><div class="cv"><canvas id="cLiveRh"></canvas></div></div>
+    <div class="card chartbox wide"><h3>Wind speed (m/s)</h3><div class="cv"><canvas id="cLiveWind"></canvas></div></div>
+  </div>
+  <p class="hnote">Graphs show the most recent readings (about the last 3 minutes) and refresh every 2 seconds.</p>
+</section>
+
+<!-- ================= HISTORY ================= -->
+<section id="view-history" class="view" aria-labelledby="h-hist">
+  <div class="statusline"><h2 id="h-hist">Historical data</h2></div>
+  <div class="card" style="margin-bottom:18px">
+    <div class="controls">
+      <div>
+        <div class="updated" style="font-weight:600;margin-bottom:3px">Resolution</div>
+        <div class="seg" id="periodSeg" role="group" aria-label="Resolution">
+          <button data-p="1min" aria-pressed="true">1 minute</button>
+          <button data-p="hourly" aria-pressed="false">Hourly</button>
+          <button data-p="daily" aria-pressed="false">Daily</button>
+          <button data-p="monthly" aria-pressed="false">Monthly</button>
+        </div>
+      </div>
+      <label class="f">From<input type="datetime-local" id="fromDt"></label>
+      <label class="f">To<input type="datetime-local" id="toDt"></label>
+      <button class="btn" id="applyBtn">Show data</button>
+      <button class="btn ghost" id="csvBtn">Download CSV</button>
+    </div>
+    <div class="note" id="histMsg"></div>
+  </div>
+
+  <div class="charts">
+    <div class="card chartbox"><h3>Temperature vs time (°C)</h3><div class="cv"><canvas id="hTemp"></canvas></div></div>
+    <div class="card chartbox"><h3>Relative humidity vs time (%)</h3><div class="cv"><canvas id="hRh"></canvas></div></div>
+    <div class="card chartbox"><h3>Heat index vs time (°C)</h3><div class="cv"><canvas id="hHi"></canvas></div></div>
+    <div class="card chartbox"><h3>Wind speed vs time (m/s)</h3><div class="cv"><canvas id="hWind"></canvas></div></div>
+    <div class="card chartbox wide"><h3 id="hMistTitle">Misting ON/OFF vs time</h3><div class="cv"><canvas id="hMist"></canvas></div></div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <h3>Records</h3>
+    <div class="note" id="tblNote" style="padding-top:4px"></div>
+    <div class="tablewrap"><table id="histTable"></table></div>
+  </div>
+</section>
+
+<!-- ================= SYSTEM ================= -->
+<section id="view-system" class="view" aria-labelledby="h-sys">
+  <div class="prose">
+    <h2 id="h-sys">System information</h2>
+    <p>The system continuously measures air temperature, relative humidity and wind speed under the waiting shed. An ESP32 microcontroller evaluates these readings every 2 seconds and switches the misting pump automatically. No manual operation is needed.</p>
+
+    <h3>Automatic misting conditions</h3>
+    <div class="rule">Temperature ≥ 31 °C<br>AND relative humidity &lt; 70%<br>AND wind speed between 0.5 and 4.0 m/s</div>
+    <p>If any one condition is not satisfied, the pump remains OFF. The humidity limit was adjusted from 60% to <strong>70% RH</strong>; the system now operates with the 70% limit.</p>
+
+    <h3>Pump cycle</h3>
+    <div class="two" style="margin:8px 0">
+      <div class="card thr"><div class="t">Pump ON</div><div class="v">30 seconds</div></div>
+      <div class="card thr"><div class="t">Pump OFF</div><div class="v">3 minutes</div></div>
+    </div>
+    <p>After the OFF period, the environmental conditions are checked again. Because of this rest interval, the dashboard can show that all conditions are met while the pump is still resting.</p>
+
+    <h3>Measured values</h3>
+    <ul>
+      <li><strong>Temperature and humidity:</strong> the average of the valid readings from three DHT22 sensors.</li>
+      <li><strong>Heat index:</strong> calculated on the ESP32 with the NOAA/NWS heat index method and displayed in °C.</li>
+      <li><strong>Wind speed:</strong> measured by an analog anemometer. A wind event is recorded when the speed stays within 0.5–4.0 m/s.</li>
+    </ul>
+
+    <h3>Self-check indicator</h3>
+    <p>Every 2 seconds the ESP32 checks the three DHT22 sensors, the anemometer, the real-time clock (DS3231) and the microSD card. A green indicator lamp flashes for 0.3 seconds only when all six pass. The lamp is separate from the pump relay and does not show whether the pump is running.</p>
+
+    <h3>Data flow</h3>
+    <div class="flow">
+      <span class="s">ESP32</span><span class="a">→</span><span class="s">Wi-Fi</span><span class="a">→</span><span class="s">Supabase database</span><span class="a">→</span><span class="s">This website</span>
+    </div>
+    <p>Raw readings are uploaded about every 2 seconds. The database then summarizes them automatically into 1-minute, hourly, daily and monthly records, which feed the Historical data page. The original 2-second measurements are also kept on the microSD card as the experimental record. This website only reads data; it cannot change the system.</p>
+
+    <h3>Hardware</h3>
+    <div class="card"><div class="tablewrap" style="border:0"><table>
+      <thead><tr><th>Component</th><th>ESP32 pin</th><th>Interface</th></tr></thead>
+      <tbody>
+        <tr><td>DHT22 #1</td><td>GPIO 4</td><td>Digital</td></tr>
+        <tr><td>DHT22 #2</td><td>GPIO 5</td><td>Digital</td></tr>
+        <tr><td>DHT22 #3</td><td>GPIO 18</td><td>Digital</td></tr>
+        <tr><td>Anemometer</td><td>GPIO 34</td><td>ADC through voltage divider</td></tr>
+        <tr><td>DS3231 RTC</td><td>GPIO 21 (SDA), GPIO 22 (SCL)</td><td>I²C</td></tr>
+        <tr><td>MicroSD</td><td>GPIO 13 (CS), 23 (MOSI), 19 (MISO), 14 (SCK)</td><td>SPI</td></tr>
+        <tr><td>Green diagnostic relay</td><td>GPIO 27</td><td>Digital output</td></tr>
+        <tr><td>Pump relay</td><td>GPIO 25</td><td>Digital output</td></tr>
+      </tbody></table></div></div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+<section id="view-about" class="view" aria-labelledby="h-about">
+  <div class="prose">
+    <h2 id="h-about">About the project</h2>
+    <div class="rule" style="font-family:var(--serif)">Design and Development of a Roof-Mounted Misting System to Provide Thermal Comfort in Outdoor Campus Spaces</div>
+    <p><strong>Institution:</strong> Polytechnic University of the Philippines – Institute of Technology (PUP ITECH)<br>
+       <strong>Author:</strong> LIBIRAN JR., HENRY MICHAEL S.</p>
+
+    <h3>Overview</h3>
+    <p>This thesis project is an automated environmental monitoring and misting system for an outdoor waiting shed at PUP ITECH. High-pressure misting nozzles are mounted on the roof of the shed, and an ESP32-based controller decides when they operate.</p>
+
+    <h3>Purpose</h3>
+    <p>The system aims to reduce thermal discomfort in outdoor campus spaces. It monitors environmental conditions, provides automated misting when temperature, relative humidity and wind speed indicate that cooling is appropriate, and records the data needed to evaluate thermal conditions at the site. The project seeks to support thermal comfort for students and other people who wait or rest in the shed.</p>
+
+    <h3>This website</h3>
+    <p>The website is a public, read-only view of the system. It shows current readings, the reason the pump is ON or OFF, the status of the monitoring hardware, and stored measurements at 1-minute, hourly, daily and monthly resolution.</p>
+
+    <h3>Methods in brief</h3>
+    <ul>
+      <li>Three DHT22 sensors and an analog anemometer measure temperature, humidity and wind speed.</li>
+      <li>Heat index is computed with the NOAA/NWS method.</li>
+      <li>Readings are logged locally to a microSD card and uploaded to an online database for monitoring and historical analysis.</li>
+    </ul>
+  </div>
+</section>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">PUP ITECH Automated Misting System · Thesis project of LIBIRAN JR., HENRY MICHAEL S. · Public read-only dashboard. Times are shown in Philippine Time.</div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script>
+(function(){
+"use strict";
+
+/* ================= CONFIG ================= */
+const SUPABASE_URL = "https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/";
+const SUPABASE_KEY = "sb_publishable_A1pqlhoRsez27xDKXsAfhA_0lXQr4Eq"; // publishable (public, read-only via RLS)
+const TZ = "Asia/Manila";
+
+const TH = { tempMin: 31, rhMax: 70, windMin: 0.5, windMax: 4.0 };
+const POLL_MS = 2000;
+const STALE_S = 20;        // data older than this = "no recent data"
+const LIVE_POINTS = 90;    // ≈ 3 minutes at 2 s
+
+/* Optional hardware self-test columns in sensor_live (boolean). Shown as "Not reported" if absent. */
+const HEALTH = [
+  {key:"dht1_ok", label:"DHT22 #1"},
+  {key:"dht2_ok", label:"DHT22 #2"},
+  {key:"dht3_ok", label:"DHT22 #3"},
+  {key:"anemometer_ok", label:"Anemometer"},
+  {key:"rtc_ok", label:"RTC (DS3231)"},
+  {key:"sd_ok", label:"SD card"}
+];
+
+/* ================= HELPERS ================= */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const num = v => (v===null||v===undefined||v==="") ? NaN : Number(v);
+const fmt = (v,d=1) => Number.isFinite(v) ? v.toFixed(d) : "–";
+const isOn = v => v===true || String(v).trim().toUpperCase()==="ON" || String(v).toLowerCase()==="true";
+
+function fmtTime(iso, opts){
+  const d = new Date(iso);
+  if(isNaN(d)) return String(iso);
+  return d.toLocaleString("en-PH", Object.assign({timeZone:TZ, year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:true}, opts||{}));
+}
+function ago(iso){
+  const s = Math.max(0, Math.round((Date.now()-new Date(iso).getTime())/1000));
+  if(s<60) return s+" s ago";
+  if(s<3600) return Math.floor(s/60)+" min ago";
+  if(s<86400) return Math.floor(s/3600)+" h ago";
+  return Math.floor(s/86400)+" d ago";
+}
+async function query(table, params){
+  const u = new URL(SUPABASE_URL + table);
+  Object.entries(params).forEach(([k,v])=>{
+    (Array.isArray(v)?v:[v]).forEach(x=>u.searchParams.append(k,x));
+  });
+  const r = await fetch(u, {headers:{apikey:SUPABASE_KEY, Accept:"application/json"}, cache:"no-store"});
+  if(!r.ok) throw new Error("HTTP "+r.status);
+  return r.json();
+}
+function hiCategory(c){
+  if(!Number.isFinite(c)) return "";
+  if(c>=51.7) return "NWS category: extreme danger";
+  if(c>=39.4) return "NWS category: danger";
+  if(c>=32.2) return "NWS category: extreme caution";
+  if(c>=26.7) return "NWS category: caution";
+  return "Below NWS caution level";
+}
+
+/* ================= NAVIGATION ================= */
+function show(view){
+  $$("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.view===view));
+  $$(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+view));
+  if(location.hash.slice(1)!==view) history.replaceState(null,"","#"+view);
+  window.scrollTo(0,0);
+  if(view==="live") setTimeout(()=>Object.values(liveCharts).forEach(c=>c.resize()),30);
+  if(view==="history" && !histLoaded){ histLoaded=true; loadHistory(); }
+}
+$$("nav.tabs button").forEach(b=>b.addEventListener("click",()=>show(b.dataset.view)));
+
+/* ================= DECISION ================= */
+function evaluate(row, fresh){
+  const t=num(row.temperature), h=num(row.humidity), w=num(row.wind_speed);
+  const tOK = t>=TH.tempMin, hOK = h<TH.rhMax, wOK = w>=TH.windMin && w<=TH.windMax;
+  const reasons=[];
+  if(!Number.isFinite(t)) reasons.push("Temperature reading unavailable"); else if(!tOK) reasons.push("Temperature is below "+TH.tempMin+" °C");
+  if(!Number.isFinite(h)) reasons.push("Humidity reading unavailable"); else if(!hOK) reasons.push("Relative humidity is "+TH.rhMax+"% or higher");
+  if(!Number.isFinite(w)) reasons.push("Wind reading unavailable"); else if(w<TH.windMin) reasons.push("Wind speed is below "+TH.windMin+" m/s"); else if(w>TH.windMax) reasons.push("Wind speed is above "+TH.windMax.toFixed(1)+" m/s");
+  return {t,h,w,tOK,hOK,wOK,all:tOK&&hOK&&wOK,reasons,pumpOn:isOn(row.misting_status)};
+}
+function rowHTML(label,val,unit,ok,req){
+  const mark = ok===null ? '<span class="na">–</span>' : ok ? '<span class="pass">✓ Pass</span>' : '<span class="fail">✗ Fail</span>';
+  return `<tr><td>${label}<div class="hnote" style="margin:0">${req}</div></td><td class="num">${val} ${unit}</td><td>${mark}</td></tr>`;
+}
+function decisionHTML(row, fresh){
+  if(!row) return '<p class="hnote">Waiting for data…</p>';
+  const e = evaluate(row, fresh);
+  const tv=Number.isFinite(e.t), hv=Number.isFinite(e.h), wv=Number.isFinite(e.w);
+  let cls="off", big="🔴 Misting off", detail="";
+  if(!fresh){ cls=""; big="No recent data"; detail="The controller has not sent a reading recently, so the current state is unknown."; }
+  else if(e.pumpOn){ cls="on"; big="🟢 Misting active"; detail="All conditions are met and the pump is in its 30-second ON period."; }
+  else if(e.all){ cls="rest"; big="🔴 Misting off (pump resting)"; detail="All conditions are met. The pump is in its 3-minute OFF period and will start when it ends."; }
+  else { detail = "<strong>Reason:</strong> " + e.reasons.join("; ") + "."; }
+  return `<table class="plain">
+    <thead><tr><th>Condition</th><th>Reading</th><th>Result</th></tr></thead><tbody>
+    ${rowHTML("Temperature",fmt(e.t,1),"°C",tv?e.tOK:null,"Required: ≥ 31 °C")}
+    ${rowHTML("Relative humidity",fmt(e.h,0),"%",hv?e.hOK:null,"Required: &lt; 70%")}
+    ${rowHTML("Wind speed",fmt(e.w,1),"m/s",wv?e.wOK:null,"Required: 0.5–4.0 m/s")}
+    </tbody></table>
+    <div class="decision ${cls}"><div class="big">${big}</div><p>${detail}</p></div>`;
+}
+
+/* ================= HEALTH ================= */
+function healthHTML(row, fresh){
+  let items = `<li><span>Data link (ESP32 → Supabase)</span>${fresh?'<span class="pass">✓ Receiving</span>':'<span class="fail">✗ No recent data</span>'}</li>`;
+  let reported=0;
+  HEALTH.forEach(h=>{
+    const v = row ? row[h.key] : undefined;
+    let r;
+    if(v===undefined || v===null){ r='<span class="na">Not reported</span>'; }
+    else { reported++; r = (v===true||v==="true"||v===1||v==="OK") ? '<span class="pass">✓ OK</span>' : '<span class="fail">✗ Fault</span>'; }
+    items += `<li><span>${h.label}</span>${r}</li>`;
+  });
+  const note = reported===0 ? '<p class="hnote">Component self-test results are not yet included in the uploaded data. The data link status above is based on how recent the last reading is.</p>' : '';
+  return `<ul class="health">${items}</ul>${note}`;
+}
+
+/* ================= METERS (live page) ================= */
+function meter(label, val, unit, min, max, zoneFrom, zoneTo, ok, scaleLabels){
+  const pct = v => Math.min(100,Math.max(0,(v-min)/(max-min)*100));
+  const z0=pct(zoneFrom), z1=pct(zoneTo);
+  const mk = Number.isFinite(val) ? `<div class="mark" style="left:${pct(val)}%"></div>` : "";
+  const st = ok===null?'<span class="na">–</span>':ok?'<span class="pass">✓ Within range</span>':'<span class="fail">✗ Outside range</span>';
+  return `<div class="meter"><div class="row"><span>${label}: ${fmt(val,1)} ${unit}</span>${st}</div>
+    <div class="track"><div class="zone" style="left:${z0}%;width:${z1-z0}%"></div>${mk}</div>
+    <div class="scale">${scaleLabels.map(s=>`<span>${s}</span>`).join("")}</div></div>`;
+}
+function metersHTML(row){
+  if(!row) return '<p class="hnote">Waiting for data…</p>';
+  const e = evaluate(row,true);
+  return meter("Temperature",e.t,"°C",20,40,TH.tempMin,40,Number.isFinite(e.t)?e.tOK:null,["20","Threshold ≥ 31","40"])
+       + meter("Relative humidity",e.h,"%",0,100,0,TH.rhMax,Number.isFinite(e.h)?e.hOK:null,["0","Threshold &lt; 70","100"])
+       + meter("Wind speed",e.w,"m/s",0,8,TH.windMin,TH.windMax,Number.isFinite(e.w)?e.wOK:null,["0","Range 0.5–4.0","8"])
+       + '<p class="hnote">The green band marks the range in which each condition is satisfied. The dark marker is the current reading.</p>';
+}
+
+/* ================= LIVE RENDER ================= */
+let liveRows = [];
+const liveCharts = {};
+function chartBase(label2){
+  return {responsive:true, maintainAspectRatio:false, animation:false,
+    interaction:{mode:"index", intersect:false},
+    plugins:{legend:{display:label2, position:"bottom", labels:{boxWidth:12}}},
+    elements:{point:{radius:0}, line:{borderWidth:2, tension:.2}},
+    scales:{x:{ticks:{maxTicksLimit:7, maxRotation:0}, grid:{display:false}}, y:{grace:"8%"}}};
+}
+function mkChart(id, datasets, legend, extra){
+  const cfg = {type:"line", data:{labels:[], datasets}, options:chartBase(legend)};
+  if(extra) extra(cfg);
+  return new Chart($("#"+id), cfg);
+}
+const C = {maroon:"#7a0c14", red:"#d0485a", ink:"#33383d", blue:"#2f6f9f", grey:"#8b9097"};
+function thrLine(v,label){ return {label, data:[], borderColor:C.grey, borderDash:[6,4], borderWidth:1.5, pointRadius:0, _const:v}; }
+
+function initLiveCharts(){
+  if(typeof Chart==="undefined") return;
+  liveCharts.temp = mkChart("cLiveTemp",[
+    {label:"Temperature", data:[], borderColor:C.maroon, backgroundColor:C.maroon},
+    {label:"Heat index", data:[], borderColor:C.red, backgroundColor:C.red},
+    thrLine(TH.tempMin,"31 °C threshold")], true);
+  liveCharts.rh = mkChart("cLiveRh",[
+    {label:"Relative humidity", data:[], borderColor:C.blue, backgroundColor:C.blue},
+    thrLine(TH.rhMax,"70% threshold")], true);
+  liveCharts.wind = mkChart("cLiveWind",[
+    {label:"Wind speed", data:[], borderColor:C.ink, backgroundColor:C.ink},
+    thrLine(TH.windMin,"0.5 m/s"), thrLine(TH.windMax,"4.0 m/s")], true);
+}
+function updateLiveCharts(){
+  if(!liveCharts.temp) return;
+  const asc = liveRows.slice().reverse();
+  const labels = asc.map(r=>fmtTime(r.recorded_at,{year:undefined,month:undefined,day:undefined,hour:"2-digit",minute:"2-digit",second:"2-digit"}));
+  const set = (chart, series)=>{
+    chart.data.labels = labels;
+    chart.data.datasets.forEach((ds,i)=>{
+      ds.data = ds._const!==undefined ? labels.map(()=>ds._const) : series[i];
+    });
+    chart.update("none");
+  };
+  set(liveCharts.temp,[asc.map(r=>num(r.temperature)), asc.map(r=>num(r.heat_index))]);
+  set(liveCharts.rh,[asc.map(r=>num(r.humidity))]);
+  set(liveCharts.wind,[asc.map(r=>num(r.wind_speed))]);
+}
+
+function renderLive(){
+  const row = liveRows[0];
+  const fresh = row && (Date.now()-new Date(row.recorded_at).getTime())/1000 <= STALE_S;
+
+  // chips + timestamps
+  [["#linkChip","#updatedHome"],["#linkChip2","#updatedLive"]].forEach(([c,u])=>{
+    const chip=$(c); chip.className="chip "+(row?(fresh?"ok":"warn"):""); 
+    chip.textContent = row ? (fresh?"Live":"No recent data") : "No data";
+    $(u).textContent = row ? "Last updated: "+fmtTime(row.recorded_at)+" ("+ago(row.recorded_at)+")" : "Last updated: –";
+  });
+
+  const v = k => row ? num(row[k]) : NaN;
+  const e = row ? evaluate(row,fresh) : null;
+  $('[data-v="temp"]').textContent = fmt(v("temperature"),1);
+  $('[data-v="rh"]').textContent   = fmt(v("humidity"),0);
+  $('[data-v="hi"]').textContent   = fmt(v("heat_index"),1);
+  $('[data-v="wind"]').textContent = fmt(v("wind_speed"),1);
+  $('[data-s="temp"]').textContent = e ? (e.tOK?"Meets ≥ 31 °C":"Below 31 °C threshold") : "";
+  $('[data-s="rh"]').textContent   = e ? (e.hOK?"Meets < 70%":"At or above 70%") : "";
+  $('[data-s="hi"]').textContent   = row ? hiCategory(v("heat_index")) : "";
+  $('[data-s="wind"]').textContent = e ? (e.wOK?"Within 0.5–4.0 m/s":(e.w<TH.windMin?"Below 0.5 m/s":"Above 4.0 m/s")) : "";
+
+  const mc=$("#mistCard"), mt=$("#mistText"), md=$("#mistDot"), ms=$("#mistSub");
+  if(!row || !fresh){
+    mc.className="card reading mist nodata"; md.className="dot"; mt.textContent=row?"Unknown":"No data";
+    ms.textContent = row?"Last reading is not recent":"";
+  } else if(e.pumpOn){
+    mc.className="card reading mist on"; md.className="dot on"; mt.textContent="Misting active"; ms.textContent="Pump ON (30 s cycle)";
+  } else {
+    mc.className="card reading mist off"; md.className="dot off"; mt.textContent="Misting off";
+    ms.textContent = e.all ? "Conditions met · pump resting" : "Conditions not met";
+  }
+
+  const dh=decisionHTML(row,fresh);
+  $("#decisionHome").innerHTML=dh; $("#decisionLive").innerHTML=dh;
+  const hh=healthHTML(row,fresh);
+  $("#healthHome").innerHTML=hh; $("#healthLive").innerHTML=hh;
+  $("#meters").innerHTML=metersHTML(row);
+  updateLiveCharts();
+}
+
+let polling=false, failCount=0;
+async function poll(){
+  if(polling || document.hidden) return;
+  polling=true;
+  try{
+    liveRows = await query("sensor_live",{select:"*", order:"recorded_at.desc", limit:LIVE_POINTS});
+    failCount=0; $("#errBanner").classList.remove("show");
+  }catch(err){
+    failCount++;
+    if(failCount>=2){
+      const b=$("#errBanner"); b.textContent="Cannot reach the database right now ("+err.message+"). Retrying automatically.";
+      b.classList.add("show");
+    }
+  }
+  renderLive();
+  polling=false;
+}
+document.addEventListener("visibilitychange",()=>{ if(!document.hidden) poll(); });
+
+/* ================= HISTORY ================= */
+let histLoaded=false, period="1min", histRows=[];
+const histCharts={};
+const TABLES={"1min":"sensor_1min", hourly:"sensor_hourly", daily:"sensor_daily", monthly:"sensor_monthly"};
+const DEFAULT_SPAN={"1min":3*3600e3, hourly:3*86400e3, daily:30*86400e3, monthly:365*86400e3};
+
+const F = {
+  t:   /^(avg_?)?temp(erature)?(_?avg)?$/i,
+  tmax:/(max.*temp|temp.*max)/i,
+  tmin:/(min.*temp|temp.*min)/i,
+  h:   /^(avg_?)?(humidity|rh)(_?avg)?$/i,
+  w:   /^(avg_?)?wind(_?speed)?(_?avg)?$/i,
+  hi:  /^(avg_?)?heat_?index(_?avg)?$/i,
+  himax:/(max.*heat|heat.*max)/i,
+  mist:/mist/i
+};
+function pick(row, re){
+  if(!row) return undefined;
+  const k = Object.keys(row).find(k=>re.test(k));
+  return k;
+}
+function series(rows, re){
+  const k = rows.length ? pick(rows[0], re) : undefined;
+  return k ? rows.map(r=>num(r[k])) : null;
+}
+function mistSeries(rows){
+  const k = rows.length ? pick(rows[0], F.mist) : undefined;
+  if(!k) return null;
+  return rows.map(r=>{
+    const v=r[k];
+    if(typeof v==="number") return period==="1min" ? (v>0?1:0) : v;
+    if(typeof v==="string" && !isNaN(Number(v)) && v.trim()!=="") return period==="1min" ? (Number(v)>0?1:0) : Number(v);
+    return isOn(v)?1:0;
+  });
+}
+function localInput(d){
+  const p=n=>String(n).padStart(2,"0");
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+"T"+p(d.getHours())+":"+p(d.getMinutes());
+}
+function setDefaultRange(){
+  const to=new Date(), from=new Date(to.getTime()-DEFAULT_SPAN[period]);
+  $("#toDt").value=localInput(to); $("#fromDt").value=localInput(from);
+}
+function labelFor(iso){
+  const o = period==="monthly" ? {year:"numeric",month:"short",day:undefined,hour:undefined,minute:undefined,second:undefined}
+          : period==="daily"   ? {year:undefined,month:"short",day:"2-digit",hour:undefined,minute:undefined,second:undefined}
+          : period==="hourly"  ? {year:undefined,month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit",second:undefined}
+          : {year:undefined,month:undefined,day:"2-digit",hour:"2-digit",minute:"2-digit",second:undefined};
+  if(period==="1min"){ o.month="short"; }
+  return fmtTime(iso,o);
+}
+function drawHist(id, labels, sets, opts){
+  if(histCharts[id]){ histCharts[id].destroy(); delete histCharts[id]; }
+  if(typeof Chart==="undefined") return;
+  const present = sets.filter(s=>s.data);
+  const cfg = {type:(opts&&opts.type)||"line",
+    data:{labels, datasets:present.map(s=>Object.assign({borderWidth:2,pointRadius:labels.length>80?0:3,tension:.2,backgroundColor:s.borderColor},s))},
+    options:Object.assign(chartBase(present.length>1),{plugins:{legend:{display:present.length>1,position:"bottom",labels:{boxWidth:12}}}})};
+  if(opts && opts.step) cfg.data.datasets.forEach(d=>d.stepped=true);
+  if(opts && opts.yMax!==undefined){ cfg.options.scales.y={min:0,max:opts.yMax,ticks:opts.ticks,grace:0}; }
+  else if(opts && opts.yMin!==undefined){ cfg.options.scales.y={min:opts.yMin,grace:"8%"}; }
+  histCharts[id]=new Chart($("#"+id),cfg);
+}
+function renderHist(){
+  const rows=histRows;
+  const labels=rows.map(r=>labelFor(r.recorded_at));
+  drawHist("hTemp",labels,[
+    {label:"Average",data:series(rows,F.t),borderColor:C.maroon},
+    {label:"Maximum",data:series(rows,F.tmax),borderColor:C.red,borderDash:[5,4]},
+    {label:"Minimum",data:series(rows,F.tmin),borderColor:C.blue,borderDash:[5,4]},
+    {label:"Threshold 31 °C",data:rows.map(()=>TH.tempMin),borderColor:C.grey,borderDash:[2,4],borderWidth:1.5,pointRadius:0}]);
+  drawHist("hRh",labels,[
+    {label:"Relative humidity",data:series(rows,F.h),borderColor:C.blue},
+    {label:"Threshold 70%",data:rows.map(()=>TH.rhMax),borderColor:C.grey,borderDash:[2,4],borderWidth:1.5,pointRadius:0}]);
+  drawHist("hHi",labels,[
+    {label:"Average",data:series(rows,F.hi),borderColor:C.maroon},
+    {label:"Maximum",data:series(rows,F.himax),borderColor:C.red,borderDash:[5,4]}]);
+  drawHist("hWind",labels,[
+    {label:"Wind speed",data:series(rows,F.w),borderColor:C.ink},
+    {label:"0.5 m/s",data:rows.map(()=>TH.windMin),borderColor:C.grey,borderDash:[2,4],borderWidth:1.5,pointRadius:0},
+    {label:"4.0 m/s",data:rows.map(()=>TH.windMax),borderColor:C.grey,borderDash:[2,4],borderWidth:1.5,pointRadius:0}]);
+  const m=mistSeries(rows);
+  if(period==="1min"){
+    $("#hMistTitle").textContent="Misting ON/OFF vs time";
+    drawHist("hMist",labels,[{label:"Misting (1 = ON, 0 = OFF)",data:m,borderColor:C.maroon,backgroundColor:"rgba(122,12,20,.15)",fill:true}],{step:true,yMax:1,ticks:{stepSize:1,callback:v=>v===1?"ON":v===0?"OFF":""}});
+  } else {
+    $("#hMistTitle").textContent="Misting duration per period (minutes)";
+    drawHist("hMist",labels,[{label:"Misting minutes",data:m,borderColor:C.maroon,backgroundColor:C.maroon}],{type:"bar",yMin:0});
+  }
+
+  // table
+  const t=$("#histTable");
+  if(!rows.length){ t.innerHTML=""; $("#tblNote").textContent="No records found for this period."; return; }
+  const keys=Object.keys(rows[0]).filter(k=>k!=="id");
+  const pretty=k=>k.replace(/_/g," ").replace(/^\w/,c=>c.toUpperCase());
+  const recent=rows.slice().reverse().slice(0,200);
+  t.innerHTML="<thead><tr>"+keys.map(k=>"<th>"+pretty(k)+"</th>").join("")+"</tr></thead><tbody>"+
+    recent.map(r=>"<tr>"+keys.map(k=>{
+      let v=r[k];
+      if(k==="recorded_at"||/(_at|_time)$/.test(k)) v=fmtTime(v);
+      else if(typeof v==="number") v=Number.isInteger(v)?v:v.toFixed(2);
+      else if(typeof v==="string" && v!=="" && !isNaN(Number(v))) v=Number(v).toFixed(2);
+      else if(v===null) v="–";
+      return "<td>"+v+"</td>";
+    }).join("")+"</tr>").join("")+"</tbody>";
+  $("#tblNote").textContent="Showing the most recent "+recent.length+" of "+rows.length+" records.";
+}
+async function loadHistory(){
+  const msg=$("#histMsg"); msg.textContent="Loading…";
+  const from=new Date($("#fromDt").value), to=new Date($("#toDt").value);
+  if(isNaN(from)||isNaN(to)||from>=to){ msg.textContent="Choose a valid period: the start must be before the end."; return; }
+  try{
+    let rows = await query(TABLES[period],{select:"*", order:"recorded_at.desc", limit:1000,
+      recorded_at:["gte."+from.toISOString(),"lte."+to.toISOString()]});
+    const capped = rows.length>=1000;
+    histRows = rows.reverse();
+    msg.textContent = histRows.length+" records loaded" + (capped?" (limit reached – showing the most recent 1,000; narrow the period to see earlier data)":"") + ".";
+    renderHist();
+  }catch(err){
+    msg.textContent="Could not load data ("+err.message+"). Check your connection and try again.";
+  }
+}
+$$("#periodSeg button").forEach(b=>b.addEventListener("click",()=>{
+  period=b.dataset.p;
+  $$("#periodSeg button").forEach(x=>x.setAttribute("aria-pressed",x===b));
+  setDefaultRange(); loadHistory();
+}));
+$("#applyBtn").addEventListener("click",loadHistory);
+$("#csvBtn").addEventListener("click",()=>{
+  if(!histRows.length) return;
+  const keys=Object.keys(histRows[0]);
+  const esc=v=>{v=v===null?"":String(v);return /[",\n]/.test(v)?'"'+v.replace(/"/g,'""')+'"':v;};
+  const csv=[keys.join(",")].concat(histRows.map(r=>keys.map(k=>esc(r[k])).join(","))).join("\n");
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
+  a.download="misting_"+period+"_"+new Date().toISOString().slice(0,10)+".csv";
+  a.click(); URL.revokeObjectURL(a.href);
+});
+
+/* ================= START ================= */
+setDefaultRange();
+initLiveCharts();
+renderLive();
+poll();
+setInterval(poll,POLL_MS);
+setInterval(()=>{ if(liveRows[0]) renderLive(); }, 5000); // refresh "x s ago" / staleness
+const start=location.hash.slice(1);
+if(["home","live","history","system","about"].includes(start)) show(start);
+})();
+</script>
+</body>
+</html>
