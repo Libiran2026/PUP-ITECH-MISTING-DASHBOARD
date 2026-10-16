@@ -661,6 +661,15 @@ html.in-dash #misty{display:none}
 @media (max-width:720px){.hifig{width:104px}.hicap{font-size:.78rem}}
 @media (prefers-reduced-motion:reduce){.hip *,.mshed *{animation:none !important}.hip .st{opacity:.5}}
 
+/* sound button */
+.sndbtn{position:relative;flex:none;width:38px;height:34px;padding:0;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.25);color:#fff;font-size:1rem;line-height:1;cursor:pointer;display:grid;place-items:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.sndbtn:hover{background:rgba(255,255,255,.12)}
+.sndbtn[data-lock="1"]{border-color:var(--accent);animation:sndpulse 1.6s ease-out infinite}
+.sndbtn[data-lock="1"]::before{content:"Tap for sound";position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);white-space:nowrap;background:var(--maroon);color:#fff;font:700 .76rem var(--sans);padding:3px 10px;border-radius:999px;pointer-events:none}
+@keyframes sndpulse{0%{box-shadow:0 0 0 0 rgba(255,123,136,.7)}100%{box-shadow:0 0 0 12px rgba(255,123,136,0)}}
+@media (max-width:720px){.sndbtn[data-lock="1"]::before{display:none}}
+@media (prefers-reduced-motion:reduce){.sndbtn[data-lock="1"]{animation:none}}
+
 /* concept flow */
 .js .concept:not(.in) .node,.js .concept:not(.in) .arr{opacity:0}
 .concept.in .node{animation:pop .75s cubic-bezier(.2,.8,.2,1) both}
@@ -768,6 +777,7 @@ html.in-dash #misty{display:none}
 <div class="topbar" id="topbar">
   <img data-logo="pup" alt="PUP logo"><img data-logo="itech" alt="PUP Institute of Technology logo">
   <span class="tt">PUP ITECH Automated Misting System</span>
+  <button class="sndbtn" type="button" aria-pressed="true" aria-label="Sound on" title="Sound on">🔊</button>
   <a class="pillbtn" href="#dashboard" data-go="dashboard">Skip to dashboard →</a>
 </div>
 <nav class="prog" id="prog" aria-label="Page progress">
@@ -1198,6 +1208,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
       <div class="row">
         <img data-logo="pup" alt="PUP logo"><img data-logo="itech" alt="PUP Institute of Technology logo">
         <div class="tt">PUP ITECH Misting System<small>Environmental monitoring</small></div>
+        <button class="sndbtn" type="button" aria-pressed="true" aria-label="Sound on" title="Sound on">🔊</button>
         <button class="pillbtn" id="toIntro" type="button">↑ Introduction</button>
       </div>
       <div class="tabswrap" id="tabswrap">
@@ -1495,8 +1506,116 @@ function countUp(el){
   const to=+el.dataset.to, from=+el.dataset.from;
   if(reduceMotion){ el.textContent=to; return; }
   const t0=performance.now(), dur=1200;
-  (function step(t){ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=Math.round(from+(to-from)*e); if(k<1) requestAnimationFrame(step); else el.textContent=to; })(t0);
+  (function step(t){ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3); const v=Math.round(from+(to-from)*e); if(v!==el._lv){ el._lv=v; sfx("tick",k); } el.textContent=v; if(k<1) requestAnimationFrame(step); else el.textContent=to; })(t0);
 }
+/* ================= SOUND: every effect is synthesised in the browser (no audio files) ================= */
+let shedPrev, personLvl;   /* last states, used to play a sound only when something changes */
+const SND={ctx:null,master:null,nb:null,enabled:true,unlocked:false,justUnlocked:0};
+try{ if(localStorage.getItem("pupSound")==="off") SND.enabled=false; }catch(e){}
+function updSndBtns(){
+  $$(".sndbtn").forEach(b=>{
+    const t=SND.enabled?"Sound on (press to mute)":"Sound off (press to turn on)";
+    b.textContent=SND.enabled?(SND.unlocked?"🔊":"🔈"):"🔇";
+    b.dataset.lock=(SND.enabled&&!SND.unlocked)?"1":"0";
+    b.setAttribute("aria-pressed",String(SND.enabled)); b.title=t; b.setAttribute("aria-label",t);
+  });
+}
+function sndInit(){
+  if(SND.ctx) return true;
+  const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
+  try{ SND.ctx=new AC(); }catch(e){ return false; }
+  SND.master=SND.ctx.createGain(); SND.master.gain.value=.5;
+  const comp=SND.ctx.createDynamicsCompressor(); SND.master.connect(comp); comp.connect(SND.ctx.destination);
+  const len=SND.ctx.sampleRate*2, buf=SND.ctx.createBuffer(1,len,SND.ctx.sampleRate), d=buf.getChannelData(0);
+  for(let i=0;i<len;i++) d[i]=Math.random()*2-1; SND.nb=buf; return true;
+}
+function sndUnlock(){
+  if(SND.unlocked || !sndInit()) return;
+  SND.unlocked=true; SND.justUnlocked=performance.now();
+  const go=()=>{ updSndBtns(); if(SND.enabled) sfx("unlock"); };
+  try{ SND.ctx.resume().then(go,go); }catch(e){ go(); }
+}
+["pointerdown","keydown","touchend"].forEach(ev=>document.addEventListener(ev,sndUnlock,{passive:true}));
+document.addEventListener("visibilitychange",()=>{ if(!SND.ctx) return; try{ document.hidden ? SND.ctx.suspend() : SND.ctx.resume(); }catch(e){} });
+document.addEventListener("click",e=>{
+  const sb=e.target.closest&&e.target.closest(".sndbtn");
+  if(sb){
+    if(performance.now()-SND.justUnlocked<800) return;     /* the first tap only turns the audio on */
+    SND.enabled=!SND.enabled; try{ localStorage.setItem("pupSound",SND.enabled?"on":"off"); }catch(_){}
+    updSndBtns(); if(SND.enabled){ if(!SND.unlocked) sndUnlock(); sfx("click"); } return;
+  }
+  const b=e.target.closest&&e.target.closest("button,.btn,a.pillbtn,[data-go]");
+  if(b && b.id!=="mchar") sfx("click");
+},true);
+function osc(type,f0,f1,t,dur,vol){
+  const c=SND.ctx,o=c.createOscillator(),g=c.createGain(); o.type=type; o.frequency.setValueAtTime(f0,t);
+  if(f1) o.frequency.exponentialRampToValueAtTime(Math.max(20,f1),t+dur);
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+Math.min(.015,dur/3)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(SND.master); o.start(t); o.stop(t+dur+.05);
+}
+function nz(t,dur,vol,f0,f1,q,type){
+  const c=SND.ctx,s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();
+  s.buffer=SND.nb; s.loop=true; fl.type=type||"bandpass"; fl.frequency.setValueAtTime(f0,t);
+  if(f1) fl.frequency.exponentialRampToValueAtTime(f1,t+dur); fl.Q.value=q||1;
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+Math.min(.1,dur/3)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  s.connect(fl); fl.connect(g); g.connect(SND.master); s.start(t); s.stop(t+dur+.05);
+}
+const PENT=[392,440,523.25,587.33,659.25,783.99,880,1046.5,1174.7];
+const SFX={
+  unlock(t){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>osc("sine",f,null,t+i*.09,.3,.13)); },
+  click(t){ osc("triangle",520,780,t,.07,.17); osc("sine",1040,null,t+.01,.05,.07); },
+  whoosh(t){ nz(t,.7,.2,300,3400,.8); osc("sine",180,640,t,.55,.06); },
+  whooshOut(t){ nz(t,.75,.18,3400,300,.8); osc("sine",640,160,t,.6,.05); },
+  pop(t){ osc("sine",300,720,t,.09,.15); },
+  bloop(t){ osc("sine",240,540,t,.13,.17); osc("sine",480,1080,t+.02,.08,.05); },
+  note(t,k){ const f=PENT[((k||0)%PENT.length+PENT.length)%PENT.length]; osc("sine",f,null,t,.3,.15); osc("triangle",f*2,null,t,.2,.04); },
+  sparkle(t){ [1568,2093,2637].forEach((f,i)=>osc("sine",f,null,t+i*.06,.14,.05)); },
+  tick(t,p,v){ const f=380+(p||0)*900; osc("triangle",f,f*1.12,t,.04,.11*(v===undefined?1:v)); },
+  letter(t){ const f=PENT[Math.floor(Math.random()*PENT.length)]*2; osc("sine",f,null,t,.06,.035); },
+  splash(t){ nz(t,.3,.17,2000,500,.7); osc("sine",760,300,t,.1,.1); osc("sine",980,420,t+.06,.1,.07); },
+  boing(t){ const o=SND.ctx.createOscillator(),g=SND.ctx.createGain(); o.type="sine"; o.frequency.setValueAtTime(190,t); o.frequency.exponentialRampToValueAtTime(620,t+.13); o.frequency.exponentialRampToValueAtTime(250,t+.34);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.17,t+.02); g.gain.exponentialRampToValueAtTime(.0001,t+.36); o.connect(g); g.connect(SND.master); o.start(t); o.stop(t+.4); },
+  blip(t){ osc("sine",720,1050,t,.07,.09); },
+  hello(t){ osc("square",620,900,t,.12,.045); osc("square",700,1020,t+.15,.14,.045); osc("square",820,1180,t+.32,.16,.045); },
+  bye(t){ osc("square",900,620,t,.12,.045); osc("square",780,520,t+.16,.16,.045); },
+  enter(t){ [523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>osc("triangle",f,null,t+i*.08,.34,.12)); },
+  leave(t){ [783.99,659.25,523.25].forEach((f,i)=>osc("triangle",f,null,t+i*.12,.34,.12)); },
+  hand(t){ osc("sine",480,720,t,.12,.12); osc("sine",620,900,t+.1,.1,.09); },
+  mistOn(t){ for(let i=0;i<3;i++) osc("sine",120,55,t+i*.15,.13,.2); osc("square",70,90,t,.5,.04); nz(t+.2,1.5,.2,4800,6800,.7); },
+  mistOff(t){ osc("sine",190,60,t,.38,.17); nz(t,.5,.08,3200,700,.8); },
+  water(t){ nz(t,1.8,.1,2600,1500,1.4); for(let i=0;i<7;i++) osc("sine",900+Math.random()*900,350+Math.random()*200,t+.1+i*.22+Math.random()*.08,.09,.06); },
+  sweep(t){ osc("sine",300,1200,t,.34,.07); },
+  ding(t){ osc("sine",1175,null,t,.36,.12); osc("sine",1568,null,t+.05,.3,.07); },
+  heat0(t){ osc("sine",784,null,t,.3,.09); osc("sine",988,null,t+.08,.3,.07); },
+  heat1(t){ osc("sine",330,null,t,.28,.1); osc("sine",370,null,t+.12,.2,.07); },
+  heat2(t){ osc("triangle",392,null,t,.14,.12); osc("triangle",311,null,t+.17,.24,.12); },
+  heat3(t){ for(let i=0;i<4;i++){ nz(t+i*.2,.16,.13,1400,800,1.1); osc("sine",260,200,t+i*.2,.12,.04); } },
+  heat4(t){ osc("sawtooth",520,150,t,.85,.06); osc("sawtooth",530,160,t,.85,.05); },
+  mood_happy(t){ SFX.ding(t); },
+  mood_hello(t){ osc("triangle",500,800,t,.1,.11); osc("triangle",650,1000,t+.12,.12,.11); },
+  mood_wow(t){ osc("sine",350,950,t,.24,.14); osc("sine",700,1500,t+.04,.2,.05); },
+  mood_think(t){ osc("sine",330,300,t,.16,.12); osc("sine",290,250,t+.2,.22,.12); },
+  mood_excited(t){ osc("triangle",600,900,t,.09,.12); osc("triangle",800,1250,t+.1,.12,.12); },
+  mood_cool(t){ osc("sine",1318,null,t,.3,.07); osc("sine",988,null,t+.1,.3,.08); nz(t,.2,.05,5000,8000,1); },
+  mood_curious(t){ osc("sine",440,480,t,.09,.11); osc("sine",520,560,t+.13,.1,.11); },
+  mood_joy(t){ [700,850,1000].forEach((f,i)=>osc("triangle",f,f*1.15,t+i*.08,.07,.1)); nz(t+.2,.2,.07,2500,1200,.8); },
+  mood_love(t){ osc("sine",1046.5,null,t,.3,.1); osc("sine",1318.5,null,t+.14,.34,.1); osc("sine",1568,null,t+.28,.34,.06); },
+  mood_dizzy(t){ osc("sine",600,200,t,.75,.11); osc("sine",615,210,t,.75,.09); },
+  mood_giggle(t){ osc("triangle",800,1100,t,.06,.1); osc("triangle",900,1250,t+.09,.07,.1); osc("triangle",850,1180,t+.19,.06,.08); },
+  mood_run(t){ SFX.boing(t); }
+};
+const SGAP={click:40,pop:110,bloop:140,note:60,sparkle:200,tick:35,letter:70,splash:90,blip:150,water:6000,sweep:300,hand:600};
+const slast={};
+function sfx(name,a,b){
+  if(!SND.enabled||!SND.unlocked||!SND.ctx||SND.ctx.state!=="running"||document.hidden) return;
+  const now=performance.now(), gap=SGAP[name]!==undefined?SGAP[name]:(name.indexOf("mood_")===0?250:0);
+  if(gap && now-(slast[name]||0)<gap) return; slast[name]=now;
+  const f=SFX[name]; if(!f) return;
+  try{ f(SND.ctx.currentTime+.005,a,b); }catch(e){}
+}
+document.addEventListener("mouseover",e=>{ const c=e.target; if(c && c.classList && c.classList.contains("ch")) sfx("letter"); },{passive:true});
+updSndBtns();
+
 /* ================= NAVIGATION ================= */
 const HASH = {home:"dashboard", live:"live-data", history:"historical-data", how:"how-it-works", about:"about"};
 let histLoaded=false;
@@ -1524,8 +1643,9 @@ function switchMode(dash, tab, push){
   $("#chi").textContent = dash ? "Hello!" : "Bye!";
   $("#csub").textContent = dash ? "Loading the latest readings…" : "PUP ITECH Automated Roof-Mounted Misting System";
   curtain.className="show"; void curtain.offsetWidth; curtain.classList.add("in");
-  setTimeout(()=>setMode(dash,tab),800);
-  setTimeout(()=>curtain.classList.add("out"),1180);
+  sfx("whoosh"); setTimeout(()=>sfx(dash?"hello":"bye"),950);
+  setTimeout(()=>{ setMode(dash,tab); sfx("pop"); sfx(dash?"enter":"leave"); },800);
+  setTimeout(()=>{ curtain.classList.add("out"); sfx("whooshOut"); },1180);
   setTimeout(()=>{ curtain.className=""; curtainBusy=false; },1950);
 }
 function enterDash(tab){ if(!inDashMode()) switchMode(true,tab||"home",true); else show(tab||"home"); }
@@ -1686,7 +1806,7 @@ const mistyEl=$("#misty"), mbub=$("#mbub"), mchar=$("#mchar");
 const MISTY=[["hero","Hi PUP student! I'm Misty 👋 Scroll down with me!"],["sec-what","This is a PUP ITECH thesis project. 🏫"],["sec-why","We study heat conditions and record the data. 🌡️"],["sec-how","Watch the steps light up as you scroll! ✨"],["sec-when","Try the sliders and play with the numbers! 🎛️"],["sec-measure","So many things to measure! 📏"],["sec-water","Water use is measured too. 💦"],["sec-ready","Ready? Tap Enter Main Dashboard! 🚀"]];
 let mistyCur="", mistyTimer=null, mistyMsg="";
 function mistySay(t){
-  mistyMsg=t; mbub.textContent=t; mbub.classList.remove("show"); void mbub.offsetWidth; mbub.classList.add("show");
+  sfx("blip"); mistyMsg=t; mbub.textContent=t; mbub.classList.remove("show"); void mbub.offsetWidth; mbub.classList.add("show");
   clearTimeout(mistyTimer); mistyTimer=setTimeout(()=>mbub.classList.remove("show"),6500);
 }
 /* where Misty stands in each section: [0 = left / 1 = right, 0 = top ... 1 = bottom] */
@@ -1699,16 +1819,16 @@ function mistyXY(id){
 }
 const MOODS={"hero":"hello","sec-what":"wow","sec-why":"think","sec-how":"excited","sec-when":"cool","sec-measure":"curious","sec-water":"joy","sec-ready":"love"};
 let mistyMood="hello", mistyBase="hello", moodT=null, mistyFace=1;
-function setMood(m){
+function setMood(m,quiet){
   if(mistyMood===m) return;
-  mistyMood=m; mistyEl.dataset.mood=m;
+  mistyMood=m; mistyEl.dataset.mood=m; if(!quiet) sfx("mood_"+m);
   mistyEl.classList.remove("pop"); void mistyEl.offsetWidth; mistyEl.classList.add("pop");
 }
 function mistyReact(msg,mood,hold){
   clearTimeout(moodT); setMood(mood); mistySay(msg);
-  moodT=setTimeout(()=>setMood(mistyBase),hold||6500);
+  moodT=setTimeout(()=>setMood(mistyBase,true),hold||6500);
 }
-function mistyBrief(mood,ms){ clearTimeout(moodT); setMood(mood); moodT=setTimeout(()=>setMood(mistyBase),ms); }
+function mistyBrief(mood,ms){ clearTimeout(moodT); setMood(mood); moodT=setTimeout(()=>setMood(mistyBase,true),ms); }
 let mistyX=14, mistyMoveT=null;
 function mistyPos(x,y,smooth){
   mistyX=x;
@@ -1719,7 +1839,7 @@ function mistyGo(id,animate){
   const p=mistyXY(id), curX=mistyX;
   mistyEl.classList.toggle("right",p.right);
   mistyBase=MOODS[id]||"happy";
-  if(!animate || reduceMotion){ mistyPos(p.x,p.y,false); mchar.style.setProperty("--face",p.right?-1:1); mistyFace=p.right?-1:1; clearTimeout(moodT); setMood(mistyBase); return 0; }
+  if(!animate || reduceMotion){ mistyPos(p.x,p.y,false); mchar.style.setProperty("--face",p.right?-1:1); mistyFace=p.right?-1:1; clearTimeout(moodT); setMood(mistyBase,true); return 0; }
   mistyEl.classList.add("moving"); mbub.classList.remove("show");
   mistyFace=p.x<curX?-1:1; mchar.style.setProperty("--face",mistyFace); clearTimeout(moodT); setMood("run");
   mistyPos(p.x,p.y,true);
@@ -1789,7 +1909,7 @@ const fillRange=i=>i.style.setProperty("--fill",((+i.value-+i.min)/(+i.max-+i.mi
 RANGES.forEach(i=>{
   fillRange(i); i.classList.add("hintpulse");
   i.addEventListener("input",()=>{
-    fillRange(i);
+    fillRange(i); sfx("tick",(+i.value-+i.min)/(+i.max-+i.min),demoState.active?.45:1);
     if(!demoState.active){ const card=i.closest(".card"); (card?card.querySelectorAll("input[type=range]"):[i]).forEach(x=>{ x.classList.remove("hintpulse"); x._used=true; }); }
   });
 });
@@ -1810,7 +1930,7 @@ function startDemo(input,msg,settled){
   demoRestore=v0;
   demoHand=document.createElement("div"); demoHand.className="shand"; demoHand.setAttribute("aria-hidden","true");
   demoHand.innerHTML='<span class="hh">👆</span><span class="ht">Drag me!</span>'; wrap.appendChild(demoHand);
-  mistyReact(msg,"excited",6500);
+  sfx("hand"); mistyReact(msg,"excited",6500);
   const up=Math.min(max,v0+range*0.34), down=Math.max(min,v0-range*0.24);
   const path=[[0,v0],[.3,up],[.66,down],[1,v0]], dur=4200, t0=performance.now();
   const ease=k=>k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;
@@ -1847,6 +1967,7 @@ function fxDrop(x,y,cls,vars){
   fxLayer.appendChild(e); e.addEventListener("animationend",()=>e.remove());
 }
 function splash(x,y){
+  sfx("splash");
   if(reduceMotion) return;
   const cols=["#bfe6ff","#ff9aa6","#f1bd5a","#bfe6ff","#ffffff","#ff7b88","#bfe6ff"];
   for(let i=0;i<7;i++){ const a=(i/7)*Math.PI*2+Math.random()*.5, d=26+Math.random()*26;
@@ -1866,10 +1987,12 @@ if(!reduceMotion){
 if("IntersectionObserver" in window){
   const vis=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle("off",!e.isIntersecting)),{rootMargin:"120px 0px"});
   $$("#hero, .sec").forEach(el=>vis.observe(el));
+  new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) sfx("water"); }),{threshold:.45}).observe($("#sec-water"));
 }
 /* reveal helpers */
 function markIn(t){
   t.classList.add("in");
+  if(t.matches(".step")) sfx("bloop"); else if(t.matches("h2.t,.cta h2,.hero h1")) sfx("sparkle"); else sfx("pop");
   t.querySelectorAll(".cnt").forEach(countUp);
   setTimeout(()=>t.classList.add("rvd"),1600);
 }
@@ -1895,6 +2018,7 @@ const STEP_NODES=[[0,1],[2],[3],[4],[5],[6,7]];
 const stackedMQ=window.matchMedia("(max-width:1020px)");
 function setStep(i){
   if(i<0) return;
+  sfx("note",i);
   steps.forEach((s,k)=>s.classList.toggle("active",k===i));
   if(stackedMQ.matches) return;
   const lo=STEP_NODES[i][0], hi=STEP_NODES[i][STEP_NODES[i].length-1];
@@ -1918,6 +2042,7 @@ function runChain(){
   nds.forEach((n,k)=>setTimeout(()=>{
     if(id!==chainRun) return;
     nds.forEach((m,j)=>{ m.classList.toggle("on",j===k); m.classList.toggle("done",j<k); });
+    sfx("note",k);
     ars.forEach((a,j)=>a.classList.toggle("lit",j<k));
     if(k===nds.length-1) setTimeout(()=>{ if(id===chainRun){ n.classList.remove("on"); n.classList.add("done"); ars.forEach(a=>a.classList.remove("lit")); } },1000);
   },350+k*520));
@@ -2127,7 +2252,7 @@ function updateLiveCharts(rows){
 }
 
 /* ================= LIVE RENDER ================= */
-let liveRows = [];
+let liveRows = [], livePump;
 function renderLive(){
   const row = liveRows[0];
   const fresh = !!row && (Date.now()-new Date(row.recorded_at).getTime())/1000 <= STALE_S;
@@ -2165,6 +2290,9 @@ function renderLive(){
   mt.textContent = mtxt;
   $$("[data-mist]").forEach(x=>x.textContent = (fresh?(mtxt==="ACTIVE"?"● ACTIVE":"● OFF"):"No recent data"));
 
+  const pumpNow=!!(row && fresh && e && e.pumpOn);
+  if(livePump!==undefined && livePump!==pumpNow && inDashMode()) sfx(pumpNow?"mistOn":"mistOff");
+  livePump=pumpNow;
   const dh = decisionHTML(row,fresh);
   $("#decisionHome").innerHTML=dh; $("#decisionLive").innerHTML=dh;
   $("#meters").innerHTML=metersHTML(row);
@@ -2237,6 +2365,7 @@ function drawHist(id, labels, sets, opts){
   histCharts[id]=new Chart($("#"+id),cfg);
 }
 function renderHist(){
+  sfx("sweep");
   const rows=histRows, labels=rows.map(r=>labelFor(r.recorded_at));
   const dash = (v,l)=>({label:l,data:rows.map(()=>v),borderColor:C.grey,borderDash:[2,4],borderWidth:1.5,pointRadius:0});
   drawHist("hTemp",labels,[
@@ -2304,7 +2433,7 @@ $("#csvBtn").addEventListener("click",()=>{
   const a=document.createElement("a");
   a.href=URL.createObjectURL(new Blob([csv],{type:"text/csv"}));
   a.download="misting_"+period+"_"+new Date().toISOString().slice(0,10)+".csv";
-  a.click(); URL.revokeObjectURL(a.href);
+  a.click(); URL.revokeObjectURL(a.href); sfx("ding");
 });
 
 /* ================= SIMULATOR (educational, not live data) ================= */
@@ -2331,6 +2460,7 @@ sim();
 })();
 function shedUpdate(all,t,w){
   const sh=$("#mshed"); if(!sh) return;
+  if(shedPrev!==undefined && shedPrev!==all) sfx(all?"mistOn":"mistOff"); shedPrev=all;
   sh.classList.toggle("on",all);
   $("#mled").setAttribute("fill",all?"#62d48f":"#ff7b88");
   const bar=$("#shedbar"); bar.classList.toggle("on",all); $("#shedtxt").textContent = all ? "Misting ON: all three conditions are met 💦" : "Misting OFF: not all conditions are met";
@@ -2343,6 +2473,7 @@ function shedUpdate(all,t,w){
 const HI_LINES=["Feeling okay","Getting a little tired","Very uncomfortable","Struggling with the heat","Needs to cool down now"];
 function personUpdate(k){
   const lvl = !k ? 0 : k.label==="Caution" ? 1 : k.label==="Extreme Caution" ? 2 : k.label==="Danger" ? 3 : 4;
+  if(personLvl!==lvl){ if(personLvl!==undefined) sfx("heat"+lvl); personLvl=lvl; }
   $("#hip").dataset.s=lvl; $("#hiCap").textContent=HI_LINES[lvl];
 }
 function simHI(){
