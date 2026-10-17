@@ -1524,8 +1524,12 @@ function sndInit(){
   if(SND.ctx) return true;
   const AC=window.AudioContext||window.webkitAudioContext; if(!AC) return false;
   try{ SND.ctx=new AC(); }catch(e){ return false; }
-  SND.master=SND.ctx.createGain(); SND.master.gain.value=.5;
+  SND.master=SND.ctx.createGain(); SND.master.gain.value=.58;
   const comp=SND.ctx.createDynamicsCompressor(); SND.master.connect(comp); comp.connect(SND.ctx.destination);
+  const rl=Math.floor(SND.ctx.sampleRate*1.3), ib=SND.ctx.createBuffer(2,rl,SND.ctx.sampleRate);          /* a small, soft room echo */
+  for(let ch=0;ch<2;ch++){ const d=ib.getChannelData(ch); for(let i=0;i<rl;i++) d[i]=(Math.random()*2-1)*Math.pow(1-i/rl,2.6); }
+  const conv=SND.ctx.createConvolver(); conv.buffer=ib; const wet=SND.ctx.createGain(); wet.gain.value=.17;
+  SND.master.connect(conv); conv.connect(wet); wet.connect(comp);
   const len=SND.ctx.sampleRate*2, buf=SND.ctx.createBuffer(1,len,SND.ctx.sampleRate), d=buf.getChannelData(0);
   for(let i=0;i<len;i++) d[i]=Math.random()*2-1; SND.nb=buf; return true;
 }
@@ -1560,6 +1564,15 @@ function nz(t,dur,vol,f0,f1,q,type){
   g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+Math.min(.1,dur/3)); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
   s.connect(fl); fl.connect(g); g.connect(SND.master); s.start(t); s.stop(t+dur+.05);
 }
+function bubble(t,f,dur,vol){
+  f=f||600; dur=dur||.11; vol=vol||.12;
+  const c=SND.ctx,o=c.createOscillator(),g=c.createGain(); o.type="sine";
+  o.frequency.setValueAtTime(f,t); o.frequency.exponentialRampToValueAtTime(f*(1.7+Math.random()*.5),t+dur*.8);
+  g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(vol,t+.012); g.gain.exponentialRampToValueAtTime(.0001,t+dur);
+  o.connect(g); g.connect(SND.master); o.start(t); o.stop(t+dur+.05);
+}
+function bubbles(t,n,span,fLo,fHi,vol){ for(let i=0;i<n;i++) bubble(t+Math.random()*span,fLo+Math.random()*(fHi-fLo),.06+Math.random()*.1,vol*(.5+Math.random()*.7)); }
+function bell(t,f,dur,vol){ osc("sine",f,null,t,dur,vol); osc("sine",f*2.76,null,t,dur*.45,vol*.35); osc("sine",f*5.4,null,t,dur*.22,vol*.15); }
 const PENT=[392,440,523.25,587.33,659.25,783.99,880,1046.5,1174.7];
 const SFX={
   unlock(t){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>osc("sine",f,null,t+i*.09,.3,.13)); },
@@ -1604,6 +1617,45 @@ const SFX={
   mood_giggle(t){ osc("triangle",800,1100,t,.06,.1); osc("triangle",900,1250,t+.09,.07,.1); osc("triangle",850,1180,t+.19,.06,.08); },
   mood_run(t){ SFX.boing(t); }
 };
+Object.assign(SFX,{
+  unlock(t){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>bell(t+i*.1,f,.6,.1)); },
+  click(t){ bubble(t,760,.1,.07); nz(t,.03,.035,5000,7000,1,"highpass"); },
+  pop(t){ bubble(t,420,.09,.09); },
+  bloop(t){ bubble(t,300,.14,.12); bubble(t+.07,520,.1,.07); },
+  note(t,k){ bell(t,PENT[((k||0)%PENT.length+PENT.length)%PENT.length],.55,.1); },
+  sparkle(t){ [1568,2093,2637].forEach((f,i)=>bell(t+i*.06,f,.3,.035)); },
+  tick(t,p,v){ const f=330+(p||0)*700, m=(v===undefined?1:v); osc("sine",f,null,t,.07,.12*m); osc("sine",f*3,null,t,.03,.03*m); },
+  letter(t){ bubble(t,1100+Math.random()*700,.035,.04); },
+  ding(t){ bell(t,1175,.55,.1); bell(t+.06,1568,.45,.06); },
+  enter(t){ [523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>bell(t+i*.08,f,.75,.1)); },
+  leave(t){ [783.99,659.25,523.25].forEach((f,i)=>bell(t+i*.12,f,.65,.1)); },
+  heat0(t){ bell(t,784,.5,.08); bell(t+.08,988,.5,.06); },
+  mood_happy(t){ bell(t,988,.45,.09); },
+  mood_love(t){ bell(t,1046.5,.5,.09); bell(t+.14,1318.5,.55,.09); bell(t+.28,1568,.55,.06); },
+  mood_cool(t){ bell(t,1318.5,.5,.07); bell(t+.1,988,.5,.07); nz(t,.2,.04,5000,8000,1); },
+  glug(t){ bubble(t,170,.2,.2); bubble(t+.1,250,.14,.15); nz(t,.25,.1,1800,500,.8); },
+  /* page switch, going in: water fills the screen with a gurgle and lots of bubbles */
+  waterFill(t){
+    const c=SND.ctx,s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain(),lfo=c.createOscillator(),lg=c.createGain();
+    s.buffer=SND.nb; s.loop=true; fl.type="bandpass"; fl.Q.value=1.7;
+    fl.frequency.setValueAtTime(260,t); fl.frequency.exponentialRampToValueAtTime(2200,t+.85);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.2,t+.4); g.gain.exponentialRampToValueAtTime(.0001,t+1.05);
+    lfo.frequency.value=12; lg.gain.value=.05; lfo.connect(lg); lg.connect(g.gain);
+    s.connect(fl); fl.connect(g); g.connect(SND.master); s.start(t); s.stop(t+1.1); lfo.start(t); lfo.stop(t+1.1);
+    osc("sine",110,300,t,.9,.07);
+    bubbles(t,18,.95,320,1100,.12);
+  },
+  /* page switch, going out: the water drains away and bubbles pop */
+  waterDrain(t){
+    const c=SND.ctx,s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain(),lfo=c.createOscillator(),lg=c.createGain();
+    s.buffer=SND.nb; s.loop=true; fl.type="bandpass"; fl.Q.value=1.5;
+    fl.frequency.setValueAtTime(2000,t); fl.frequency.exponentialRampToValueAtTime(220,t+.8);
+    g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.17,t+.2); g.gain.exponentialRampToValueAtTime(.0001,t+.95);
+    lfo.frequency.value=9; lg.gain.value=.04; lfo.connect(lg); lg.connect(g.gain);
+    s.connect(fl); fl.connect(g); g.connect(SND.master); s.start(t); s.stop(t+1); lfo.start(t); lfo.stop(t+1);
+    bubbles(t,12,.75,700,1700,.08); bubble(t+.78,190,.22,.16);
+  }
+});
 const SGAP={click:40,pop:110,bloop:140,note:60,sparkle:200,tick:35,letter:70,splash:90,blip:150,water:6000,sweep:300,hand:600};
 const slast={};
 function sfx(name,a,b){
@@ -1611,8 +1663,9 @@ function sfx(name,a,b){
   const now=performance.now(), gap=SGAP[name]!==undefined?SGAP[name]:(name.indexOf("mood_")===0?250:0);
   if(gap && now-(slast[name]||0)<gap) return; slast[name]=now;
   const f=SFX[name]; if(!f) return;
-  try{ f(SND.ctx.currentTime+.005,a,b); }catch(e){}
+  try{ f(SND.ctx.currentTime+.005,a,b); }catch(e){ if(window.__sfxDebug) console.error("sfx "+name+": "+e.message); }
 }
+if(window.__sfxDebug) window.__sfxCall=sfx;
 document.addEventListener("mouseover",e=>{ const c=e.target; if(c && c.classList && c.classList.contains("ch")) sfx("letter"); },{passive:true});
 updSndBtns();
 
@@ -1643,9 +1696,9 @@ function switchMode(dash, tab, push){
   $("#chi").textContent = dash ? "Hello!" : "Bye!";
   $("#csub").textContent = dash ? "Loading the latest readings…" : "PUP ITECH Automated Roof-Mounted Misting System";
   curtain.className="show"; void curtain.offsetWidth; curtain.classList.add("in");
-  sfx("whoosh"); setTimeout(()=>sfx(dash?"hello":"bye"),950);
-  setTimeout(()=>{ setMode(dash,tab); sfx("pop"); sfx(dash?"enter":"leave"); },800);
-  setTimeout(()=>{ curtain.classList.add("out"); sfx("whooshOut"); },1180);
+  sfx("waterFill"); setTimeout(()=>sfx(dash?"hello":"bye"),950);
+  setTimeout(()=>{ setMode(dash,tab); sfx("glug"); setTimeout(()=>sfx(dash?"enter":"leave"),160); },800);
+  setTimeout(()=>{ curtain.classList.add("out"); sfx("waterDrain"); },1180);
   setTimeout(()=>{ curtain.className=""; curtainBusy=false; },1950);
 }
 function enterDash(tab){ if(!inDashMode()) switchMode(true,tab||"home",true); else show(tab||"home"); }
