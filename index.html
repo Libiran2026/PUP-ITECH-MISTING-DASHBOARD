@@ -474,6 +474,26 @@ html.in-dash #misty{display:none}
 #misty .mx:hover{opacity:1;background:var(--maroon)}
 
 
+/* misting alert */
+#misty{transition:transform 1.15s cubic-bezier(.45,0,.2,1),scale .55s cubic-bezier(.3,1.6,.5,1);transform-origin:0 100%}
+#misty.right{transform-origin:100% 100%}
+#misty.big{scale:1.85}
+html.in-dash #misty.alert{display:block}
+#misty.alert .mchar{filter:drop-shadow(0 0 16px rgba(107,184,238,.85))}
+#mistBanner{position:fixed;left:50%;bottom:14px;z-index:72;display:flex;align-items:center;gap:9px;padding:10px 18px;border-radius:999px;font-weight:700;color:#fff;background:linear-gradient(90deg,#1c5d8f,#2f86cc);border:1px solid rgba(191,230,255,.65);box-shadow:0 10px 28px rgba(0,0,0,.45),0 0 0 4px rgba(107,184,238,.18);overflow:hidden;transform:translate(-50%,160%);opacity:0;transition:transform .55s cubic-bezier(.3,1.5,.5,1),opacity .3s;pointer-events:none}
+#mistBanner.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+#mistBanner .mbi{font-size:1.2rem;animation:ticob 1.6s ease-in-out infinite;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+#mistBanner .mbd{position:absolute;inset:0;pointer-events:none}
+#mistBanner .mbd i{position:absolute;top:-8px;width:5px;height:8px;border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:rgba(223,243,255,.85);animation:mbfall 1.6s linear infinite}
+#mistBanner .mbd i:nth-child(1){left:8%;animation-delay:0s}#mistBanner .mbd i:nth-child(2){left:24%;animation-delay:.5s}#mistBanner .mbd i:nth-child(3){left:41%;animation-delay:1s}#mistBanner .mbd i:nth-child(4){left:58%;animation-delay:.25s}#mistBanner .mbd i:nth-child(5){left:74%;animation-delay:.8s}#mistBanner .mbd i:nth-child(6){left:90%;animation-delay:1.25s}
+@keyframes mbfall{from{translate:0 0;opacity:0}15%{opacity:1}to{translate:0 52px;opacity:0}}
+#mistBanner .mbt,#mistBanner .mbi,#mistBanner .mbell{position:relative}
+.mbell{pointer-events:auto;border:1px solid rgba(255,255,255,.6);background:rgba(0,0,0,.2);color:#fff;font:700 .78rem var(--sans);padding:4px 10px;border-radius:999px;cursor:pointer}
+#fx .rn{position:absolute;top:-24px;width:var(--s);height:calc(var(--s)*1.4);border-radius:50% 50% 50% 50%/62% 62% 38% 38%;background:rgba(160,215,255,.8);animation:rnfall var(--t) linear forwards}
+@keyframes rnfall{from{translate:0 0;opacity:0}8%{opacity:.9}to{translate:var(--dx,0px) 112vh;opacity:.5}}
+@media (max-width:720px){#mistBanner{padding:9px 14px;font-size:.92rem;max-width:92vw}}
+@media (prefers-reduced-motion:reduce){#mistBanner .mbd,#mistBanner .mbi{animation:none}#fx .rn{display:none}}
+
 /* Misty's expressions */
 #misty .mf{display:none}
 #misty[data-mood="happy"] :is(.e-norm,.m-smile),
@@ -778,6 +798,11 @@ html.in-dash #misty{display:none}
   <button data-t="dashboard" aria-label="Dashboard"><span>Dashboard</span><i></i></button>
 </nav>
 
+<div id="mistBanner" role="status" aria-live="polite">
+  <span class="mbd" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
+  <span class="mbi" aria-hidden="true">💦</span><span class="mbt">Misting is active now</span>
+  <button class="mbell" id="mbell" type="button" hidden>🔔 Notify me</button>
+</div>
 <div id="fx" aria-hidden="true"></div>
 <div id="misty" data-mood="hello">
   <button class="mx" id="mx" type="button" aria-label="Hide Misty">×</button>
@@ -1498,7 +1523,7 @@ function countUp(el){
   (function step(t){ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3); const v=Math.round(from+(to-from)*e); if(v!==el._lv){ el._lv=v; sfx("tick",k); } el.textContent=v; if(k<1) requestAnimationFrame(step); else el.textContent=to; })(t0);
 }
 /* ================= SOUND: every effect is synthesised in the browser (no audio files) ================= */
-let shedPrev, personLvl;   /* last states, used to play a sound only when something changes */
+let shedPrev, personLvl, pendingAlert=false;   /* last states, used to play a sound only when something changes */
 const SND={ctx:null,master:null,nb:null,enabled:true,unlocked:false,justUnlocked:0};
 function updSndBtns(){
   $$(".sndbtn").forEach(b=>{
@@ -1524,7 +1549,7 @@ function sndInit(){
 function sndUnlock(){
   if(SND.unlocked || !sndInit()) return;
   SND.unlocked=true; SND.justUnlocked=performance.now();
-  const go=()=>{ updSndBtns(); if(SND.enabled) sfx("unlock"); };
+  const go=()=>{ updSndBtns(); if(SND.enabled){ sfx("unlock"); if(pendingAlert && livePump===true){ pendingAlert=false; setTimeout(alertEffects,700); } } };
   try{ SND.ctx.resume().then(go,go); }catch(e){ go(); }
 }
 ["pointerdown","keydown","touchend"].forEach(ev=>document.addEventListener(ev,sndUnlock,{passive:true}));
@@ -1615,6 +1640,13 @@ Object.assign(SFX,{
   mood_happy(t){ bell(t,988,.45,.09); },
   mood_love(t){ bell(t,1046.5,.5,.09); bell(t+.14,1318.5,.55,.09); bell(t+.28,1568,.55,.06); },
   mood_cool(t){ bell(t,1318.5,.5,.07); bell(t+.1,988,.5,.07); nz(t,.2,.04,5000,8000,1); },
+  alertMist(t){
+    [1046.5,1318.5,1568,2093].forEach((f,i)=>bell(t+i*.12,f,.8,.12));
+    bubbles(t+.2,12,1.3,500,1500,.1);
+    for(let i=0;i<3;i++) osc('sine',120,55,t+.55+i*.15,.13,.2);
+    nz(t+.7,1.6,.15,4800,7000,.7);
+    bell(t+1.15,1318.5,.9,.09); bell(t+1.4,987.77,1.1,.1);
+  },
   glug(t){ bubble(t,170,.2,.2); bubble(t+.1,250,.14,.15); nz(t,.25,.1,1800,500,.8); },
   /* page switch, going in: water fills the screen with a gurgle and lots of bubbles */
   waterFill(t){
@@ -1638,7 +1670,7 @@ Object.assign(SFX,{
     bubbles(t,12,.75,700,1700,.08); bubble(t+.78,190,.22,.16);
   }
 });
-const SGAP={click:40,pop:110,bloop:140,note:60,sparkle:200,tick:35,letter:70,splash:90,blip:150,water:6000,sweep:300,hand:600};
+const SGAP={alertMist:3000,click:40,pop:110,bloop:140,note:60,sparkle:200,tick:35,letter:70,splash:90,blip:150,water:6000,sweep:300,hand:600};
 const slast={};
 function sfx(name,a,b){
   if(!SND.enabled||!SND.unlocked||!SND.ctx||SND.ctx.state!=="running"||document.hidden) return;
@@ -1994,6 +2026,49 @@ if("IntersectionObserver" in window){
   });
 }
 
+/* ================= MISTING ALERT: starts when the real pump turns ON, or when a visitor arrives while it is already ON ================= */
+const BASE_TITLE=document.title;
+let alertT=null, lastAlert=0;
+function buzz(pattern){ try{ if(navigator.vibrate) navigator.vibrate(pattern); }catch(e){} }
+function alertEffects(){ sfx("alertMist"); buzz([160,70,160,70,320]); }
+function shower(){
+  if(reduceMotion) return;
+  for(let i=0;i<46;i++) setTimeout(()=>{
+    const e=document.createElement("i"); e.className="rn";
+    e.style.left=(Math.random()*window.innerWidth).toFixed(0)+"px";
+    e.style.setProperty("--s",(5+Math.random()*6).toFixed(1)+"px"); e.style.setProperty("--t",(1.5+Math.random()*1.4).toFixed(2)+"s"); e.style.setProperty("--dx",(Math.random()*40-20).toFixed(0)+"px");
+    fxLayer.appendChild(e); e.addEventListener("animationend",()=>e.remove());
+  },Math.random()*3000);
+}
+function mistyAlert(msg){
+  if(mistyEl.style.display==="none") return;                 /* the visitor hid Misty */
+  if(inDashMode()){ mistyEl.classList.remove("right"); mchar.style.setProperty("--face",1); mistyPos(14,window.innerHeight-(mchar.offsetHeight||80)-14,false); }
+  mistyEl.classList.add("alert","big");
+  clearTimeout(moodT); setMood("wow",true); mistySay(msg);
+  moodT=setTimeout(()=>setMood(mistyBase,true),7000);
+  clearTimeout(alertT);
+  alertT=setTimeout(()=>{ mistyEl.classList.remove("big"); setTimeout(()=>mistyEl.classList.remove("alert"),700); },7000);
+  const r=mchar.getBoundingClientRect(); splash(r.left+r.width/2,r.top+r.height/2);
+}
+function mistStarted(kind){
+  const banner=$("#mistBanner"); banner.classList.add("show");
+  document.title="💦 Misting now · "+BASE_TITLE;
+  const now=Date.now(); if(now-lastAlert<20000) return; lastAlert=now;
+  const msg=kind==="arrive" ? "The shed is misting right now! 💦" : "Misting just started! 💦";
+  mistyAlert(msg); shower();
+  if(SND.unlocked) alertEffects(); else pendingAlert=true;      /* sound and vibration need one tap first */
+  try{ if("Notification" in window && Notification.permission==="granted" && document.hidden) new Notification("PUP ITECH Misting System",{body:msg}); }catch(e){}
+}
+function mistStopped(){
+  $("#mistBanner").classList.remove("show"); document.title=BASE_TITLE; pendingAlert=false;
+  if(inDashMode()) sfx("mistOff");
+}
+(function(){
+  const bell=$("#mbell"); if(!bell || !("Notification" in window) || Notification.permission!=="default") return;
+  bell.hidden=false;
+  bell.addEventListener("click",()=>{ try{ Notification.requestPermission().then(()=>{ bell.hidden=true; }); }catch(e){ bell.hidden=true; } });
+})();
+
 /* cursor droplets + click splash */
 const fxLayer=$("#fx");
 function fxDrop(x,y,cls,vars){
@@ -2326,7 +2401,8 @@ function renderLive(){
   $$("[data-mist]").forEach(x=>x.textContent = (fresh?(mtxt==="ACTIVE"?"● ACTIVE":"● OFF"):"No recent data"));
 
   const pumpNow=!!(row && fresh && e && e.pumpOn);
-  if(livePump!==undefined && livePump!==pumpNow && inDashMode()) sfx(pumpNow?"mistOn":"mistOff");
+  if(pumpNow && livePump!==true) mistStarted(livePump===undefined?"arrive":"start");
+  else if(!pumpNow && livePump===true) mistStopped();
   livePump=pumpNow;
   const dh = decisionHTML(row,fresh);
   $("#decisionHome").innerHTML=dh; $("#decisionLive").innerHTML=dh;
@@ -2334,9 +2410,10 @@ function renderLive(){
   updateLiveCharts(liveRows);
 }
 
-let polling=false, failCount=0;
+let polling=false, failCount=0, lastHiddenPoll=0;
 async function poll(){
-  if(polling || document.hidden) return;
+  if(polling) return;
+  if(document.hidden){ if(Date.now()-lastHiddenPoll<10000) return; lastHiddenPoll=Date.now(); }
   polling=true;
   try{
     liveRows = await query("sensor_live",{select:"*", order:"recorded_at.desc", limit:LIVE_POINTS});
