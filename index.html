@@ -661,15 +661,6 @@ html.in-dash #misty{display:none}
 @media (max-width:720px){.hifig{width:104px}.hicap{font-size:.78rem}}
 @media (prefers-reduced-motion:reduce){.hip *,.mshed *{animation:none !important}.hip .st{opacity:.5}}
 
-/* sound button */
-.sndbtn{position:relative;flex:none;width:38px;height:34px;padding:0;border-radius:999px;border:1px solid rgba(255,255,255,.28);background:rgba(0,0,0,.25);color:#fff;font-size:1rem;line-height:1;cursor:pointer;display:grid;place-items:center;font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
-.sndbtn:hover{background:rgba(255,255,255,.12)}
-.sndbtn[data-lock="1"]{border-color:var(--accent);animation:sndpulse 1.6s ease-out infinite}
-.sndbtn[data-lock="1"]::before{content:"Tap for sound";position:absolute;right:calc(100% + 8px);top:50%;transform:translateY(-50%);white-space:nowrap;background:var(--maroon);color:#fff;font:700 .76rem var(--sans);padding:3px 10px;border-radius:999px;pointer-events:none}
-@keyframes sndpulse{0%{box-shadow:0 0 0 0 rgba(255,123,136,.7)}100%{box-shadow:0 0 0 12px rgba(255,123,136,0)}}
-@media (max-width:720px){.sndbtn[data-lock="1"]::before{display:none}}
-@media (prefers-reduced-motion:reduce){.sndbtn[data-lock="1"]{animation:none}}
-
 /* concept flow */
 .js .concept:not(.in) .node,.js .concept:not(.in) .arr{opacity:0}
 .concept.in .node{animation:pop .75s cubic-bezier(.2,.8,.2,1) both}
@@ -777,7 +768,6 @@ html.in-dash #misty{display:none}
 <div class="topbar" id="topbar">
   <img data-logo="pup" alt="PUP logo"><img data-logo="itech" alt="PUP Institute of Technology logo">
   <span class="tt">PUP ITECH Automated Misting System</span>
-  <button class="sndbtn" type="button" aria-pressed="true" aria-label="Sound on" title="Sound on">🔊</button>
   <a class="pillbtn" href="#dashboard" data-go="dashboard">Skip to dashboard →</a>
 </div>
 <nav class="prog" id="prog" aria-label="Page progress">
@@ -1208,7 +1198,6 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
       <div class="row">
         <img data-logo="pup" alt="PUP logo"><img data-logo="itech" alt="PUP Institute of Technology logo">
         <div class="tt">PUP ITECH Misting System<small>Environmental monitoring</small></div>
-        <button class="sndbtn" type="button" aria-pressed="true" aria-label="Sound on" title="Sound on">🔊</button>
         <button class="pillbtn" id="toIntro" type="button">↑ Introduction</button>
       </div>
       <div class="tabswrap" id="tabswrap">
@@ -1511,7 +1500,6 @@ function countUp(el){
 /* ================= SOUND: every effect is synthesised in the browser (no audio files) ================= */
 let shedPrev, personLvl;   /* last states, used to play a sound only when something changes */
 const SND={ctx:null,master:null,nb:null,enabled:true,unlocked:false,justUnlocked:0};
-try{ if(localStorage.getItem("pupSound")==="off") SND.enabled=false; }catch(e){}
 function updSndBtns(){
   $$(".sndbtn").forEach(b=>{
     const t=SND.enabled?"Sound on (press to mute)":"Sound off (press to turn on)";
@@ -1542,12 +1530,6 @@ function sndUnlock(){
 ["pointerdown","keydown","touchend"].forEach(ev=>document.addEventListener(ev,sndUnlock,{passive:true}));
 document.addEventListener("visibilitychange",()=>{ if(!SND.ctx) return; try{ document.hidden ? SND.ctx.suspend() : SND.ctx.resume(); }catch(e){} });
 document.addEventListener("click",e=>{
-  const sb=e.target.closest&&e.target.closest(".sndbtn");
-  if(sb){
-    if(performance.now()-SND.justUnlocked<800) return;     /* the first tap only turns the audio on */
-    SND.enabled=!SND.enabled; try{ localStorage.setItem("pupSound",SND.enabled?"on":"off"); }catch(_){}
-    updSndBtns(); if(SND.enabled){ if(!SND.unlocked) sndUnlock(); sfx("click"); } return;
-  }
   const b=e.target.closest&&e.target.closest("button,.btn,a.pillbtn,[data-go]");
   if(b && b.id!=="mchar") sfx("click");
 },true);
