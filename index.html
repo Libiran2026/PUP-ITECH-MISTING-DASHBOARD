@@ -2193,7 +2193,7 @@ $("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupD
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
 async function devPoll(){
   if(!devOpen) return;
-  try{ devHealthRows=await query("device_health",{select:"*",order:"recorded_at.desc",limit:80}); devHealthState=devHealthRows.length?"ok":"empty"; }
+  try{ devHealthRows=await query("system_status",{select:"*",order:"recorded_at.desc",limit:80}); devHealthState=devHealthRows.length?"ok":"empty"; }
   catch(e){ devHealthState=/404|42P01/.test(e.message)?"missing":"error"; }
   renderDev();
 }
@@ -2319,15 +2319,15 @@ function renderDev(){
   chip.style.color=bad.length?"#ff7b88":warn.length?"#f1bd5a":real.length?"#62d48f":"#a6aeb6";
   const BD={ok:"OK",warn:"WARNING",fail:"FAIL",na:"NOT REPORTED"};
   let h="";
-  if(devHealthState==="missing") h+='<div class="dvnote"><b>device_health table not found.</b> The ESP32 does not report its components yet, so the DHT22, SD card, RTC and controller cards below show <b>NOT REPORTED</b>. Run the SQL and add the ESP32 code from <code>dev_health_setup.md</code>. The data-link, cadence, RTC-offset, pump and sensor-value cards already work from the live stream.</div>';
-  else if(devHealthState==="empty") h+='<div class="dvnote">The <code>device_health</code> table exists but has no rows yet. Waiting for the ESP32 to upload.</div>';
-  else if(devHealthState==="error") h+='<div class="dvnote">Could not read <code>device_health</code> (network or permission problem).</div>';
-  else if(devHealthState==="ok") h+='<div class="dvnote">Component data from <code>device_health</code> · '+devHealthRows.length+' rows · newest RTC time '+esc2(fmtTime(devHealthRows[0].recorded_at))+'</div>';
+  if(devHealthState==="missing") h+='<div class="dvnote"><b>system_status table not found.</b> The ESP32 does not report its components yet, so the DHT22, SD card, RTC and controller cards below show <b>NOT REPORTED</b>. Run the SQL and add the ESP32 code from <code>dev_health_setup.md</code>. The data-link, cadence, RTC-offset, pump and sensor-value cards already work from the live stream.</div>';
+  else if(devHealthState==="empty") h+='<div class="dvnote">The <code>system_status</code> table exists but has no rows yet. Waiting for the ESP32 to upload.</div>';
+  else if(devHealthState==="error") h+='<div class="dvnote">Could not read <code>system_status</code> (network or permission problem).</div>';
+  else if(devHealthState==="ok") h+='<div class="dvnote">Component data from <code>system_status</code> · '+devHealthRows.length+' rows · newest RTC time '+esc2(fmtTime(devHealthRows[0].recorded_at))+'</div>';
   h+='<div class="dvgrid">'+comps.map(c=>'<div class="dvc '+c.s+'"><h4>'+esc2(c.title)+'<span class="dvb">'+BD[c.s]+'</span></h4><ul>'+c.lines.filter(Boolean).map(x=>'<li>'+esc2(x)+'</li>').join("")+'</ul></div>').join("")+'</div>';
   h+='<h3 class="dvh">Event log (this session)</h3><div class="dvlog">'+(devLog.length?devLog.map(e=>'<div>'+new Date(e.t).toLocaleTimeString("en-PH",{timeZone:TZ})+' · '+esc2(e.m)+'</div>').join(""):'<div>No changes yet.</div>')+'</div>';
   h+='<h3 class="dvh">Latest readings</h3><div class="dvscroll"><table class="dvtable"><thead><tr><th>RTC time</th><th>Temp</th><th>RH</th><th>Wind</th><th>HI</th><th>Pump</th></tr></thead><tbody>'+
      liveRows.slice(0,15).map(r=>'<tr><td>'+esc2(fmtTime(r.recorded_at,{year:undefined,month:undefined,day:undefined}))+'</td><td>'+esc2(r.temperature)+'</td><td>'+esc2(r.humidity)+'</td><td>'+esc2(r.wind_speed)+'</td><td>'+esc2(r.heat_index)+'</td><td>'+esc2(r.misting_status)+'</td></tr>').join("")+'</tbody></table></div>';
-  h+='<details style="margin-top:14px"><summary style="cursor:pointer;color:#ff7b88;font-weight:600">Raw latest rows</summary><div class="dvraw">'+esc2(JSON.stringify({sensor_live:liveRows[0]||null,device_health:devHealthRows[0]||null},null,2))+'</div></details>';
+  h+='<details style="margin-top:14px"><summary style="cursor:pointer;color:#ff7b88;font-weight:600">Raw latest rows</summary><div class="dvraw">'+esc2(JSON.stringify({sensor_live:liveRows[0]||null,system_status:devHealthRows[0]||null},null,2))+'</div></details>';
   const body=$("#dvbody"), sy=$("#devpage").scrollTop; body.innerHTML=h; $("#devpage").scrollTop=sy;
 }
 
@@ -3018,7 +3018,7 @@ document.addEventListener("visibilitychange",load);
   var SB="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/system_status?select=*&id=eq.main";
   window.fetch=function(input,init){
     var u=typeof input==="string"?input:(input&&input.href)||(input&&input.url)||String(input);
-    if(u.indexOf("/rest/v1/device_health")>-1){
+    if(u.indexOf("/rest/v1/system_status")>-1){
       return of.call(this,SB,init).then(function(r){
         if(!r.ok) return r;
         return r.clone().json().then(function(rows){
