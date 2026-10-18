@@ -2885,5 +2885,131 @@ if(hit){ rootEl.classList.add("in-dash"); show(hit); updTabs(); }
 else { rootEl.classList.remove("in-dash"); }
 })();
 </script>
+  <!-- ============================================================
+  SITE UPDATE  -  paste this WHOLE block in your website file,
+  right BEFORE the final </body> line (after the last </script>).
+  Nothing else in your file needs to change.
+  ============================================================ -->
+
+<style>
+/* 1. remove the little rectangle ("notch") at the top middle: it was the hidden developer toast peeking out */
+#devtoast{visibility:hidden;opacity:0}
+#devtoast.show{visibility:visible;opacity:1}
+
+/* 2. brighter waiting-shed illustration in the introduction */
+.illus{
+  background:linear-gradient(180deg,#5d8fbd 0%,#9cc4e0 62%,#c9e0ef 100%);
+  border-radius:16px;
+  filter:brightness(1.12) saturate(1.08);
+}
+.illus text{fill:#fff;paint-order:stroke;stroke:#2c4a66;stroke-width:3px;stroke-linejoin:round}
+.illus line[stroke="#6b727a"]{stroke:#e8f2fa}
+.illus .cloud g{fill:#fff}
+
+/* 3. hardware status card */
+.chip.bad{background:var(--bad-bg);color:var(--bad)}
+.hw{margin:0 0 18px}
+.hw .hwhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:14px 18px 0}
+.hw .hwhead h3{padding:0;margin-right:auto}
+.hw .hwgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px 18px 6px}
+.hw .hwi{padding:12px 14px;border-left:4px solid var(--off);border-radius:8px;background:var(--off-bg)}
+.hw .hwi.ok{border-left-color:var(--ok);background:var(--ok-bg)}
+.hw .hwi.bad{border-left-color:var(--bad);background:var(--bad-bg)}
+.hw .hwi .n{font-weight:600;font-size:.92rem;color:var(--muted)}
+.hw .hwi .s{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin-top:2px}
+.hw .hwi.ok .s{color:var(--ok)}
+.hw .hwi.bad .s{color:var(--bad)}
+.hw .hwnote{padding:0 18px 14px}
+@media (max-width:720px){.hw .hwgrid{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<script>
+(function(){
+"use strict";
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+
+/* ---------- 4. simpler text ---------- */
+function txt(sel,arr){
+  var els=$$(sel); if(!Array.isArray(arr)) arr=[arr];
+  arr.forEach(function(t,i){
+    if(!els[i]||t===null) return;
+    if(t==="") els[i].style.display="none"; else els[i].textContent=t;
+  });
+}
+txt(".hero h2","Can technology make outdoor campus spaces more comfortable?");
+txt(".hero .lead","A roof-mounted misting system that watches the weather and mists automatically.");
+txt("#sec-what .lead",["The system measures temperature, humidity and wind, then mists automatically when conditions are right.",""]);
+txt("#sec-why .lead","Hot days make outdoor spaces uncomfortable. This thesis project tests whether misting helps, and records the data.");
+txt("#sec-why .ic p",["Temperature, humidity, heat index and wind.","Mists when conditions are met.","Records data over time.","Tracks water use."]);
+txt("#sec-how .step p",["Sensors read temperature, humidity and wind.","The ESP32 processes the readings.","It checks the misting conditions.","If they are met, the pump turns on.","Fine mist is released.","Data is saved to the SD card and the dashboard."]);
+$$(".step ul").forEach(function(u){u.style.display="none"});
+txt("#sec-when .lead","The pump runs only when all three conditions are met.");
+txt(".cond p",["Warm enough","Dry enough","Wind not too strong"]);
+txt("#sec-when .tag","PROJECT SETTINGS");
+txt(".sim .body > p.hnote",["Move the sliders. Simulation only.","Simulation only (NOAA/NWS formula)."]);
+txt(".simnote","The pump runs 30 s, then rests 3 min.");
+txt(".hi-block .lead","The heat index shows how hot it feels. Move the sliders to see it.");
+txt("#sec-measure .ic p",["Air temperature (DHT22).","Moisture in the air.","How hot it feels.","Air speed (anemometer).","Total water used (flow sensor).","Measured separately, not shown here."]);
+txt("#sec-water .lead",["A flow sensor counts pulses to calculate the total water used.",""]);
+txt("#sec-ready .lead","Explore the live and past data.");
+txt(".cta p","See the system in action.");
+txt("#view-live .vintro","Latest readings (about the last 3 minutes).");
+txt("#view-history .vintro","Browse past data by minute, hour, day or month.");
+txt("#view-how .prose > p",["The ESP32 reads the sensors every 2 seconds and switches the pump automatically.","If any condition fails, the pump stays OFF.","After the cooldown, conditions are checked again.","Readings upload about every 2 seconds. The SD card keeps the full record."]);
+txt("#view-how .prose li",["Temperature and humidity: average of 3 DHT22 sensors.","Heat index: NOAA/NWS formula, in °C.","Wind: anemometer.","Water: flow sensor.","Electricity: separate submeter."]);
+txt("#view-about .ab-sec:first-child > p:not(.inst)","A thesis project that monitors a waiting shed and mists automatically when conditions are met.");
+txt(".authorcard p","Came up with the idea and built the prototype.");
+txt("footer .wrap","PUP ITECH Misting System · Thesis project · Times in Philippine Time.");
+
+/* ---------- 5. hardware status card (reads your existing system_status table) ---------- */
+var URL="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/system_status?id=eq.main&select=*";
+var KEY="sb_publishable_A1pqlhoRsez27xDKXsAfhA_0lXQr4Eq";
+var OFFLINE_S=60;                       /* no update for 60 s = ESP32 offline */
+var host=$("#view-home .grid2");
+if(!host) return;
+var card=document.createElement("div");
+card.className="card hw";
+card.innerHTML=
+ '<div class="hwhead"><h3>HARDWARE STATUS</h3><span class="chip" id="hwChip">CONNECTING</span><span class="updated" id="hwUpd">Last updated: –</span></div>'+
+ '<div class="hwgrid" id="hwGrid"></div>'+
+ '<p class="hnote hwnote" id="hwNote"></p>';
+host.parentNode.insertBefore(card,host);
+
+var ITEMS=[["dht1_ok","DHT22 #1"],["dht2_ok","DHT22 #2"],["dht3_ok","DHT22 #3"],["sd_ok","SD card"]];
+function fmtT(iso){
+  var d=new Date(iso); if(isNaN(d)) return String(iso);
+  return d.toLocaleString("en-PH",{timeZone:"Asia/Manila",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true});
+}
+function paint(row,err){
+  var chip=$("#hwChip"), grid=$("#hwGrid"), note=$("#hwNote"), upd=$("#hwUpd");
+  var age=row&&row.updated_at?(Date.now()-new Date(row.updated_at).getTime())/1000:Infinity;
+  var offline=!row||age>OFFLINE_S;
+  grid.innerHTML=ITEMS.map(function(it){
+    var v=row?row[it[0]]:undefined, cls="", s="–";
+    if(!offline&&v===true){cls="ok";s="OK";} else if(!offline&&v===false){cls="bad";s="FAIL";}
+    return '<div class="hwi '+cls+'"><div class="n">'+it[1]+'</div><div class="s">'+s+'</div></div>';
+  }).join("");
+  upd.textContent=row&&row.updated_at?"Last updated: "+fmtT(row.updated_at):"Last updated: –";
+  if(err){ chip.className="chip warn"; chip.textContent="NO DATA"; note.textContent="Cannot read system_status ("+err+")."; return; }
+  if(offline){ chip.className="chip warn"; chip.textContent="ESP32 OFFLINE"; note.textContent="No update received recently."; return; }
+  var all=ITEMS.every(function(it){return row[it[0]]===true});
+  chip.className="chip "+(all?"ok":"bad"); chip.textContent=all?"ALL OK":"CHECK HARDWARE";
+  var bad=ITEMS.filter(function(it){return row[it[0]]!==true}).map(function(it){return it[1]});
+  note.textContent=all?"":"Not working: "+bad.join(", ")+".";
+}
+var busy=false;
+function load(){
+  if(busy||document.hidden) return; busy=true;
+  fetch(URL,{headers:{apikey:KEY,Accept:"application/json"},cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
+    .then(function(rows){ paint(rows[0]||null, rows.length?"":"no row yet"); if(!rows.length) paint(null,"no row yet"); })
+    .catch(function(e){ paint(null,e.message); })
+    .then(function(){ busy=false; });
+}
+load(); setInterval(load,5000);
+document.addEventListener("visibilitychange",load);
+})();
+</script>
 </body>
 </html>
