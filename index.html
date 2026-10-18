@@ -3036,5 +3036,129 @@ document.addEventListener("visibilitychange",load);
   };
 })();
 </script>
+  <style>
+#dvbody,#dvchip{display:none !important}
+#dvsimple{color:#e6e8ea}
+.dvs-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:14px}
+.dvs-chip{padding:4px 12px;border-radius:999px;font-weight:700;font-size:.85rem;background:#2a2f36;color:#a6aeb6}
+.dvs-chip.ok{background:rgba(98,212,143,.16);color:#62d48f}
+.dvs-chip.bad{background:rgba(255,123,136,.16);color:#ff7b88}
+.dvs-upd{color:#a6aeb6;font-size:.9rem}
+.dvs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
+.dvs-i{background:#171a1f;border:1px solid #2b3036;border-left:4px solid #4a525a;border-radius:8px;padding:12px 14px}
+.dvs-i.ok{border-left-color:#62d48f}.dvs-i.bad{border-left-color:#ff7b88}
+.dvs-i .n{font-size:.9rem;color:#a6aeb6;font-weight:600}
+.dvs-i .s{font-size:1.35rem;font-weight:800;margin-top:2px;color:#a6aeb6}
+.dvs-i.ok .s{color:#62d48f}.dvs-i.bad .s{color:#ff7b88}
+.dvs-i .x{font-size:.85rem;margin-top:4px;color:#a6aeb6}
+.dvs-h{font-size:1.05rem;margin:22px 0 8px;color:#fff;font-family:var(--sans)}
+.dvs-card{background:#171a1f;border:1px solid #2b3036;border-radius:8px;padding:14px 16px}
+.dvs-card p{margin:0 0 10px;color:#c3c8cd}
+.dvs-card input{font:inherit;font-size:1.1rem;letter-spacing:.25em;padding:9px 12px;border-radius:8px;border:1px solid #383f47;background:#101215;color:#fff;margin-right:8px;max-width:100%}
+.dvs-ok{font-weight:800;color:#62d48f;margin-bottom:10px}
+.dvs-card .btn{margin:2px 8px 2px 0}
+.dvs-card .btn[disabled]{opacity:.45;cursor:not-allowed}
+.dvs-msg{margin-top:10px;min-height:1.3em;font-weight:600;color:#f1bd5a}
+</style>
+<script>
+(function(){
+"use strict";
+var BASE="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/";
+var KEY="sb_publishable_A1pqlhoRsez27xDKXsAfhA_0lXQr4Eq";
+var page=document.getElementById("devpage"), body=document.getElementById("dvbody");
+if(!page||!body) return;
+var box=document.createElement("div"); box.id="dvsimple";
+box.innerHTML='<div class="dvs-top"><span class="dvs-chip" id="dvsChip">CONNECTING</span><span class="dvs-upd" id="dvsUpd"></span></div>'+
+  '<div class="dvs-grid" id="dvsGrid"></div><h3 class="dvs-h">Manual misting</h3><div class="dvs-card" id="dvsMist"></div>';
+body.parentNode.insertBefore(box,body);
+function $(id){return document.getElementById(id)}
+function api(path,opt){
+  opt=opt||{}; var h={apikey:KEY,Accept:"application/json"};
+  if(opt.body) h["Content-Type"]="application/json";
+  return fetch(BASE+path,{method:opt.method||"GET",headers:h,body:opt.body,cache:"no-store"})
+    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); });
+}
+
+/* ---------- status: DHT22 x3 + SD card ---------- */
+var OFFLINE_S=60;
+function paint(row,err){
+  var age=row&&row.updated_at?(Date.now()-new Date(row.updated_at).getTime())/1000:Infinity;
+  var off=!row||age>OFFLINE_S;
+  function item(name,v,extra){
+    var cls="",s="–";
+    if(!off&&v===true){cls="ok";s="WORKING";} else if(!off&&v===false){cls="bad";s="NOT WORKING";}
+    return '<div class="dvs-i '+cls+'"><div class="n">'+name+'</div><div class="s">'+s+'</div>'+(extra?'<div class="x">'+extra+'</div>':'')+'</div>';
+  }
+  var w="";
+  if(row&&"sd_write_ok" in row&&!off) w="Writing: "+(row.sd_write_ok===true?"YES":row.sd_write_ok===false?"NO":"–");
+  else if(row&&!off) w="Writing: not reported";
+  $("dvsGrid").innerHTML=item("DHT22 #1",row&&row.dht1_ok)+item("DHT22 #2",row&&row.dht2_ok)+item("DHT22 #3",row&&row.dht3_ok)+item("SD card",row&&row.sd_ok,w);
+  var chip=$("dvsChip");
+  if(err){chip.className="dvs-chip";chip.textContent="NO DATA";}
+  else if(off){chip.className="dvs-chip bad";chip.textContent="ESP32 OFFLINE";}
+  else{
+    var ok=row.dht1_ok===true&&row.dht2_ok===true&&row.dht3_ok===true&&row.sd_ok===true&&row.sd_write_ok!==false;
+    chip.className="dvs-chip "+(ok?"ok":"bad"); chip.textContent=ok?"ALL WORKING":"CHECK HARDWARE";
+  }
+  $("dvsUpd").textContent=row&&row.updated_at?"Last update: "+new Date(row.updated_at).toLocaleTimeString("en-PH",{timeZone:"Asia/Manila"}):"";
+}
+var busy=false;
+function loadStatus(){
+  if(busy) return; busy=true;
+  api("system_status?id=eq.main&select=*").then(function(r){paint(r[0]||null,r.length?"":"none");}).catch(function(e){paint(null,e.message);}).then(function(){busy=false;});
+}
+
+/* ---------- manual misting ---------- */
+var pw=null, watch=null, cool=null;
+function msg(t){ var m=$("mmsg"); if(m) m.textContent=t; }
+function renderMist(){
+  var el=$("dvsMist");
+  if(pw===null){
+    el.innerHTML='<p>Enter the password to control the pump.</p><input id="mpw" type="password" inputmode="numeric" autocomplete="off" aria-label="Password"><button class="btn sm" id="munlock" type="button">UNLOCK</button><div class="dvs-msg" id="mmsg"></div>';
+    var go=function(){
+      var v=$("mpw").value; if(!v) return; msg("Checking…");
+      api("rpc/verify_mist_password",{method:"POST",body:JSON.stringify({pw:v})})
+        .then(function(ok){ if(ok===true){pw=v;renderMist();} else {msg("Wrong password"); $("mpw").value="";} })
+        .catch(function(e){msg("Could not check ("+e.message+")");});
+    };
+    $("munlock").onclick=go; $("mpw").onkeydown=function(e){if(e.key==="Enter")go();};
+  } else {
+    el.innerHTML='<div class="dvs-ok">🔓 SYSTEM CONTROL UNLOCKED</div><button class="btn sm" id="mstart" type="button">START MANUAL MISTING</button><button class="btn sm ghost" id="mlock" type="button">Lock</button><div class="dvs-msg" id="mmsg"></div>';
+    $("mlock").onclick=lock; $("mstart").onclick=start;
+  }
+}
+function lock(){ pw=null; clearInterval(watch); clearTimeout(cool); renderMist(); }
+function start(){
+  var b=$("mstart"); b.disabled=true; msg("Sending request…");
+  api("rpc/request_manual_mist",{method:"POST",body:JSON.stringify({pw:pw})}).then(function(ok){
+    if(ok!==true){ msg("Rejected (wrong password)."); lock(); return; }
+    msg("Request sent. Waiting for the ESP32…");
+    var tries=0; clearInterval(watch);
+    watch=setInterval(function(){
+      tries++;
+      api("system_control?id=eq.main&select=manual_mist").then(function(r){
+        if(r[0]&&r[0].manual_mist===false){
+          clearInterval(watch); msg("✅ ESP32 received the request. Misting for 30 seconds.");
+          cool=setTimeout(function(){ var s=$("mstart"); if(s){s.disabled=false; msg("");} },35000);
+        } else if(tries>=15){
+          clearInterval(watch); msg("⚠ The ESP32 has not picked up the request (offline?). It will start when it reconnects.");
+          var s=$("mstart"); if(s) s.disabled=false;
+        }
+      }).catch(function(){});
+    },2000);
+  }).catch(function(e){ msg("Could not send ("+e.message+")"); var s=$("mstart"); if(s) s.disabled=false; });
+}
+renderMist();
+
+/* poll only while the developer console is open; lock again when it closes */
+var n=0, wasOpen=false;
+setInterval(function(){
+  var open=!page.hidden;
+  if(!open){ if(wasOpen){ wasOpen=false; lock(); } return; }
+  if(!wasOpen){ wasOpen=true; n=0; }
+  if(n%3===0) loadStatus(); n++;
+},1000);
+})();
+</script>
 </body>
 </html>
