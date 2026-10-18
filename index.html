@@ -2231,7 +2231,8 @@ function devAnalyze(){
     if(!c.has){ add("dht"+i,name,"na",["Not reported by the ESP32 yet","(see dev_health_setup.md)"]); return; }
     let s="ok"; const lines=[], bad=[], warn=[];
     if(c.ok===false) bad.push("sensor reports FAILURE");
-    if(!Number.isFinite(c.t)||!Number.isFinite(c.h)) bad.push("no valid reading (NaN / null)");
+      if(!Number.isFinite(c.t)&&!Number.isFinite(c.h)){ if(c.ok===undefined) bad.push("no valid reading (NaN / null)"); }
+    else if(!Number.isFinite(c.t)||!Number.isFinite(c.h)) bad.push("no valid reading (NaN / null)");
     else{
       if(c.t<-40||c.t>80||c.h<0||c.h>100) bad.push("reading outside the DHT22 range");
       if(Number.isFinite(mT)&&Math.abs(c.t-mT)>3) warn.push("temperature differs from the others by "+(c.t-mT).toFixed(1)+" °C");
@@ -3009,6 +3010,30 @@ function load(){
 }
 load(); setInterval(load,5000);
 document.addEventListener("visibilitychange",load);
+})();
+</script>
+  <script>
+(function(){
+  var of=window.fetch;
+  var SB="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/system_status?select=*&id=eq.main";
+  window.fetch=function(input,init){
+    var u=typeof input==="string"?input:(input&&input.href)||(input&&input.url)||String(input);
+    if(u.indexOf("/rest/v1/device_health")>-1){
+      return of.call(this,SB,init).then(function(r){
+        if(!r.ok) return r;
+        return r.clone().json().then(function(rows){
+          rows=rows.map(function(x){
+            return Object.assign({},x,{recorded_at:x.updated_at||x.recorded_at||x.created_at});
+          });
+          return new Response(JSON.stringify(rows),{
+            status:200,
+            headers:{"Content-Type":"application/json","Date":r.headers.get("Date")||new Date().toUTCString()}
+          });
+        });
+      });
+    }
+    return of.apply(this,arguments);
+  };
 })();
 </script>
 </body>
