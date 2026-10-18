@@ -474,6 +474,44 @@ html.in-dash #misty{display:none}
 #misty .mx:hover{opacity:1;background:var(--maroon)}
 
 
+/* developer console (hidden) */
+#devtoast{position:fixed;top:18px;left:50%;z-index:160;transform:translate(-50%,-140%);background:#14161a;color:#fff;border:1px solid var(--accent);border-radius:999px;padding:10px 22px;font-weight:700;box-shadow:0 10px 28px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+#devtoast.show{transform:translate(-50%,0)}
+#devgate{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px}
+#devgate[hidden],#devpage[hidden]{display:none}
+.dgbox{width:min(360px,100%);background:#1b1f24;border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
+.dgbox h3{padding:0;margin:0 0 4px;font-size:1.25rem}.dgbox p{color:var(--muted);margin:0 0 12px}
+.dgbox input[type=password]{width:100%;font:inherit;font-size:1.25rem;letter-spacing:.3em;padding:10px 12px;border-radius:8px;border:1px solid var(--line);background:#101215;color:#fff}
+.dgrem{display:flex;gap:8px;align-items:center;margin-top:10px;font-size:.9rem;color:var(--muted)}
+.dgmsg{min-height:1.3em;margin-top:8px;color:var(--bad);font-weight:600;font-size:.9rem}
+.dgbtns{display:flex;gap:10px;margin-top:8px}
+.dgbox.shake{animation:dgshake .4s}
+@keyframes dgshake{20%,60%{translate:-8px 0}40%,80%{translate:8px 0}}
+#devpage{position:fixed;inset:0;z-index:155;background:#0e1013;color:#e6e8ea;overflow:auto;-webkit-overflow-scrolling:touch}
+html.dev-open{overflow:hidden}
+.dvwrap{max-width:1100px;margin:0 auto;padding:18px 16px 60px;font-family:var(--sans)}
+.dvhead{display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;margin-bottom:16px}
+.dvhead h2{font-size:1.4rem;margin-right:auto}
+.dvbtns{display:flex;flex-wrap:wrap;gap:8px}
+.dvchip{padding:4px 12px;border-radius:999px;font-weight:700;font-size:.85rem;background:#2a2f36}
+.dvgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:12px;margin-bottom:18px}
+.dvc{background:#171a1f;border:1px solid #2b3036;border-radius:8px;padding:12px 14px;border-left:4px solid #4a525a}
+.dvc.ok{border-left-color:#62d48f}.dvc.warn{border-left-color:#f1bd5a}.dvc.fail{border-left-color:#ff7b88}
+.dvc h4{margin:0 0 6px;font-size:1rem;display:flex;justify-content:space-between;align-items:center;gap:8px;font-family:var(--sans)}
+.dvb{font-size:.72rem;font-weight:800;letter-spacing:.06em;padding:2px 8px;border-radius:4px;background:#2a2f36;color:#a6aeb6}
+.dvc.ok .dvb{background:rgba(98,212,143,.16);color:#62d48f}.dvc.warn .dvb{background:rgba(241,189,90,.16);color:#f1bd5a}.dvc.fail .dvb{background:rgba(255,123,136,.16);color:#ff7b88}
+.dvc ul{list-style:none;margin:0;padding:0;font-size:.88rem;color:#c3c8cd}
+.dvc li{padding:2px 0;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;word-break:break-word}
+.dvh{font-size:1.02rem;margin:18px 0 8px;color:#fff;font-family:var(--sans)}
+.dvnote{background:#1b1f24;border:1px solid #2b3036;border-radius:8px;padding:12px 14px;color:#c3c8cd;font-size:.9rem;margin-bottom:14px}
+.dvnote code,.dvnote b{color:#fff}
+.dvtable{width:100%;border-collapse:collapse;font-size:.82rem;font-family:ui-monospace,Menlo,Consolas,monospace}
+.dvtable th,.dvtable td{padding:5px 8px;border-bottom:1px solid #23272d;text-align:left;white-space:nowrap}
+.dvscroll{overflow:auto;border:1px solid #2b3036;border-radius:8px;max-height:300px}
+.dvlog{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.8rem;color:#c3c8cd;max-height:220px;overflow:auto;background:#12151a;border:1px solid #2b3036;border-radius:8px;padding:8px 10px}
+.dvlog div{padding:2px 0}
+.dvraw{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;color:#a6aeb6;background:#12151a;border:1px solid #2b3036;border-radius:8px;padding:10px;margin-top:6px;overflow:auto}
+
 /* misting alert */
 #misty{--grow:54px}
 #misty .mchar svg{transform-origin:0 100%;transition:scale .55s cubic-bezier(.3,1.6,.5,1)}
@@ -800,6 +838,21 @@ html.in-dash #misty.alert{display:block}
   <button data-t="dashboard" aria-label="Dashboard"><span>Dashboard</span><i></i></button>
 </nav>
 
+<div id="devtoast" role="status" aria-live="polite"></div>
+<div id="devgate" hidden role="dialog" aria-modal="true" aria-labelledby="dgt"><div class="dgbox">
+  <h3 id="dgt">Developer access</h3><p>Enter the password</p>
+  <input id="dgpw" type="password" inputmode="numeric" autocomplete="off" aria-label="Password">
+  <label class="dgrem"><input id="dgrem" type="checkbox" checked> Remember on this device</label>
+  <div class="dgmsg" id="dgmsg" role="alert"></div>
+  <div class="dgbtns"><button class="btn sm" id="dgok" type="button">Enter</button><button class="btn sm ghost" id="dgno" type="button">Cancel</button></div>
+</div></div>
+<div id="devpage" hidden role="dialog" aria-modal="true" aria-label="Developer console">
+  <div class="dvwrap">
+    <div class="dvhead"><h2>Developer console</h2><span class="dvchip" id="dvchip">…</span>
+      <span class="dvbtns"><button class="btn sm ghost" id="dvref" type="button">Refresh</button><button class="btn sm ghost" id="dvforget" type="button">Forget this device</button><button class="btn sm" id="dvclose" type="button">Close</button></span></div>
+    <div id="dvbody"></div>
+  </div>
+</div>
 <div id="mistBanner" role="status" aria-live="polite">
   <span class="mbd" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span>
   <span class="mbi" aria-hidden="true">💦</span><span class="mbt">Misting is active now</span>
@@ -1476,10 +1529,12 @@ function ago(iso){
   if(s<60) return s+" seconds ago"; if(s<3600) return Math.floor(s/60)+" min ago";
   if(s<86400) return Math.floor(s/3600)+" h ago"; return Math.floor(s/86400)+" d ago";
 }
+let srvOff=null, devLat=[], devFails=0;
 async function query(table, params){
   const u = new URL(SUPABASE_URL + table);
   Object.entries(params).forEach(([k,v])=>{ (Array.isArray(v)?v:[v]).forEach(x=>u.searchParams.append(k,x)); });
   const r = await fetch(u, {headers:{apikey:SUPABASE_KEY, Accept:"application/json"}, cache:"no-store"});
+  const dh=r.headers.get("Date"); if(dh){ const d=Date.parse(dh); if(d) srvOff=d-Date.now(); }
   if(!r.ok) throw new Error("HTTP "+r.status);
   return r.json();
 }
@@ -1931,7 +1986,7 @@ function mistyUpdate(){
 function mistyReplace(){ if(mistyCur) mistyGo(mistyCur,false); }
 window.addEventListener("resize",mistyReplace);
 mchar.addEventListener("mouseenter",()=>{ if(!mistyEl.classList.contains("moving")) mistyBrief("giggle",900); });
-mchar.addEventListener("click",e=>{ e.stopPropagation(); mistyBrief("giggle",1100); mchar.classList.remove("hop"); void mchar.offsetWidth; mchar.classList.add("hop"); if(mistyMsg) mistySay(mistyMsg); splash(e.clientX,e.clientY); });
+mchar.addEventListener("click",e=>{ e.stopPropagation(); devTap(); mistyBrief("giggle",1100); mchar.classList.remove("hop"); void mchar.offsetWidth; mchar.classList.add("hop"); if(mistyMsg) mistySay(mistyMsg); splash(e.clientX,e.clientY); });
 $("#mx").addEventListener("click",()=>{ mistyEl.style.display="none"; });
 if(reduceMotion){ mbub.style.transition="none"; }
 
@@ -2070,6 +2125,210 @@ function mistStopped(){
   bell.hidden=false;
   bell.addEventListener("click",()=>{ try{ Notification.requestPermission().then(()=>{ bell.hidden=true; }); }catch(e){ bell.hidden=true; } });
 })();
+
+/* ================= DEVELOPER CONSOLE (hidden: five quick taps on Misty) ================= */
+const DEV_HASH="f5cb19d2e6ab353571813a202ca5b50945fd6d295de225676fe355dd58e7b04b";
+let devTaps=0, devLast=0, devOpen=false, devFail=0, devLockUntil=0, devTimer=null, devHealthRows=[], devHealthState="loading", devLastKey=null, devLastNew=0;
+const devLog=[], devPrev={}, devSeen={};
+function sha256js(str){
+  const pr=[]; for(let n=2;pr.length<64;n++){ if(pr.every(p=>n%p)) pr.push(n); }
+  const fr=x=>Math.floor((x-Math.floor(x))*4294967296)>>>0;
+  const K=pr.map(p=>fr(Math.cbrt(p))); let H=pr.slice(0,8).map(p=>fr(Math.sqrt(p)));
+  const enc=new TextEncoder().encode(str), l=enc.length, pl=((l+9+63)>>6)<<6, buf=new Uint8Array(pl); buf.set(enc); buf[l]=0x80;
+  const dv=new DataView(buf.buffer); dv.setUint32(pl-4,(l*8)>>>0); dv.setUint32(pl-8,Math.floor(l*8/4294967296));
+  const w=new Uint32Array(64);
+  for(let off=0;off<pl;off+=64){
+    for(let i=0;i<16;i++) w[i]=dv.getUint32(off+i*4);
+    for(let i=16;i<64;i++){ const a=w[i-15],b=w[i-2]; w[i]=(w[i-16]+(((a>>>7)|(a<<25))^((a>>>18)|(a<<14))^(a>>>3))+w[i-7]+(((b>>>17)|(b<<15))^((b>>>19)|(b<<13))^(b>>>10)))>>>0; }
+    let [a,b,c,d,e,f,g,h]=H;
+    for(let i=0;i<64;i++){
+      const t1=(h+(((e>>>6)|(e<<26))^((e>>>11)|(e<<21))^((e>>>25)|(e<<7)))+((e&f)^(~e&g))+K[i]+w[i])>>>0;
+      const t2=((((a>>>2)|(a<<30))^((a>>>13)|(a<<19))^((a>>>22)|(a<<10)))+((a&b)^(a&c)^(b&c)))>>>0;
+      h=g;g=f;f=e;e=(d+t1)>>>0;d=c;c=b;b=a;a=(t1+t2)>>>0;
+    }
+    H=[H[0]+a,H[1]+b,H[2]+c,H[3]+d,H[4]+e,H[5]+f,H[6]+g,H[7]+h].map(x=>x>>>0);
+  }
+  return H.map(x=>x.toString(16).padStart(8,"0")).join("");
+}
+async function sha256hex(str){
+  try{ if(window.crypto && crypto.subtle){ const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(str)); return Array.from(new Uint8Array(b)).map(x=>x.toString(16).padStart(2,"0")).join(""); } }catch(e){}
+  return sha256js(str);
+}
+function devTap(){
+  const n=performance.now(); devTaps=(n-devLast<1300)?devTaps+1:1; devLast=n;
+  if(devTaps>=5){ devTaps=0; setTimeout(devEntry,450); }
+}
+function devToast(t){ const el=$("#devtoast"); el.textContent=t; el.classList.add("show"); setTimeout(()=>el.classList.remove("show"),2200); }
+function devEntry(){
+  if(devOpen || !$("#devgate").hidden) return;
+  let known=false; try{ known=localStorage.getItem("pupDev")===DEV_HASH; }catch(e){}
+  devToast(known?"Welcome back, developer":"Welcome, developer");
+  setTimeout(known?openDev:openGate,1000);
+}
+function openGate(){ $("#devgate").hidden=false; $("#dgmsg").textContent=""; const i=$("#dgpw"); i.value=""; setTimeout(()=>i.focus(),60); }
+async function devSubmit(){
+  const msg=$("#dgmsg"), now=Date.now();
+  if(now<devLockUntil){ msg.textContent="Too many attempts. Try again in "+Math.ceil((devLockUntil-now)/1000)+" s."; return; }
+  const hv=await sha256hex("pupdev:"+$("#dgpw").value);
+  if(hv===DEV_HASH){
+    devFail=0; if($("#dgrem").checked){ try{ localStorage.setItem("pupDev",DEV_HASH); }catch(e){} }
+    $("#devgate").hidden=true; sfx("enter"); openDev();
+  } else {
+    devFail++; msg.textContent="Incorrect password";
+    if(devFail>=5){ devLockUntil=Date.now()+30000; devFail=0; msg.textContent="Too many attempts. Locked for 30 s."; }
+    const box=$(".dgbox"); box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); $("#dgpw").value="";
+  }
+}
+$("#dgok").addEventListener("click",devSubmit);
+$("#dgno").addEventListener("click",()=>{ $("#devgate").hidden=true; });
+$("#dgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") devSubmit(); });
+function openDev(){
+  devOpen=true; $("#devpage").hidden=false; rootEl.classList.add("dev-open");
+  devPoll(); clearInterval(devTimer); devTimer=setInterval(devPoll,3000); renderDev();
+}
+function closeDev(){ devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
+$("#dvclose").addEventListener("click",closeDev);
+$("#dvref").addEventListener("click",()=>{ devPoll(); poll(); });
+$("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupDev"); }catch(e){} closeDev(); });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
+async function devPoll(){
+  if(!devOpen) return;
+  try{ devHealthRows=await query("device_health",{select:"*",order:"recorded_at.desc",limit:80}); devHealthState=devHealthRows.length?"ok":"empty"; }
+  catch(e){ devHealthState=/404|42P01/.test(e.message)?"missing":"error"; }
+  renderDev();
+}
+/* ---- analysis ---- */
+const DK=[{t:["dht1_temp","dht1_temperature","temp1"],h:["dht1_hum","dht1_humidity","hum1","humidity1"],ok:["dht1_ok"]},
+          {t:["dht2_temp","dht2_temperature","temp2"],h:["dht2_hum","dht2_humidity","hum2","humidity2"],ok:["dht2_ok"]},
+          {t:["dht3_temp","dht3_temperature","temp3"],h:["dht3_hum","dht3_humidity","hum3","humidity3"],ok:["dht3_ok"]}];
+const gv=(row,names)=>{ if(!row) return undefined; for(const n of names) if(n in row) return row[n]; return undefined; };
+const nnum=v=>(v===null||v===undefined||v===""||isNaN(Number(v)))?NaN:Number(v);
+const med=a=>{ const b=a.filter(Number.isFinite).sort((x,y)=>x-y); return b.length?b[Math.floor(b.length/2)]:NaN; };
+const yn=v=>v===true||v==="true"||v===1?true:(v===false||v==="false"||v===0?false:undefined);
+function devAnalyze(){
+  const L=liveRows, H=devHealthRows, out=[], l0=L[0], h0=H[0];
+  const add=(id,title,s,lines)=>out.push({id,title,s,lines});
+  const nowMs=Date.now()+(srvOff||0);
+  // data link
+  const since=l0?(Date.now()-devLastNew)/1000:Infinity;
+  add("link","Data link (ESP32 → database)", !l0?"fail": since<=8?"ok": since<=30?"warn":"fail",
+    [l0?"Last new reading: "+since.toFixed(0)+" s ago":"No readings received", l0?"RTC time of latest: "+fmtTime(l0.recorded_at):"", "Poll latency: "+(devLat.length?Math.round(devLat.reduce((a,b)=>a+b,0)/devLat.length)+" ms":"–")+" · failed polls: "+devFails, "Browser online: "+(navigator.onLine?"yes":"NO")]);
+  // cadence
+  const ts=L.map(r=>Date.parse(r.recorded_at)).filter(Number.isFinite).reverse();
+  if(ts.length<5) add("cad","Upload cadence","na",["Collecting data…"]);
+  else{
+    const d=[]; for(let i=1;i<ts.length;i++) d.push(ts[i]-ts[i-1]);
+    const gaps=d.filter(x=>x>6000), frozen=d.filter(x=>x===0).length, missed=gaps.reduce((a,x)=>a+Math.max(0,Math.floor(x/2000)-1),0);
+    add("cad","Upload cadence (expected 2 s)", frozen>=5?"fail":gaps.length>3?"fail":gaps.length>0?"warn":"ok",
+      ["Median interval: "+(med(d)/1000).toFixed(1)+" s","Longest gap: "+(Math.max(...d)/1000).toFixed(1)+" s","Gaps over 6 s: "+gaps.length+" (≈"+missed+" missed uploads)","Identical timestamps in a row: "+frozen+(frozen>=5?"  ← RTC may be frozen":""),"Rows analysed: "+ts.length]);
+  }
+  // DHT22 sensors, individually
+  const avgT=nnum(l0&&l0.temperature), avgH=nnum(l0&&l0.humidity);
+  const cur=DK.map(k=>({t:nnum(gv(h0,k.t)),h:nnum(gv(h0,k.h)),ok:yn(gv(h0,k.ok)),has:h0&&(gv(h0,k.t)!==undefined||gv(h0,k.h)!==undefined||gv(h0,k.ok)!==undefined)}));
+  const mT=med(cur.map(c=>c.t)), mH=med(cur.map(c=>c.h));
+  DK.forEach((k,i)=>{
+    const c=cur[i], name="DHT22 #"+(i+1);
+    if(!c.has){ add("dht"+i,name,"na",["Not reported by the ESP32 yet","(see dev_health_setup.md)"]); return; }
+    let s="ok"; const lines=[], bad=[], warn=[];
+    if(c.ok===false) bad.push("sensor reports FAILURE");
+    if(!Number.isFinite(c.t)||!Number.isFinite(c.h)) bad.push("no valid reading (NaN / null)");
+    else{
+      if(c.t<-40||c.t>80||c.h<0||c.h>100) bad.push("reading outside the DHT22 range");
+      if(Number.isFinite(mT)&&Math.abs(c.t-mT)>3) warn.push("temperature differs from the others by "+(c.t-mT).toFixed(1)+" °C");
+      if(Number.isFinite(mH)&&Math.abs(c.h-mH)>12) warn.push("humidity differs from the others by "+(c.h-mH).toFixed(0)+" %");
+    }
+    const hist=H.slice(0,40).map(r=>[nnum(gv(r,k.t)),nnum(gv(r,k.h))]).filter(a=>Number.isFinite(a[0]));
+    if(hist.length>=40 && hist.every(a=>a[0]===hist[0][0]&&a[1]===hist[0][1])) warn.push("value has not changed for "+hist.length+" samples (possibly stuck)");
+    s=bad.length?"fail":warn.length?"warn":"ok";
+    lines.push("Temperature: "+(Number.isFinite(c.t)?c.t.toFixed(1)+" °C":"–"),"Humidity: "+(Number.isFinite(c.h)?c.h.toFixed(0)+" %":"–"),"ESP32 flag: "+(c.ok===undefined?"–":c.ok?"OK":"FAIL"));
+    bad.concat(warn).forEach(m=>lines.push("⚠ "+m)); add("dht"+i,name,s,lines);
+  });
+  const reportedT=cur.map(c=>c.t).filter(Number.isFinite);
+  if(Number.isFinite(avgT)&&reportedT.length){ const mean=reportedT.reduce((a,b)=>a+b,0)/reportedT.length;
+    add("avg","Averaged reading (website)", Math.abs(mean-avgT)>1.5?"warn":"ok",["Uploaded average: "+avgT.toFixed(1)+" °C / "+(Number.isFinite(avgH)?avgH.toFixed(0):"–")+" %","Mean of DHT22 values: "+mean.toFixed(1)+" °C","Valid DHT22 count: "+reportedT.length+" of 3"]); }
+  // anemometer
+  const wl=L.slice(0,60).map(r=>nnum(r.wind_speed)), aOk=yn(gv(h0,["anemometer_ok","wind_ok"]));
+  { const w0=nnum(l0&&l0.wind_speed), flat0=wl.length>=40&&wl.every(x=>x===0);
+    const lines=["Wind speed: "+(Number.isFinite(w0)?w0.toFixed(2)+" m/s":"–"),"ESP32 flag: "+(aOk===undefined?"not reported":aOk?"OK":"FAIL")];
+    if(flat0) lines.push("Exactly 0 for the last "+wl.length+" readings (calm, or the anemometer is not connected)");
+    const adc=gv(h0,["wind_adc","wind_raw"]); if(adc!==undefined) lines.push("ADC raw: "+adc);
+    add("wind","Anemometer", aOk===false||(Number.isFinite(w0)&&(w0<0||w0>40))?"fail":aOk===true?(flat0?"warn":"ok"):(Number.isFinite(w0)?"na":"fail"), lines); }
+  // RTC
+  { const ro=yn(gv(h0,["rtc_ok"])), lp=yn(gv(h0,["rtc_lost_power"])), rt=nnum(gv(h0,["rtc_temp"]));
+    const lines=[]; let s="ok";
+    const src=l0||h0; const created=gv(src,["created_at","inserted_at"]);
+    let drift=NaN, how="";
+    if(src&&created){ drift=(Date.parse(created)-Date.parse(src.recorded_at))/1000; how="server insert time − RTC time"; }
+    else if(l0&&since<=8){ drift=(nowMs-Date.parse(l0.recorded_at))/1000; how="this device's clock − RTC time (±3 s expected)"; }
+    if(Number.isFinite(drift)){ lines.push("RTC offset: "+drift.toFixed(1)+" s  ("+how+")"); const a=Math.abs(drift)-(created?0:3);
+      if(a>60) s="fail"; else if(a>8) s="warn"; } else lines.push("RTC offset: cannot be measured (no new data)");
+    if(src) lines.push("RTC timestamp: "+fmtTime(src.recorded_at));
+    if(ro!==undefined) lines.push("DS3231 found: "+(ro?"yes":"NO")); if(ro===false) s="fail";
+    if(lp!==undefined){ lines.push("Lost power flag: "+(lp?"YES (backup battery?)":"no")); if(lp&&s==="ok") s="warn"; }
+    if(Number.isFinite(rt)) lines.push("RTC chip temperature: "+rt.toFixed(1)+" °C");
+    const frozen=ts.length>=5 && ts.slice(-6).every(x=>x===ts[ts.length-1]);
+    if(frozen){ s="fail"; lines.push("⚠ timestamps are not advancing"); }
+    add("rtc","RTC (DS3231) accuracy",!Number.isFinite(drift)&&ro===undefined&&!l0?"na":s,lines); }
+  // SD card
+  { const so=yn(gv(h0,["sd_ok"])), sw=yn(gv(h0,["sd_write_ok"])), sf=nnum(gv(h0,["sd_fail_count"])), sc=nnum(gv(h0,["sd_log_count"]));
+    if(so===undefined&&sw===undefined&&!Number.isFinite(sc)) add("sd","SD card","na",["Not reported by the ESP32 yet","(see dev_health_setup.md)"]);
+    else{ let s="ok"; const lines=["Card mounted: "+(so===undefined?"–":so?"yes":"NO"),"Last write: "+(sw===undefined?"–":sw?"successful":"FAILED"),"Rows logged since boot: "+(Number.isFinite(sc)?sc:"–"),"Write failures since boot: "+(Number.isFinite(sf)?sf:"–")];
+      if(so===false||sw===false) s="fail";
+      const f1=nnum(gv(H[Math.min(H.length-1,12)],["sd_fail_count"])); if(Number.isFinite(sf)&&Number.isFinite(f1)&&sf>f1){ lines.push("⚠ failures increased by "+(sf-f1)+" recently"); if(s==="ok") s="warn"; }
+      const c1=nnum(gv(H[Math.min(H.length-1,6)],["sd_log_count"])); if(H.length>6&&Number.isFinite(sc)&&Number.isFinite(c1)&&sc<=c1){ lines.push("⚠ log counter is not increasing (nothing is being written)"); s="fail"; }
+      add("sd","SD card (logging)",s,lines); } }
+  // pump
+  { const asc=L.slice().reverse(), lines=[], on=r=>isOn(r.misting_status);
+    if(asc.length<3) add("pump","Pump relay","na",["Collecting data…"]);
+    else{ let s="ok", i=0; const durs=[];
+      while(i<asc.length){ if(on(asc[i])){ let j=i; while(j+1<asc.length&&on(asc[j+1])) j++; durs.push([(Date.parse(asc[j].recorded_at)-Date.parse(asc[i].recorded_at))/1000+2,j===asc.length-1]); i=j+1; } else i++; }
+      lines.push("State now: "+(on(asc[asc.length-1])?"ON":"OFF"),"ON periods in window: "+durs.length);
+      durs.forEach(d=>{ lines.push("  • "+d[0].toFixed(0)+" s"+(d[1]?" (still ON)":"")); if(d[0]>150) s="fail"; else if(d[0]>45&&s==="ok") s="warn"; });
+      if(s!=="ok") lines.push("⚠ expected 30 s ON; a relay may be stuck");
+      const t0=nnum(asc[asc.length-1].temperature); if(on(asc[asc.length-1])&&Number.isFinite(t0)&&t0<28){ lines.push("⚠ pump ON although temperature is only "+t0.toFixed(1)+" °C"); if(s==="ok") s="warn"; }
+      add("pump","Pump relay / misting",s,lines); } }
+  // environment sanity
+  { if(!l0) add("env","Sensor values","na",["No data"]);
+    else{ const t=nnum(l0.temperature),h=nnum(l0.humidity),w=nnum(l0.wind_speed),hi=nnum(l0.heat_index); const bad=[];
+      if(!Number.isFinite(t)||t<-10||t>60) bad.push("temperature invalid"); if(!Number.isFinite(h)||h<0||h>100) bad.push("humidity invalid");
+      if(!Number.isFinite(w)||w<0||w>40) bad.push("wind invalid"); if(!Number.isFinite(hi)) bad.push("heat index missing");
+      add("env","Sensor values (sanity)",bad.length?"fail":"ok",["Temp "+(Number.isFinite(t)?t.toFixed(1):"–")+" °C · RH "+(Number.isFinite(h)?h.toFixed(0):"–")+" % · Wind "+(Number.isFinite(w)?w.toFixed(1):"–")+" m/s · HI "+(Number.isFinite(hi)?hi.toFixed(1):"–")+" °C"].concat(bad.map(m=>"⚠ "+m))); } }
+  // Wi-Fi, controller, diagnostic lamp
+  { const rs=nnum(gv(h0,["wifi_rssi"]));
+    add("wifi","Wi-Fi signal",Number.isFinite(rs)?(rs>-67?"ok":rs>-80?"warn":"fail"):"na",[Number.isFinite(rs)?"RSSI: "+rs+" dBm":"Not reported by the ESP32 yet"]); }
+  { const up=nnum(gv(h0,["uptime_s"])), hp=nnum(gv(h0,["free_heap"])), rr=gv(h0,["reset_reason"]), fw=gv(h0,["fw"]);
+    if(!Number.isFinite(up)&&!Number.isFinite(hp)) add("ctl","Controller (ESP32)","na",["Not reported by the ESP32 yet"]);
+    else{ let s="ok"; const lines=["Uptime: "+(Number.isFinite(up)?Math.floor(up/3600)+" h "+Math.floor(up%3600/60)+" min":"–"),"Free memory: "+(Number.isFinite(hp)?(hp/1024).toFixed(0)+" kB":"–"),"Last reset reason code: "+(rr===undefined?"–":rr),"Firmware: "+(fw||"–")];
+      if(Number.isFinite(hp)){ const lo=Math.min(...H.map(r=>nnum(r.free_heap)).filter(Number.isFinite)); lines.push("Lowest free memory in window: "+(lo/1024).toFixed(0)+" kB"); if(lo<20000) s="fail"; else if(lo<50000) s="warn"; }
+      const asc=H.slice().reverse(); for(let i=1;i<asc.length;i++){ const a=nnum(asc[i-1].uptime_s), b=nnum(asc[i].uptime_s);
+        if(Number.isFinite(a)&&Number.isFinite(b)&&b<a-1){ const key="rb"+asc[i].recorded_at; if(!devSeen[key]){ devSeen[key]=1; devLog.unshift({t:Date.now(),m:"Reboot detected (uptime reset) at RTC "+fmtTime(asc[i].recorded_at)}); } lines.push("⚠ reboot detected at "+fmtTime(asc[i].recorded_at,{year:undefined,month:undefined,day:undefined})); if(s==="ok") s="warn"; } }
+      add("ctl","Controller (ESP32)",s,lines); } }
+  { const dg=yn(gv(h0,["diag_ok"])); add("diag","Self-check (green lamp logic)",dg===undefined?"na":dg?"ok":"fail",[dg===undefined?"Not reported by the ESP32 yet":dg?"All six checks pass (lamp flashes)":"A check failed (lamp is off)"]); }
+  return out;
+}
+const esc2=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function renderDev(){
+  if(!devOpen) return;
+  const comps=devAnalyze();
+  comps.forEach(c=>{ const p=devPrev[c.id]; if(p!==undefined&&p!==c.s) devLog.unshift({t:Date.now(),m:c.title+": "+p.toUpperCase()+" → "+c.s.toUpperCase()}); devPrev[c.id]=c.s; });
+  if(devLog.length>80) devLog.length=80;
+  const real=comps.filter(c=>c.s!=="na"), bad=real.filter(c=>c.s==="fail"), warn=real.filter(c=>c.s==="warn");
+  const chip=$("#dvchip"); chip.textContent=!real.length?"NO DATA":bad.length?bad.length+" FAILING":warn.length?warn.length+" WARNING":"ALL SYSTEMS OK";
+  chip.style.background=bad.length?"rgba(255,123,136,.2)":warn.length?"rgba(241,189,90,.2)":real.length?"rgba(98,212,143,.2)":"#2a2f36";
+  chip.style.color=bad.length?"#ff7b88":warn.length?"#f1bd5a":real.length?"#62d48f":"#a6aeb6";
+  const BD={ok:"OK",warn:"WARNING",fail:"FAIL",na:"NOT REPORTED"};
+  let h="";
+  if(devHealthState==="missing") h+='<div class="dvnote"><b>device_health table not found.</b> The ESP32 does not report its components yet, so the DHT22, SD card, RTC and controller cards below show <b>NOT REPORTED</b>. Run the SQL and add the ESP32 code from <code>dev_health_setup.md</code>. The data-link, cadence, RTC-offset, pump and sensor-value cards already work from the live stream.</div>';
+  else if(devHealthState==="empty") h+='<div class="dvnote">The <code>device_health</code> table exists but has no rows yet. Waiting for the ESP32 to upload.</div>';
+  else if(devHealthState==="error") h+='<div class="dvnote">Could not read <code>device_health</code> (network or permission problem).</div>';
+  else if(devHealthState==="ok") h+='<div class="dvnote">Component data from <code>device_health</code> · '+devHealthRows.length+' rows · newest RTC time '+esc2(fmtTime(devHealthRows[0].recorded_at))+'</div>';
+  h+='<div class="dvgrid">'+comps.map(c=>'<div class="dvc '+c.s+'"><h4>'+esc2(c.title)+'<span class="dvb">'+BD[c.s]+'</span></h4><ul>'+c.lines.filter(Boolean).map(x=>'<li>'+esc2(x)+'</li>').join("")+'</ul></div>').join("")+'</div>';
+  h+='<h3 class="dvh">Event log (this session)</h3><div class="dvlog">'+(devLog.length?devLog.map(e=>'<div>'+new Date(e.t).toLocaleTimeString("en-PH",{timeZone:TZ})+' · '+esc2(e.m)+'</div>').join(""):'<div>No changes yet.</div>')+'</div>';
+  h+='<h3 class="dvh">Latest readings</h3><div class="dvscroll"><table class="dvtable"><thead><tr><th>RTC time</th><th>Temp</th><th>RH</th><th>Wind</th><th>HI</th><th>Pump</th></tr></thead><tbody>'+
+     liveRows.slice(0,15).map(r=>'<tr><td>'+esc2(fmtTime(r.recorded_at,{year:undefined,month:undefined,day:undefined}))+'</td><td>'+esc2(r.temperature)+'</td><td>'+esc2(r.humidity)+'</td><td>'+esc2(r.wind_speed)+'</td><td>'+esc2(r.heat_index)+'</td><td>'+esc2(r.misting_status)+'</td></tr>').join("")+'</tbody></table></div>';
+  h+='<details style="margin-top:14px"><summary style="cursor:pointer;color:#ff7b88;font-weight:600">Raw latest rows</summary><div class="dvraw">'+esc2(JSON.stringify({sensor_live:liveRows[0]||null,device_health:devHealthRows[0]||null},null,2))+'</div></details>';
+  const body=$("#dvbody"), sy=$("#devpage").scrollTop; body.innerHTML=h; $("#devpage").scrollTop=sy;
+}
 
 /* cursor droplets + click splash */
 const fxLayer=$("#fx");
@@ -2410,6 +2669,8 @@ function renderLive(){
   $("#decisionHome").innerHTML=dh; $("#decisionLive").innerHTML=dh;
   $("#meters").innerHTML=metersHTML(row);
   updateLiveCharts(liveRows);
+  { const k=row?(row.id!==undefined?row.id:row.recorded_at):null; if(k!==devLastKey){ devLastKey=k; devLastNew=Date.now(); } }
+  if(devOpen) renderDev();
 }
 
 let polling=false, failCount=0, lastHiddenPoll=0;
@@ -2418,10 +2679,12 @@ async function poll(){
   if(document.hidden){ if(Date.now()-lastHiddenPoll<10000) return; lastHiddenPoll=Date.now(); }
   polling=true;
   try{
+    const t0=performance.now();
     liveRows = await query("sensor_live",{select:"*", order:"recorded_at.desc", limit:LIVE_POINTS});
+    devLat.push(performance.now()-t0); if(devLat.length>12) devLat.shift();
     failCount=0; $("#errBanner").classList.remove("show");
   }catch(err){
-    failCount++;
+    failCount++; devFails++;
     if(failCount>=2){ const b=$("#errBanner"); b.textContent="Cannot reach the database right now ("+err.message+"). Retrying automatically."; b.classList.add("show"); }
   }
   renderLive();
