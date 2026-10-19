@@ -475,8 +475,8 @@ html.in-dash #misty{display:none}
 
 
 /* developer console (hidden) */
-#devtoast{position:fixed;top:18px;left:50%;z-index:160;transform:translate(-50%,-140%);background:#14161a;color:#fff;border:1px solid var(--accent);border-radius:999px;padding:10px 22px;font-weight:700;box-shadow:0 10px 28px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
-#devtoast.show{transform:translate(-50%,0)}
+#devtoast{position:fixed;top:18px;left:50%;z-index:160;opacity:0;visibility:hidden;transform:translate(-50%,-140%);background:#14161a;color:#fff;border:1px solid var(--accent);border-radius:999px;padding:10px 22px;font-weight:700;box-shadow:0 10px 28px rgba(0,0,0,.5);transition:transform .45s cubic-bezier(.3,1.5,.5,1),opacity .3s,visibility 0s .45s;pointer-events:none}
+#devtoast.show{transform:translate(-50%,0);opacity:1;visibility:visible;transition:transform .45s cubic-bezier(.3,1.5,.5,1),opacity .3s,visibility 0s}
 #devgate{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px}
 #devgate[hidden],#devpage[hidden]{display:none}
 .dgbox{width:min(360px,100%);background:#1b1f24;border:1px solid var(--line);border-radius:12px;padding:22px;box-shadow:0 20px 50px rgba(0,0,0,.6)}
@@ -912,41 +912,43 @@ html.in-dash #misty.alert{display:block}
       <div class="eyebrow rv" style="--d:.05s">PUP ITECH · Engineering thesis project</div>
       <h1 class="rv" style="--d:.1s">WELCOME, PUP STUDENT</h1>
       <h2 class="rv" style="--d:.2s">Ever wondered how technology can help make an outdoor campus space more comfortable?</h2>
-      <p class="lead rv" style="--d:.3s">Explore the PUP ITECH Automated Roof-Mounted Misting System and discover how environmental monitoring, automatic control, and water misting work together to monitor thermal conditions in an outdoor campus space.</p>
+      <p class="lead rv" style="--d:.3s">Explore how the PUP ITECH roof-mounted misting system watches the heat and mists a campus waiting shed automatically.</p>
       <p class="pname rv" style="--d:.4s"><b>Design and Development of a Roof-Mounted Misting System to Provide Thermal Comfort in Outdoor Campus Spaces</b><br>Polytechnic University of the Philippines – Institute of Technology</p>
     </div>
     <div class="rv" style="--d:.25s">
       <svg class="illus" viewBox="0 0 520 380" role="img" aria-label="Illustration of an outdoor waiting shed with long concrete tables and low seats, people sitting, talking and walking past and a trash bin; a roof-mounted line of misting nozzles and a sensor box under the center of the roof release and monitor fine mist">
         <defs>
-          <linearGradient id="roofg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a1526"/><stop offset="1" stop-color="#5e0d17"/></linearGradient>
-          <radialGradient id="sung"><stop offset="0" stop-color="#f1bd5a" stop-opacity=".55"/><stop offset="1" stop-color="#f1bd5a" stop-opacity="0"/></radialGradient>
-          <linearGradient id="mistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6ff" stop-opacity=".30"/><stop offset="1" stop-color="#bfe6ff" stop-opacity="0"/></linearGradient>
+          <linearGradient id="roofg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c32439"/><stop offset="1" stop-color="#8a1424"/></linearGradient>
+          <radialGradient id="sung"><stop offset="0" stop-color="#ffd27a" stop-opacity=".8"/><stop offset="1" stop-color="#f1bd5a" stop-opacity="0"/></radialGradient>
+          <linearGradient id="mistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfeaff" stop-opacity=".55"/><stop offset="1" stop-color="#bfe6ff" stop-opacity="0"/></linearGradient>
+        <radialGradient id="lightg"><stop offset="0" stop-color="#ffffff" stop-opacity=".34"/><stop offset="1" stop-color="#ffffff" stop-opacity="0"/></radialGradient>
         </defs>
-        <g id="sunG"><circle id="sunGlow" cx="64" cy="58" r="58" fill="url(#sung)"/><circle cx="64" cy="58" r="19" fill="#f1bd5a" opacity=".85"/></g>
-        <g class="cloud c1"><g transform="translate(0 34)" fill="#cfd6dd" opacity=".2"><ellipse cx="40" cy="16" rx="28" ry="10"/><ellipse cx="58" cy="8" rx="17" ry="9"/><ellipse cx="24" cy="10" rx="14" ry="8"/></g></g>
-        <g class="cloud c2"><g transform="translate(0 78)" fill="#cfd6dd" opacity=".14"><ellipse cx="40" cy="14" rx="22" ry="8"/><ellipse cx="54" cy="7" rx="13" ry="7"/><ellipse cx="26" cy="9" rx="11" ry="6"/></g></g>
+        <g id="sunG"><circle id="sunGlow" cx="64" cy="58" r="58" fill="url(#sung)"/><circle cx="64" cy="58" r="19" fill="#ffd27a" opacity="1"/></g>
+        <g class="cloud c1"><g transform="translate(0 34)" fill="#e8eef4" opacity=".5"><ellipse cx="40" cy="16" rx="28" ry="10"/><ellipse cx="58" cy="8" rx="17" ry="9"/><ellipse cx="24" cy="10" rx="14" ry="8"/></g></g>
+        <g class="cloud c2"><g transform="translate(0 78)" fill="#e8eef4" opacity=".34"><ellipse cx="40" cy="14" rx="22" ry="8"/><ellipse cx="54" cy="7" rx="13" ry="7"/><ellipse cx="26" cy="9" rx="11" ry="6"/></g></g>
         <g class="bird" transform="translate(0 92)"><path d="M0 0 Q6 -7 12 0 Q18 -7 24 0" fill="none" stroke="#9aa2aa" stroke-width="1.8" stroke-linecap="round"/></g>
         <!-- back fence -->
-        <g stroke="#5a626b" stroke-width="1" opacity=".6">
+        <g stroke="#8b96a3" stroke-width="1" opacity=".7">
           <line x1="8" y1="262" x2="512" y2="262"/><line x1="8" y1="316" x2="512" y2="316"/>
         </g>
-        <g id="fencebars" stroke="#5a626b" stroke-width="1" opacity=".45"></g>
-        <g fill="#7b838c"><rect x="14" y="252" width="9" height="66"/><rect x="82" y="252" width="9" height="66"/><rect x="150" y="252" width="9" height="66" opacity=".0"/><rect x="430" y="252" width="9" height="66" opacity="0"/><rect x="448" y="252" width="9" height="66"/><rect x="500" y="252" width="9" height="66"/></g>
-        <rect x="0" y="318" width="520" height="4" fill="#7a2a36"/>
+        <g id="fencebars" stroke="#8b96a3" stroke-width="1" opacity=".55"></g>
+        <g fill="#a6b0bb"><rect x="14" y="252" width="9" height="66"/><rect x="82" y="252" width="9" height="66"/><rect x="150" y="252" width="9" height="66" opacity=".0"/><rect x="430" y="252" width="9" height="66" opacity="0"/><rect x="448" y="252" width="9" height="66"/><rect x="500" y="252" width="9" height="66"/></g>
+        <rect x="0" y="318" width="520" height="4" fill="#b83a4c"/>
         <!-- tree behind the shed -->
-        <g><rect x="486" y="150" width="12" height="168" fill="#5a3b2a"/><circle cx="470" cy="122" r="34" fill="#2d6a47"/><circle cx="478" cy="96" r="36" fill="#357a52"/><circle cx="450" cy="88" r="26" fill="#2a5f40"/><circle cx="492" cy="146" r="26" fill="#2d6a47"/></g>
+        <g><rect x="486" y="150" width="12" height="168" fill="#7d5438"/><circle cx="470" cy="122" r="34" fill="#3f8c5e"/><circle cx="478" cy="96" r="36" fill="#4aa46f"/><circle cx="450" cy="88" r="26" fill="#388259"/><circle cx="492" cy="146" r="26" fill="#3f8c5e"/></g>
         <!-- posts (brown steel) -->
-        <rect x="86" y="148" width="9" height="170" fill="#7a4b3a"/><rect x="425" y="148" width="9" height="170" fill="#7a4b3a"/>
+        <rect x="86" y="148" width="9" height="170" fill="#a8694c"/><rect x="425" y="148" width="9" height="170" fill="#a8694c"/>
         <rect x="80" y="311" width="21" height="8" fill="#cbbfae"/><rect x="419" y="311" width="21" height="8" fill="#cbbfae"/>
+        <ellipse cx="260" cy="236" rx="250" ry="96" fill="url(#lightg)"/>
         <!-- mist cloud -->
         <path d="M70 168 H450 L470 318 H50 Z" fill="url(#mistg)"/>
         <!-- furniture (like the real shed): green bench, yellow curb, long concrete tables with low red seats, yellow bin -->
         <g>
-          <rect x="24" y="286" width="56" height="5" rx="2" fill="#3f9a6a"/><rect x="28" y="291" width="4" height="22" fill="#2f7a52"/><rect x="72" y="291" width="4" height="22" fill="#2f7a52"/>
+          <rect x="24" y="286" width="56" height="5" rx="2" fill="#52b883"/><rect x="28" y="291" width="4" height="22" fill="#2f7a52"/><rect x="72" y="291" width="4" height="22" fill="#2f7a52"/>
           <rect x="0" y="308" width="104" height="10" fill="#d9a21b"/>
-          <rect x="150" y="272" width="100" height="46" fill="#d9dcde"/><rect x="150" y="268" width="100" height="8" rx="1" fill="#eef0f1"/>
-          <rect x="285" y="272" width="90" height="46" fill="#d9dcde"/><rect x="285" y="268" width="90" height="8" rx="1" fill="#eef0f1"/>
-          <rect x="108" y="292" width="40" height="26" rx="2" fill="#8a2a2a"/><rect x="244" y="292" width="40" height="26" rx="2" fill="#8a2a2a"/><rect x="378" y="292" width="42" height="26" rx="2" fill="#8a2a2a"/>
+          <rect x="150" y="272" width="100" height="46" fill="#eef1f3"/><rect x="150" y="268" width="100" height="8" rx="1" fill="#ffffff"/>
+          <rect x="285" y="272" width="90" height="46" fill="#eef1f3"/><rect x="285" y="268" width="90" height="8" rx="1" fill="#ffffff"/>
+          <rect x="108" y="292" width="40" height="26" rx="2" fill="#b93c3c"/><rect x="244" y="292" width="40" height="26" rx="2" fill="#b93c3c"/><rect x="378" y="292" width="42" height="26" rx="2" fill="#b93c3c"/>
           <rect x="446" y="286" width="26" height="32" rx="2" fill="#d9a21b"/><rect x="443" y="282" width="32" height="6" rx="2" fill="#efbf3c"/>
         </g>
         <!-- people: plain side-view figures -->
@@ -1019,8 +1021,8 @@ html.in-dash #misty.alert{display:block}
     <div>
       <div class="eyebrow rv">The project</div>
       <h2 class="t rv">WHAT IS THIS PROJECT?</h2>
-      <p class="lead rv">This project is a roof-mounted misting system developed for an outdoor campus waiting area at the Polytechnic University of the Philippines – Institute of Technology.</p>
-      <p class="lead rv">The system monitors environmental conditions such as temperature, relative humidity, and wind velocity. Based on predetermined conditions, the system can automatically operate the misting system and record the resulting environmental data.</p>
+      <p class="lead rv">A roof-mounted misting system for an outdoor waiting shed at PUP ITECH.</p>
+      <p class="lead rv">It checks temperature, humidity and wind, mists automatically when the conditions are right, and records the data.</p>
     </div>
     <div class="concept rv" style="--d:.15s">
       <div class="card node">
@@ -1045,12 +1047,12 @@ html.in-dash #misty.alert{display:block}
   <div class="wrap">
     <div class="eyebrow rv">The reason</div>
     <h2 class="t rv">WHY DOES IT MATTER?</h2>
-    <p class="lead rv">Outdoor campus spaces can become uncomfortable during hot weather. This thesis project is intended to monitor thermal conditions, provide a controlled misting response, and collect data so the system can be evaluated. It does not claim to solve heat discomfort. It is an experiment, and the data below is part of that experiment.</p>
+    <p class="lead rv">Outdoor campus spaces can get uncomfortably hot. This thesis project monitors the heat, mists in a controlled way, and records data so the system can be evaluated. It does not claim to solve heat discomfort.</p>
     <div class="cards4">
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>Thermal Conditions</h3><p>Monitor temperature, humidity, heat index, and wind conditions.</p></div>
-      <div class="card ic rv" style="--d:.08s"><div class="em" aria-hidden="true">💦</div><h3>Misting</h3><p>Operate a roof-mounted misting system when programmed environmental conditions are satisfied.</p></div>
-      <div class="card ic rv" style="--d:.16s"><div class="em" aria-hidden="true">📊</div><h3>Data</h3><p>Record environmental conditions over time for analysis.</p></div>
-      <div class="card ic rv" style="--d:.24s"><div class="em" aria-hidden="true">⚡</div><h3>Resource Use</h3><p>Evaluate water and electrical consumption as part of system efficiency.</p></div>
+      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>Thermal Conditions</h3><p>Measure temperature, humidity, heat index and wind.</p></div>
+      <div class="card ic rv" style="--d:.08s"><div class="em" aria-hidden="true">💦</div><h3>Misting</h3><p>Mist automatically when the conditions are met.</p></div>
+      <div class="card ic rv" style="--d:.16s"><div class="em" aria-hidden="true">📊</div><h3>Data</h3><p>Record the data over time.</p></div>
+      <div class="card ic rv" style="--d:.24s"><div class="em" aria-hidden="true">⚡</div><h3>Resource Use</h3><p>Track water and electricity use.</p></div>
     </div>
   </div>
 </section>
@@ -1065,16 +1067,16 @@ html.in-dash #misty.alert{display:block}
     <div class="how-grid">
       <div class="steps">
         <div class="card step rv"><div class="n">01</div><div><h3>MEASURE</h3><p>Sensors monitor:</p><ul><li>temperature</li><li>relative humidity</li><li>wind velocity</li></ul></div></div>
-        <div class="card step rv"><div class="n">02</div><div><h3>PROCESS</h3><p>The ESP32-S3 receives and processes the sensor readings.</p></div></div>
-        <div class="card step rv"><div class="n">03</div><div><h3>DECIDE</h3><p>The controller checks whether the programmed misting conditions are satisfied.</p></div></div>
-        <div class="card step rv"><div class="n">04</div><div><h3>ACTIVATE</h3><p>If the conditions are satisfied, the water pump operates and supplies water to the misting nozzles.</p></div></div>
-        <div class="card step rv"><div class="n">05</div><div><h3>MIST</h3><p>Fine water mist is released into the outdoor waiting area.</p></div></div>
-        <div class="card step rv"><div class="n">06</div><div><h3>RECORD</h3><p>Environmental data and water consumption are recorded locally, and environmental data can be viewed through the online dashboard.</p></div></div>
+        <div class="card step rv"><div class="n">02</div><div><h3>PROCESS</h3><p>The ESP32 reads the sensors.</p></div></div>
+        <div class="card step rv"><div class="n">03</div><div><h3>DECIDE</h3><p>It checks if the misting conditions are met.</p></div></div>
+        <div class="card step rv"><div class="n">04</div><div><h3>ACTIVATE</h3><p>If they are, the pump sends water to the nozzles.</p></div></div>
+        <div class="card step rv"><div class="n">05</div><div><h3>MIST</h3><p>Fine mist is released into the waiting area.</p></div></div>
+        <div class="card step rv"><div class="n">06</div><div><h3>RECORD</h3><p>Data is saved on an SD card and shown on this website.</p></div></div>
       </div>
       <div class="chain rv" aria-label="System flow from environment to data storage">
         <div class="nd">ENVIRONMENT</div><div class="ar" aria-hidden="true">↓</div>
         <div class="nd">SENSORS</div><div class="ar" aria-hidden="true">↓</div>
-        <div class="nd k">ESP32-S3</div><div class="ar" aria-hidden="true">↓</div>
+        <div class="nd k">ESP32</div><div class="ar" aria-hidden="true">↓</div>
         <div class="nd k">MISTING DECISION</div><div class="ar" aria-hidden="true">↓</div>
         <div class="nd">WATER PUMP</div><div class="ar" aria-hidden="true">↓</div>
         <div class="nd">MISTING NOZZLES</div><div class="ar" aria-hidden="true">↓</div>
@@ -1089,7 +1091,7 @@ html.in-dash #misty.alert{display:block}
   <div class="wrap">
     <div class="eyebrow rv">The decision</div>
     <h2 class="t rv" style="max-width:none">WHEN DOES THE SYSTEM MIST?</h2>
-    <p class="lead rv">The system does not simply run continuously. The programmed control logic evaluates these environmental conditions before activating the misting system. All three must be satisfied.</p>
+    <p class="lead rv">It does not mist all day. It mists only when all three conditions are met.</p>
     <div class="cards3">
       <div class="card cond rv"><div class="l">TEMPERATURE</div><div class="v">≥ <span class="cnt" data-from="20" data-to="31">31</span> °C</div><p>The air must be at least this warm.</p></div>
       <div class="card cond rv" style="--d:.08s"><div class="l">RELATIVE HUMIDITY</div><div class="v">&lt; <span class="cnt" data-from="100" data-to="70">70</span>%</div><p>The air must be less humid than this.</p></div>
@@ -1101,7 +1103,7 @@ html.in-dash #misty.alert{display:block}
       <div class="card rv">
         <h3>Try it yourself</h3>
         <div class="body">
-          <p class="hnote" style="margin-top:0">Move the sliders to see how the system would decide. This is a simulation, not live data.</p>
+          <p class="hnote" style="margin-top:0">Move the sliders. This is a simulation, not live data.</p>
           <div class="slider"><label for="sT">Temperature <output id="sTo">32.0 °C</output></label><input id="sT" type="range" min="20" max="40" step="0.1" value="32"></div>
           <div class="slider"><label for="sH">Relative humidity <output id="sHo">60 %</output></label><input id="sH" type="range" min="30" max="100" step="1" value="60"></div>
           <div class="slider"><label for="sW">Wind velocity <output id="sWo">2.0 m/s</output></label><input id="sW" type="range" min="0" max="8" step="0.1" value="2"></div>
@@ -1135,7 +1137,7 @@ html.in-dash #misty.alert{display:block}
           <div class="logic" id="simOut" aria-live="polite"></div>
           <div class="hnote" style="margin-top:16px;font-weight:600;color:var(--ink)">Operating cycle</div>
           <div class="cycle"><div class="a" style="flex:30">30 s ON</div><div class="b" style="flex:180">3 minutes cooldown</div><span class="cmark" aria-hidden="true"></span></div>
-          <p class="simnote">When the conditions are satisfied, the pump runs for 30 seconds, then rests for 3 minutes before the conditions are checked again.</p>
+          <p class="simnote">The pump runs 30 seconds, then rests 3 minutes.</p>
         </div>
       </div>
     </div>
@@ -1143,12 +1145,12 @@ html.in-dash #misty.alert{display:block}
     <div class="hi-block">
       <div class="eyebrow rv" style="margin-top:60px">Heat index</div>
       <h3 class="hi-title rv">Try it yourself: heat index</h3>
-      <p class="lead rv" style="font-size:1.05rem">The heat index combines air temperature and relative humidity to estimate how hot it can feel. Move the two sliders to see the resulting heat index and its PAGASA classification.</p>
+      <p class="lead rv" style="font-size:1.05rem">Heat index shows how hot it can feel. Move the sliders to see the result and its PAGASA class.</p>
       <div class="sim">
         <div class="card rv">
           <h3>Temperature and humidity</h3>
           <div class="body">
-            <p class="hnote" style="margin-top:0">This is a simulation, not live data. The heat index is calculated with the NOAA/NWS formula.</p>
+            <p class="hnote" style="margin-top:0">Simulation, not live data. Uses the NOAA/NWS formula.</p>
             <div class="slider"><label for="hT">Temperature <output id="hTo">33.0 °C</output></label><input id="hT" type="range" min="24" max="45" step="0.1" value="33"></div>
             <div class="slider"><label for="hH">Relative humidity <output id="hHo">60 %</output></label><input id="hH" type="range" min="20" max="100" step="1" value="60"></div>
             <details class="formula"><summary>Show the formula</summary>
@@ -1159,7 +1161,7 @@ HI = −42.379 + 2.04901523·T + 10.14333127·RH
      − 0.05481717·RH² + 0.00122874·T²·RH
      + 0.00085282·T·RH² − 0.00000199·T²·RH²
 
-NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °F (about 26.7 °C) the heat index is taken as the air temperature. The result is converted back to °C.</pre></details>
+Very low or high humidity is adjusted. Below 80 °F the heat index equals the air temperature. The result is converted to °C.</pre></details>
           </div>
         </div>
         <div class="card rv" style="--d:.1s">
@@ -1224,12 +1226,12 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
     <div class="eyebrow rv">The measurements</div>
     <h2 class="t rv" style="max-width:none">WHAT ARE WE MEASURING?</h2>
     <div class="cards6">
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>TEMPERATURE</h3><p>The surrounding air temperature, measured using DHT22 sensors.</p></div>
-      <div class="card ic rv" style="--d:.06s"><div class="em" aria-hidden="true">💧</div><h3>RELATIVE HUMIDITY</h3><p>The amount of moisture in the air relative to its capacity.</p></div>
-      <div class="card ic rv" style="--d:.12s"><div class="em" aria-hidden="true">☀️</div><h3>HEAT INDEX</h3><p>A calculated indicator based on temperature and relative humidity.</p></div>
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌬</div><h3>WIND VELOCITY</h3><p>The measured speed of air movement, using the anemometer.</p></div>
-      <div class="card ic rv" style="--d:.06s"><div class="em" aria-hidden="true">💦</div><h3>WATER CONSUMPTION</h3><p>The cumulative amount of water passing through the misting system, measured using the flow sensor.</p></div>
-      <div class="card ic dim rv" style="--d:.12s"><div class="em" aria-hidden="true">⚡</div><h3>ELECTRICAL CONSUMPTION</h3><p>Electrical energy is measured separately using an electrical submeter. It is not part of the live data on this website.</p></div>
+      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>TEMPERATURE</h3><p>Air temperature (DHT22 sensors).</p></div>
+      <div class="card ic rv" style="--d:.06s"><div class="em" aria-hidden="true">💧</div><h3>RELATIVE HUMIDITY</h3><p>How much moisture is in the air.</p></div>
+      <div class="card ic rv" style="--d:.12s"><div class="em" aria-hidden="true">☀️</div><h3>HEAT INDEX</h3><p>How hot it feels, from temperature and humidity.</p></div>
+      <div class="card ic rv"><div class="em" aria-hidden="true">🌬</div><h3>WIND VELOCITY</h3><p>Wind speed (anemometer).</p></div>
+      <div class="card ic rv" style="--d:.06s"><div class="em" aria-hidden="true">💦</div><h3>WATER CONSUMPTION</h3><p>Total water used (flow sensor).</p></div>
+      <div class="card ic dim rv" style="--d:.12s"><div class="em" aria-hidden="true">⚡</div><h3>ELECTRICAL CONSUMPTION</h3><p>Measured separately with an electrical submeter. Not shown on this site.</p></div>
     </div>
   </div>
 </section>
@@ -1240,8 +1242,8 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
   <div class="wrap" style="max-width:820px;text-align:center">
     <div class="eyebrow rv">Resource use</div>
     <h2 class="t rv" style="margin:0 auto;max-width:none">HOW MUCH WATER DOES THE SYSTEM USE?</h2>
-    <p class="lead rv" style="margin-left:auto;margin-right:auto">A flow sensor installed in the water line detects water movement through pulse signals. The ESP32 uses these pulses to calculate the cumulative amount of water consumed.</p>
-    <p class="lead rv" style="margin-left:auto;margin-right:auto">This is a <strong>cumulative</strong> measurement: it keeps adding up as the system operates, rather than showing the water used at one moment.</p>
+    <p class="lead rv" style="margin-left:auto;margin-right:auto">A flow sensor in the water line counts pulses, and the ESP32 turns them into liters.</p>
+    <p class="lead rv" style="margin-left:auto;margin-right:auto">It is a <strong>running total</strong> that keeps adding up while the system works.</p>
   </div>
 </section>
 
@@ -1249,7 +1251,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
   <div class="wrap">
     <div class="eyebrow rv">The data</div>
     <h2 class="t rv" style="max-width:none">NOW, LET'S SEE THE DATA</h2>
-    <p class="lead rv">Everything shown above is connected to the actual monitoring system. The dashboard allows you to explore the environmental conditions recorded by the system in real time and over previous periods.</p>
+    <p class="lead rv">These are real readings from the system. Open the dashboard to see live and past data.</p>
     <div class="pvgrid" aria-label="Preview of current readings">
       <div class="card pv rv"><div class="l">Temperature</div><div class="v"><span data-v="temp">–</span><small>°C</small></div></div>
       <div class="card pv rv" style="--d:.05s"><div class="l">Humidity</div><div class="v"><span data-v="rh">–</span><small>%</small></div></div>
@@ -1259,7 +1261,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
     </div>
     <div class="cta rv">
       <h2>READY TO EXPLORE THE SYSTEM?</h2>
-      <p>You've seen what the system does and how it works. Now explore the environmental conditions being monitored by the PUP ITECH misting system.</p>
+      <p>Now see the real conditions at the shed.</p>
       <div class="btns">
         <button class="btn big" data-go="dashboard">ENTER MAIN DASHBOARD →</button>
         <button class="btn ghost" data-go="sec-how">LEARN HOW IT WORKS</button>
@@ -1339,7 +1341,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
     <span class="chip" data-link>CONNECTING</span>
     <span class="updated" data-updated>Last updated: –</span>
   </div>
-  <p class="vintro">These graphs show the most recent environmental measurements received from the monitoring system, covering about the last 3 minutes. Hover or tap a graph to see exact values.</p>
+  <p class="vintro">The latest readings, about the last 3 minutes. Tap a graph for exact values.</p>
   <div class="grid2">
     <div class="card"><h3>Threshold indicators</h3><div class="body" id="meters"></div></div>
     <div class="card"><h3>WHY IS THE SYSTEM ON/OFF?</h3><div class="body" id="decisionLive"></div></div>
@@ -1355,7 +1357,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
 <!-- Historical tab -->
 <section id="view-history" class="view" aria-labelledby="h-hist">
   <div class="statusline"><h2 id="h-hist">HISTORICAL DATA</h2></div>
-  <p class="vintro">Historical data allows users to examine how environmental conditions and misting operation changed over time. Longer periods use summarized records (averages per minute, hour, day or month) so the graphs stay readable.</p>
+  <p class="vintro">See how conditions and misting changed over time. Longer periods show averages.</p>
   <div class="card" style="margin-bottom:18px">
     <div class="controls">
       <div>
@@ -1392,31 +1394,31 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
 <section id="view-how" class="view" aria-labelledby="h-how">
   <div class="prose">
     <h2 id="h-how">HOW IT WORKS</h2>
-    <p>The system continuously measures air temperature, relative humidity and wind velocity under the waiting shed. An ESP32-S3 controller checks these readings every 2 seconds and switches the misting pump automatically. No manual operation is needed for automatic misting.</p>
+    <p>The system measures temperature, humidity and wind under the shed. An ESP32 checks them every 2 seconds and switches the pump automatically.</p>
 
     <h3>Automatic misting conditions</h3>
     <div class="rule">Temperature ≥ 31 °C<br>AND relative humidity &lt; 70%<br>AND wind velocity between 0 and 4 m/s</div>
-    <p>If any one condition is not satisfied, the pump remains OFF. These are the project's programmed operating conditions, not universal environmental standards.</p>
+    <p>If any condition fails, the pump stays OFF. These are the project's own settings, not universal standards.</p>
 
     <h3>Pump cycle</h3>
     <div class="two" style="margin:8px 0">
       <div class="card tc"><div class="t">Pump ON</div><div class="v">30 seconds</div></div>
       <div class="card tc"><div class="t">Cooldown</div><div class="v">3 minutes</div></div>
     </div>
-    <p>After the cooldown, the environmental conditions are checked again. During cooldown the dashboard can show that conditions are satisfied while the pump is still resting.</p>
+    <p>After the cooldown the conditions are checked again. During cooldown they can pass while the pump rests.</p>
 
     <h3>How values are obtained</h3>
     <ul>
-      <li><strong>Temperature and humidity:</strong> the average of the valid readings from three DHT22 sensors.</li>
-      <li><strong>Heat index:</strong> calculated from temperature and humidity using the NOAA/NWS method, shown in °C.</li>
+      <li><strong>Temperature and humidity:</strong> average of three DHT22 sensors.</li>
+      <li><strong>Heat index:</strong> calculated with the NOAA/NWS method, in °C.</li>
       <li><strong>Wind velocity:</strong> measured with an anemometer.</li>
-      <li><strong>Water consumption:</strong> a flow sensor produces pulses as water passes through; the ESP32 converts them into cumulative liters.</li>
+      <li><strong>Water consumption:</strong> flow sensor pulses converted to liters.</li>
       <li><strong>Electrical consumption:</strong> measured separately with an electrical submeter.</li>
     </ul>
 
     <h3>Data flow</h3>
-    <div class="flow"><span class="s">Sensors</span><span class="a">→</span><span class="s">ESP32-S3</span><span class="a">→</span><span class="s">Wi-Fi</span><span class="a">→</span><span class="s">Online database</span><span class="a">→</span><span class="s">This website</span></div>
-    <p>Readings are uploaded about every 2 seconds. The database summarizes them into 1-minute, hourly, daily and monthly records for the Historical Data page. The original 2-second measurements are also saved on an SD card as the experimental record. This website only reads data; it cannot control the system.</p>
+    <div class="flow"><span class="s">Sensors</span><span class="a">→</span><span class="s">ESP32</span><span class="a">→</span><span class="s">Wi-Fi</span><span class="a">→</span><span class="s">Online database</span><span class="a">→</span><span class="s">This website</span></div>
+    <p>Readings upload every 2 seconds. The database summarizes them for the Historical Data page, and the full 2-second record is saved on the SD card. This website only reads data. It cannot control the system.</p>
   </div>
 </section>
 
@@ -1429,7 +1431,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
       <h2 id="h-about">ABOUT THE PROJECT</h2><div class="bar"></div>
       <div class="title-box">Design and Development of a Roof-Mounted Misting System to Provide Thermal Comfort in Outdoor Campus Spaces</div>
       <p class="inst">Polytechnic University of the Philippines – Institute of Technology (PUP ITECH)</p>
-      <p>This thesis project is an automated environmental monitoring and misting system for an outdoor waiting shed. It monitors temperature, relative humidity and wind velocity, operates the misting system when programmed conditions are satisfied, and records environmental data, water consumption and electrical consumption so that the system can be evaluated. This website shows only actual measurements received from the system.</p>
+      <p>An automated system that monitors an outdoor waiting shed and mists when conditions are right. It records data, including water and electricity use, so it can be evaluated. This website shows only real measurements.</p>
     </div>
 
     <div class="ab-sec">
@@ -1439,7 +1441,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
         <div class="nm">Henry Michael S. Libiran Jr.</div>
         <div class="pr">Diploma in Mechanical Engineering Technology (DMET)</div>
         <div class="role">Concept and prototype development</div>
-        <p>Henry Michael S. Libiran Jr. came up with the main idea of the project and developed its mechanical concept. He also worked on the physical design and construction of the prototype, and played a major role in turning the concept into an actual working prototype.</p>
+        <p>Henry came up with the main idea and developed the mechanical concept. He also designed and built the prototype and played a major role in making it work.</p>
       </div>
     </div>
 
@@ -1469,7 +1471,7 @@ NOAA/NWS adjustments are applied for very low or very high humidity. Below 80 °
     <div class="ab-sec">
       <span class="lbl">Acknowledgment</span>
       <h2>PROJECT CONTRIBUTORS &amp; SUPPORT</h2><div class="bar"></div>
-      <p style="margin-top:0">With appreciation to the people who contributed assistance, guidance or technical input to the project:</p>
+      <p style="margin-top:0">With thanks to those who helped with guidance and technical input:</p>
       <div class="cgrid">
         <div class="card pcard">
           <img data-logo="dacles" alt="Photo of Engr. Jomar J. Dacles">
@@ -2184,152 +2186,78 @@ $("#dgno").addEventListener("click",()=>{ $("#devgate").hidden=true; });
 $("#dgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") devSubmit(); });
 function openDev(){
   devOpen=true; $("#devpage").hidden=false; rootEl.classList.add("dev-open");
-  devPoll(); clearInterval(devTimer); devTimer=setInterval(devPoll,3000); renderDev();
+  devStatusStart=Date.now(); devStatusKey=null; devPoll(); clearInterval(devTimer); devTimer=setInterval(devPoll,2000); renderDev();
 }
 function closeDev(){ devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
 $("#dvclose").addEventListener("click",closeDev);
 $("#dvref").addEventListener("click",()=>{ devPoll(); poll(); });
 $("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupDev"); }catch(e){} closeDev(); });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
+let devStatus=null, devStatusState="loading", devStatusKey=null, devStatusChanged=0, devStatusStart=0, devLastVal={}, devSince={};
 async function devPoll(){
   if(!devOpen) return;
-  try{ devHealthRows=await query("system_status",{select:"*",order:"recorded_at.desc",limit:80}); devHealthState=devHealthRows.length?"ok":"empty"; }
-  catch(e){ devHealthState=/404|42P01/.test(e.message)?"missing":"error"; }
+  try{
+    const rows=await query("system_status",{select:"*",id:"eq.main",limit:1});
+    if(rows.length){
+      const r=rows[0], k=String(r.updated_at||"");
+      if(k!==devStatusKey){ devStatusKey=k; devStatusChanged=Date.now(); }
+      ["dht1_ok","dht2_ok","dht3_ok","sd_ok"].forEach(f=>{ if(devLastVal[f]!==r[f]){ devLastVal[f]=r[f]; devSince[f]=Date.now(); } });
+      devStatus=r; devStatusState="ok";
+    } else devStatusState="empty";
+  }catch(e){ devStatusState=/404|42P01/.test(e.message)?"missing":"error"; }
   renderDev();
-}
-/* ---- analysis ---- */
-const DK=[{t:["dht1_temp","dht1_temperature","temp1"],h:["dht1_hum","dht1_humidity","hum1","humidity1"],ok:["dht1_ok"]},
-          {t:["dht2_temp","dht2_temperature","temp2"],h:["dht2_hum","dht2_humidity","hum2","humidity2"],ok:["dht2_ok"]},
-          {t:["dht3_temp","dht3_temperature","temp3"],h:["dht3_hum","dht3_humidity","hum3","humidity3"],ok:["dht3_ok"]}];
-const gv=(row,names)=>{ if(!row) return undefined; for(const n of names) if(n in row) return row[n]; return undefined; };
-const nnum=v=>(v===null||v===undefined||v===""||isNaN(Number(v)))?NaN:Number(v);
-const med=a=>{ const b=a.filter(Number.isFinite).sort((x,y)=>x-y); return b.length?b[Math.floor(b.length/2)]:NaN; };
-const yn=v=>v===true||v==="true"||v===1?true:(v===false||v==="false"||v===0?false:undefined);
-function devAnalyze(){
-  const L=liveRows, H=devHealthRows, out=[], l0=L[0], h0=H[0];
-  const add=(id,title,s,lines)=>out.push({id,title,s,lines});
-  const nowMs=Date.now()+(srvOff||0);
-  // data link
-  const since=l0?(Date.now()-devLastNew)/1000:Infinity;
-  add("link","Data link (ESP32 → database)", !l0?"fail": since<=8?"ok": since<=30?"warn":"fail",
-    [l0?"Last new reading: "+since.toFixed(0)+" s ago":"No readings received", l0?"RTC time of latest: "+fmtTime(l0.recorded_at):"", "Poll latency: "+(devLat.length?Math.round(devLat.reduce((a,b)=>a+b,0)/devLat.length)+" ms":"–")+" · failed polls: "+devFails, "Browser online: "+(navigator.onLine?"yes":"NO")]);
-  // cadence
-  const ts=L.map(r=>Date.parse(r.recorded_at)).filter(Number.isFinite).reverse();
-  if(ts.length<5) add("cad","Upload cadence","na",["Collecting data…"]);
-  else{
-    const d=[]; for(let i=1;i<ts.length;i++) d.push(ts[i]-ts[i-1]);
-    const gaps=d.filter(x=>x>6000), frozen=d.filter(x=>x===0).length, missed=gaps.reduce((a,x)=>a+Math.max(0,Math.floor(x/2000)-1),0);
-    add("cad","Upload cadence (expected 2 s)", frozen>=5?"fail":gaps.length>3?"fail":gaps.length>0?"warn":"ok",
-      ["Median interval: "+(med(d)/1000).toFixed(1)+" s","Longest gap: "+(Math.max(...d)/1000).toFixed(1)+" s","Gaps over 6 s: "+gaps.length+" (≈"+missed+" missed uploads)","Identical timestamps in a row: "+frozen+(frozen>=5?"  ← RTC may be frozen":""),"Rows analysed: "+ts.length]);
-  }
-  // DHT22 sensors, individually
-  const avgT=nnum(l0&&l0.temperature), avgH=nnum(l0&&l0.humidity);
-  const cur=DK.map(k=>({t:nnum(gv(h0,k.t)),h:nnum(gv(h0,k.h)),ok:yn(gv(h0,k.ok)),has:h0&&(gv(h0,k.t)!==undefined||gv(h0,k.h)!==undefined||gv(h0,k.ok)!==undefined)}));
-  const mT=med(cur.map(c=>c.t)), mH=med(cur.map(c=>c.h));
-  DK.forEach((k,i)=>{
-    const c=cur[i], name="DHT22 #"+(i+1);
-    if(!c.has){ add("dht"+i,name,"na",["Not reported by the ESP32 yet","(see dev_health_setup.md)"]); return; }
-    let s="ok"; const lines=[], bad=[], warn=[];
-    if(c.ok===false) bad.push("sensor reports FAILURE");
-      if(!Number.isFinite(c.t)&&!Number.isFinite(c.h)){ if(c.ok===undefined) bad.push("no valid reading (NaN / null)"); }
-    else if(!Number.isFinite(c.t)||!Number.isFinite(c.h)) bad.push("no valid reading (NaN / null)");
-    else{
-      if(c.t<-40||c.t>80||c.h<0||c.h>100) bad.push("reading outside the DHT22 range");
-      if(Number.isFinite(mT)&&Math.abs(c.t-mT)>3) warn.push("temperature differs from the others by "+(c.t-mT).toFixed(1)+" °C");
-      if(Number.isFinite(mH)&&Math.abs(c.h-mH)>12) warn.push("humidity differs from the others by "+(c.h-mH).toFixed(0)+" %");
-    }
-    const hist=H.slice(0,40).map(r=>[nnum(gv(r,k.t)),nnum(gv(r,k.h))]).filter(a=>Number.isFinite(a[0]));
-    if(hist.length>=40 && hist.every(a=>a[0]===hist[0][0]&&a[1]===hist[0][1])) warn.push("value has not changed for "+hist.length+" samples (possibly stuck)");
-    s=bad.length?"fail":warn.length?"warn":"ok";
-    lines.push("Temperature: "+(Number.isFinite(c.t)?c.t.toFixed(1)+" °C":"–"),"Humidity: "+(Number.isFinite(c.h)?c.h.toFixed(0)+" %":"–"),"ESP32 flag: "+(c.ok===undefined?"–":c.ok?"OK":"FAIL"));
-    bad.concat(warn).forEach(m=>lines.push("⚠ "+m)); add("dht"+i,name,s,lines);
-  });
-  const reportedT=cur.map(c=>c.t).filter(Number.isFinite);
-  if(Number.isFinite(avgT)&&reportedT.length){ const mean=reportedT.reduce((a,b)=>a+b,0)/reportedT.length;
-    add("avg","Averaged reading (website)", Math.abs(mean-avgT)>1.5?"warn":"ok",["Uploaded average: "+avgT.toFixed(1)+" °C / "+(Number.isFinite(avgH)?avgH.toFixed(0):"–")+" %","Mean of DHT22 values: "+mean.toFixed(1)+" °C","Valid DHT22 count: "+reportedT.length+" of 3"]); }
-  // anemometer
-  const wl=L.slice(0,60).map(r=>nnum(r.wind_speed)), aOk=yn(gv(h0,["anemometer_ok","wind_ok"]));
-  { const w0=nnum(l0&&l0.wind_speed), flat0=wl.length>=40&&wl.every(x=>x===0);
-    const lines=["Wind speed: "+(Number.isFinite(w0)?w0.toFixed(2)+" m/s":"–"),"ESP32 flag: "+(aOk===undefined?"not reported":aOk?"OK":"FAIL")];
-    if(flat0) lines.push("Exactly 0 for the last "+wl.length+" readings (calm, or the anemometer is not connected)");
-    const adc=gv(h0,["wind_adc","wind_raw"]); if(adc!==undefined) lines.push("ADC raw: "+adc);
-    add("wind","Anemometer", aOk===false||(Number.isFinite(w0)&&(w0<0||w0>40))?"fail":aOk===true?(flat0?"warn":"ok"):(Number.isFinite(w0)?"na":"fail"), lines); }
-  // RTC
-  { const ro=yn(gv(h0,["rtc_ok"])), lp=yn(gv(h0,["rtc_lost_power"])), rt=nnum(gv(h0,["rtc_temp"]));
-    const lines=[]; let s="ok";
-    const src=l0||h0; const created=gv(src,["created_at","inserted_at"]);
-    let drift=NaN, how="";
-    if(src&&created){ drift=(Date.parse(created)-Date.parse(src.recorded_at))/1000; how="server insert time − RTC time"; }
-    else if(l0&&since<=8){ drift=(nowMs-Date.parse(l0.recorded_at))/1000; how="this device's clock − RTC time (±3 s expected)"; }
-    if(Number.isFinite(drift)){ lines.push("RTC offset: "+drift.toFixed(1)+" s  ("+how+")"); const a=Math.abs(drift)-(created?0:3);
-      if(a>60) s="fail"; else if(a>8) s="warn"; } else lines.push("RTC offset: cannot be measured (no new data)");
-    if(src) lines.push("RTC timestamp: "+fmtTime(src.recorded_at));
-    if(ro!==undefined) lines.push("DS3231 found: "+(ro?"yes":"NO")); if(ro===false) s="fail";
-    if(lp!==undefined){ lines.push("Lost power flag: "+(lp?"YES (backup battery?)":"no")); if(lp&&s==="ok") s="warn"; }
-    if(Number.isFinite(rt)) lines.push("RTC chip temperature: "+rt.toFixed(1)+" °C");
-    const frozen=ts.length>=5 && ts.slice(-6).every(x=>x===ts[ts.length-1]);
-    if(frozen){ s="fail"; lines.push("⚠ timestamps are not advancing"); }
-    add("rtc","RTC (DS3231) accuracy",!Number.isFinite(drift)&&ro===undefined&&!l0?"na":s,lines); }
-  // SD card
-  { const so=yn(gv(h0,["sd_ok"])), sw=yn(gv(h0,["sd_write_ok"])), sf=nnum(gv(h0,["sd_fail_count"])), sc=nnum(gv(h0,["sd_log_count"]));
-    if(so===undefined&&sw===undefined&&!Number.isFinite(sc)) add("sd","SD card","na",["Not reported by the ESP32 yet","(see dev_health_setup.md)"]);
-    else{ let s="ok"; const lines=["Card mounted: "+(so===undefined?"–":so?"yes":"NO"),"Last write: "+(sw===undefined?"–":sw?"successful":"FAILED"),"Rows logged since boot: "+(Number.isFinite(sc)?sc:"–"),"Write failures since boot: "+(Number.isFinite(sf)?sf:"–")];
-      if(so===false||sw===false) s="fail";
-      const f1=nnum(gv(H[Math.min(H.length-1,12)],["sd_fail_count"])); if(Number.isFinite(sf)&&Number.isFinite(f1)&&sf>f1){ lines.push("⚠ failures increased by "+(sf-f1)+" recently"); if(s==="ok") s="warn"; }
-      const c1=nnum(gv(H[Math.min(H.length-1,6)],["sd_log_count"])); if(H.length>6&&Number.isFinite(sc)&&Number.isFinite(c1)&&sc<=c1){ lines.push("⚠ log counter is not increasing (nothing is being written)"); s="fail"; }
-      add("sd","SD card (logging)",s,lines); } }
-  // pump
-  { const asc=L.slice().reverse(), lines=[], on=r=>isOn(r.misting_status);
-    if(asc.length<3) add("pump","Pump relay","na",["Collecting data…"]);
-    else{ let s="ok", i=0; const durs=[];
-      while(i<asc.length){ if(on(asc[i])){ let j=i; while(j+1<asc.length&&on(asc[j+1])) j++; durs.push([(Date.parse(asc[j].recorded_at)-Date.parse(asc[i].recorded_at))/1000+2,j===asc.length-1]); i=j+1; } else i++; }
-      lines.push("State now: "+(on(asc[asc.length-1])?"ON":"OFF"),"ON periods in window: "+durs.length);
-      durs.forEach(d=>{ lines.push("  • "+d[0].toFixed(0)+" s"+(d[1]?" (still ON)":"")); if(d[0]>150) s="fail"; else if(d[0]>45&&s==="ok") s="warn"; });
-      if(s!=="ok") lines.push("⚠ expected 30 s ON; a relay may be stuck");
-      const t0=nnum(asc[asc.length-1].temperature); if(on(asc[asc.length-1])&&Number.isFinite(t0)&&t0<28){ lines.push("⚠ pump ON although temperature is only "+t0.toFixed(1)+" °C"); if(s==="ok") s="warn"; }
-      add("pump","Pump relay / misting",s,lines); } }
-  // environment sanity
-  { if(!l0) add("env","Sensor values","na",["No data"]);
-    else{ const t=nnum(l0.temperature),h=nnum(l0.humidity),w=nnum(l0.wind_speed),hi=nnum(l0.heat_index); const bad=[];
-      if(!Number.isFinite(t)||t<-10||t>60) bad.push("temperature invalid"); if(!Number.isFinite(h)||h<0||h>100) bad.push("humidity invalid");
-      if(!Number.isFinite(w)||w<0||w>40) bad.push("wind invalid"); if(!Number.isFinite(hi)) bad.push("heat index missing");
-      add("env","Sensor values (sanity)",bad.length?"fail":"ok",["Temp "+(Number.isFinite(t)?t.toFixed(1):"–")+" °C · RH "+(Number.isFinite(h)?h.toFixed(0):"–")+" % · Wind "+(Number.isFinite(w)?w.toFixed(1):"–")+" m/s · HI "+(Number.isFinite(hi)?hi.toFixed(1):"–")+" °C"].concat(bad.map(m=>"⚠ "+m))); } }
-  // Wi-Fi, controller, diagnostic lamp
-  { const rs=nnum(gv(h0,["wifi_rssi"]));
-    add("wifi","Wi-Fi signal",Number.isFinite(rs)?(rs>-67?"ok":rs>-80?"warn":"fail"):"na",[Number.isFinite(rs)?"RSSI: "+rs+" dBm":"Not reported by the ESP32 yet"]); }
-  { const up=nnum(gv(h0,["uptime_s"])), hp=nnum(gv(h0,["free_heap"])), rr=gv(h0,["reset_reason"]), fw=gv(h0,["fw"]);
-    if(!Number.isFinite(up)&&!Number.isFinite(hp)) add("ctl","Controller (ESP32)","na",["Not reported by the ESP32 yet"]);
-    else{ let s="ok"; const lines=["Uptime: "+(Number.isFinite(up)?Math.floor(up/3600)+" h "+Math.floor(up%3600/60)+" min":"–"),"Free memory: "+(Number.isFinite(hp)?(hp/1024).toFixed(0)+" kB":"–"),"Last reset reason code: "+(rr===undefined?"–":rr),"Firmware: "+(fw||"–")];
-      if(Number.isFinite(hp)){ const lo=Math.min(...H.map(r=>nnum(r.free_heap)).filter(Number.isFinite)); lines.push("Lowest free memory in window: "+(lo/1024).toFixed(0)+" kB"); if(lo<20000) s="fail"; else if(lo<50000) s="warn"; }
-      const asc=H.slice().reverse(); for(let i=1;i<asc.length;i++){ const a=nnum(asc[i-1].uptime_s), b=nnum(asc[i].uptime_s);
-        if(Number.isFinite(a)&&Number.isFinite(b)&&b<a-1){ const key="rb"+asc[i].recorded_at; if(!devSeen[key]){ devSeen[key]=1; devLog.unshift({t:Date.now(),m:"Reboot detected (uptime reset) at RTC "+fmtTime(asc[i].recorded_at)}); } lines.push("⚠ reboot detected at "+fmtTime(asc[i].recorded_at,{year:undefined,month:undefined,day:undefined})); if(s==="ok") s="warn"; } }
-      add("ctl","Controller (ESP32)",s,lines); } }
-  { const dg=yn(gv(h0,["diag_ok"])); add("diag","Self-check (green lamp logic)",dg===undefined?"na":dg?"ok":"fail",[dg===undefined?"Not reported by the ESP32 yet":dg?"All six checks pass (lamp flashes)":"A check failed (lamp is off)"]); }
-  return out;
 }
 const esc2=t=>String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;");
 function renderDev(){
   if(!devOpen) return;
-  const comps=devAnalyze();
+  const now=Date.now(), srv=now+(srvOff||0), r=devStatus, comps=[], add=(id,title,s,lines)=>comps.push({id,title,s,lines:lines.filter(Boolean)});
+  let alive=false;
+  if(r){
+    const byTime=Number.isFinite(Date.parse(r.updated_at))?(srv-Date.parse(r.updated_at))/1000:NaN;
+    const byChange=(now-devStatusChanged)/1000, watched=(now-devStatusStart)/1000;
+    const age=watched<6?(Number.isFinite(byTime)?Math.max(0,byTime):0):byChange;
+    alive=age<=10;
+    add("rep","ESP32 status report",alive?"ok":age<=30?"warn":"fail",[
+      "Last report: "+age.toFixed(0)+" s ago","Report time: "+(r.updated_at?fmtTime(r.updated_at):"–"),
+      (watched>=6&&alive&&Number.isFinite(byTime)&&Math.abs(byTime)>10)?"ESP32 clock is off by "+byTime.toFixed(0)+" s":"",
+      alive?"":"No new report. Values below are the last known."]);
+    const since=f=>devSince[f]?(devSince[f]-devStatusStart<2000?"since this page was opened":"changed at "+new Date(devSince[f]).toLocaleTimeString("en-PH",{timeZone:TZ})):"";
+    [["dht1_ok","DHT22 #1"],["dht2_ok","DHT22 #2"],["dht3_ok","DHT22 #3"]].forEach(([f,name])=>{
+      const v=r[f];
+      add(f,name,v===true?(alive?"ok":"warn"):v===false?"fail":"na",[
+        v===true?"WORKING":v===false?"NOT WORKING":"No value yet",
+        v===false?"No valid reading (check wiring, power, pull-up)":v===true?"Sending valid readings":"",
+        since(f)+(alive?"":" (last known)")]);
+    });
+    { const v=r.sd_ok;
+      add("sd_ok","SD card writing",v===true?(alive?"ok":"warn"):v===false?"fail":"na",[
+        v===true?"WORKING":v===false?"NOT WORKING":"No value yet",
+        v===true?"Card mounted and the last write succeeded":v===false?"Card missing, unreadable, or a write failed":"",
+        since("sd_ok")+(alive?"":" (last known)")]); }
+    const good=["dht1_ok","dht2_ok","dht3_ok"].filter(f=>r[f]===true).length, l0=liveRows[0];
+    add("avg","Averaged reading",good===0?"fail":good<3?"warn":"ok",[
+      "Valid DHT22 sensors: "+good+" of 3",
+      l0?"Average: "+fmtN(l0.temperature,1)+" °C · "+fmtN(l0.humidity,0)+" % RH":"No live reading"]);
+  }
+  const sinceNew=liveRows[0]?(now-devLastNew)/1000:Infinity;
+  add("live","Live readings arriving",!liveRows[0]?"fail":sinceNew<=8?"ok":sinceNew<=30?"warn":"fail",[liveRows[0]?"Newest reading: "+sinceNew.toFixed(0)+" s ago":"No readings received"]);
   comps.forEach(c=>{ const p=devPrev[c.id]; if(p!==undefined&&p!==c.s) devLog.unshift({t:Date.now(),m:c.title+": "+p.toUpperCase()+" → "+c.s.toUpperCase()}); devPrev[c.id]=c.s; });
-  if(devLog.length>80) devLog.length=80;
+  if(devLog.length>60) devLog.length=60;
   const real=comps.filter(c=>c.s!=="na"), bad=real.filter(c=>c.s==="fail"), warn=real.filter(c=>c.s==="warn");
-  const chip=$("#dvchip"); chip.textContent=!real.length?"NO DATA":bad.length?bad.length+" FAILING":warn.length?warn.length+" WARNING":"ALL SYSTEMS OK";
+  const chip=$("#dvchip"); chip.textContent=!real.length?"NO DATA":bad.length?bad.length+" PROBLEM"+(bad.length>1?"S":""):warn.length?"CHECK":"ALL OK";
   chip.style.background=bad.length?"rgba(255,123,136,.2)":warn.length?"rgba(241,189,90,.2)":real.length?"rgba(98,212,143,.2)":"#2a2f36";
   chip.style.color=bad.length?"#ff7b88":warn.length?"#f1bd5a":real.length?"#62d48f":"#a6aeb6";
-  const BD={ok:"OK",warn:"WARNING",fail:"FAIL",na:"NOT REPORTED"};
+  const BD={ok:"OK",warn:"CHECK",fail:"FAIL",na:"NO DATA"};
   let h="";
-  if(devHealthState==="missing") h+='<div class="dvnote"><b>system_status table not found.</b> The ESP32 does not report its components yet, so the DHT22, SD card, RTC and controller cards below show <b>NOT REPORTED</b>. Run the SQL and add the ESP32 code from <code>dev_health_setup.md</code>. The data-link, cadence, RTC-offset, pump and sensor-value cards already work from the live stream.</div>';
-  else if(devHealthState==="empty") h+='<div class="dvnote">The <code>system_status</code> table exists but has no rows yet. Waiting for the ESP32 to upload.</div>';
-  else if(devHealthState==="error") h+='<div class="dvnote">Could not read <code>system_status</code> (network or permission problem).</div>';
-  else if(devHealthState==="ok") h+='<div class="dvnote">Component data from <code>system_status</code> · '+devHealthRows.length+' rows · newest RTC time '+esc2(fmtTime(devHealthRows[0].recorded_at))+'</div>';
-  h+='<div class="dvgrid">'+comps.map(c=>'<div class="dvc '+c.s+'"><h4>'+esc2(c.title)+'<span class="dvb">'+BD[c.s]+'</span></h4><ul>'+c.lines.filter(Boolean).map(x=>'<li>'+esc2(x)+'</li>').join("")+'</ul></div>').join("")+'</div>';
-  h+='<h3 class="dvh">Event log (this session)</h3><div class="dvlog">'+(devLog.length?devLog.map(e=>'<div>'+new Date(e.t).toLocaleTimeString("en-PH",{timeZone:TZ})+' · '+esc2(e.m)+'</div>').join(""):'<div>No changes yet.</div>')+'</div>';
-  h+='<h3 class="dvh">Latest readings</h3><div class="dvscroll"><table class="dvtable"><thead><tr><th>RTC time</th><th>Temp</th><th>RH</th><th>Wind</th><th>HI</th><th>Pump</th></tr></thead><tbody>'+
-     liveRows.slice(0,15).map(r=>'<tr><td>'+esc2(fmtTime(r.recorded_at,{year:undefined,month:undefined,day:undefined}))+'</td><td>'+esc2(r.temperature)+'</td><td>'+esc2(r.humidity)+'</td><td>'+esc2(r.wind_speed)+'</td><td>'+esc2(r.heat_index)+'</td><td>'+esc2(r.misting_status)+'</td></tr>').join("")+'</tbody></table></div>';
-  h+='<details style="margin-top:14px"><summary style="cursor:pointer;color:#ff7b88;font-weight:600">Raw latest rows</summary><div class="dvraw">'+esc2(JSON.stringify({sensor_live:liveRows[0]||null,system_status:devHealthRows[0]||null},null,2))+'</div></details>';
-  const body=$("#dvbody"), sy=$("#devpage").scrollTop; body.innerHTML=h; $("#devpage").scrollTop=sy;
+  if(devStatusState==="missing") h+='<div class="dvnote">Table <code>system_status</code> was not found.</div>';
+  else if(devStatusState==="empty") h+='<div class="dvnote">No row <code>id = main</code> in <code>system_status</code> yet.</div>';
+  else if(devStatusState==="error") h+='<div class="dvnote">Could not read <code>system_status</code> (network or permission problem).</div>';
+  h+='<div class="dvgrid">'+comps.map(c=>'<div class="dvc '+c.s+'"><h4>'+esc2(c.title)+'<span class="dvb">'+BD[c.s]+'</span></h4><ul>'+c.lines.map(x=>'<li>'+esc2(x)+'</li>').join("")+'</ul></div>').join("")+'</div>';
+  h+='<h3 class="dvh">Changes this session</h3><div class="dvlog">'+(devLog.length?devLog.map(e=>'<div>'+new Date(e.t).toLocaleTimeString("en-PH",{timeZone:TZ})+' · '+esc2(e.m)+'</div>').join(""):'<div>No changes yet.</div>')+'</div>';
+  h+='<details style="margin-top:14px"><summary style="cursor:pointer;color:#ff7b88;font-weight:600">Raw status row</summary><div class="dvraw">'+esc2(JSON.stringify(r||null,null,2))+'</div></details>';
+  const pg=$("#devpage"), sy=pg.scrollTop; $("#dvbody").innerHTML=h; pg.scrollTop=sy;
 }
+const fmtN=(v,d)=>Number.isFinite(Number(v))&&v!==null&&v!==""?Number(v).toFixed(d):"–";
 
 /* cursor droplets + click splash */
 const fxLayer=$("#fx");
@@ -2381,7 +2309,8 @@ if("IntersectionObserver" in window){
     markIn(e.target); io.unobserve(e.target);
   }),{threshold:.12});
   /* the steps and the flow chart are handled by revealMid(): they start appearing when they reach the middle of the screen */
-  $$(".rv, .concept").forEach(el=>{ if(!el.matches(".step, .chain")) io.observe(el); });
+  const heroArt=$(".hero-grid > .rv:last-child"); if(heroArt) heroArt.classList.add("in","rvd");   /* the shed picture is shown at full strength from the start */
+  $$(".rv, .concept").forEach(el=>{ if(!el.matches(".step, .chain, .hero-grid > .rv:last-child")) io.observe(el); });
 } else { $$(".rv, .concept").forEach(el=>el.classList.add("in")); $$(".cnt").forEach(c=>c.textContent=c.dataset.to); pendingMid=[]; }
 
 /* "how it works": highlight the step in view and light up the flow chain */
@@ -2435,10 +2364,9 @@ function scrollFX(){
   if(inDashMode()) return;
   if(reduceMotion){ waterFill.style.height="18%"; return; }
   const hs=Math.min(1,Math.max(0,y/(heroEl.offsetHeight*0.85)));
-  heroL.style.transform="translateY("+(-hs*46).toFixed(1)+"px)";
-  heroL.style.opacity=String((1-hs*0.85).toFixed(3));
-  illusS.hy=hs*34; illusS.sc=1+hs*0.07; applyIllus();
-  illus.style.opacity=String((1-hs*0.6).toFixed(3));
+  const wide=window.innerWidth>820;          /* phones: the picture sits below the text, so no movement, and nothing ever fades */
+  heroL.style.transform=wide?"translateY("+(-hs*46).toFixed(1)+"px)":"";
+  illusS.hy=wide?hs*34:0; illusS.sc=wide?1+hs*0.07:1; applyIllus();
   cue.style.opacity=String(Math.max(0,1-hs*4).toFixed(3));
   sunG.style.transform="translateY("+(-hs*52).toFixed(1)+"px)";
   parFX();
@@ -2523,9 +2451,9 @@ function evaluate(row){
   const t=num(row.temperature), h=num(row.humidity), w=num(row.wind_speed);
   const tOK=t>=TH.tempMin, hOK=h<TH.rhMax, wOK=w>=TH.windMin && w<=TH.windMax;
   const reasons=[];
-  if(!Number.isFinite(t)) reasons.push("Temperature reading is unavailable"); else if(!tOK) reasons.push("Temperature is below the programmed misting threshold");
-  if(!Number.isFinite(h)) reasons.push("Humidity reading is unavailable"); else if(!hOK) reasons.push("Relative humidity is at or above the programmed misting limit");
-  if(!Number.isFinite(w)) reasons.push("Wind reading is unavailable"); else if(!wOK) reasons.push("Wind velocity is above the programmed misting limit");
+  if(!Number.isFinite(t)) reasons.push("Temperature reading is unavailable"); else if(!tOK) reasons.push("Temperature is below 31 °C");
+  if(!Number.isFinite(h)) reasons.push("Humidity reading is unavailable"); else if(!hOK) reasons.push("Humidity is 70% or higher");
+  if(!Number.isFinite(w)) reasons.push("Wind reading is unavailable"); else if(!wOK) reasons.push("Wind is above 4 m/s");
   return {t,h,w,tOK,hOK,wOK,all:tOK&&hOK&&wOK,reasons,pumpOn:isOn(row.misting_status)};
 }
 function rowHTML(label,val,unit,ok,req){
@@ -2536,10 +2464,10 @@ function decisionHTML(row, fresh){
   if(!row) return '<p class="hnote">Waiting for data…</p>';
   const e = evaluate(row);
   const tv=Number.isFinite(e.t), hv=Number.isFinite(e.h), wv=Number.isFinite(e.w);
-  let cls="", big="NO RECENT DATA", detail="The system has not sent a reading recently, so the current state is unknown.";
+  let cls="", big="NO RECENT DATA", detail="No recent reading, so the state is unknown.";
   if(fresh){
-    if(e.pumpOn){ cls="on"; big="🟢 MISTING ACTIVE"; detail="All conditions are satisfied and the pump is in its 30-second ON period."; }
-    else if(e.all){ cls="rest"; big="🟡 MISTING OFF — PUMP RESTING"; detail="Environmental conditions are satisfied, but the pump is currently in its cooldown period."; }
+    if(e.pumpOn){ cls="on"; big="🟢 MISTING ACTIVE"; detail="All conditions are met. The pump is running."; }
+    else if(e.all){ cls="rest"; big="🟡 MISTING OFF — PUMP RESTING"; detail="Conditions are met, but the pump is resting (3-minute cooldown)."; }
     else { cls="off"; big="🔴 MISTING OFF"; detail=e.reasons.join(". ")+"."; }
   }
   return `<table class="plain">
@@ -2884,280 +2812,6 @@ const h = location.hash.slice(1);
 const hit = Object.keys(HASH).find(k=>HASH[k]===h);
 if(hit){ rootEl.classList.add("in-dash"); show(hit); updTabs(); }
 else { rootEl.classList.remove("in-dash"); }
-})();
-</script>
-  <!-- ============================================================
-  SITE UPDATE  -  paste this WHOLE block in your website file,
-  right BEFORE the final </body> line (after the last </script>).
-  Nothing else in your file needs to change.
-  ============================================================ -->
-
-<style>
-/* 1. remove the little rectangle ("notch") at the top middle: it was the hidden developer toast peeking out */
-#devtoast{visibility:hidden;opacity:0}
-#devtoast.show{visibility:visible;opacity:1}
-
-/* 2. brighter waiting-shed illustration in the introduction */
-.illus{
-  background:linear-gradient(180deg,#5d8fbd 0%,#9cc4e0 62%,#c9e0ef 100%);
-  border-radius:16px;
-  filter:brightness(1.12) saturate(1.08);
-}
-.illus text{fill:#fff;paint-order:stroke;stroke:#2c4a66;stroke-width:3px;stroke-linejoin:round}
-.illus line[stroke="#6b727a"]{stroke:#e8f2fa}
-.illus .cloud g{fill:#fff}
-
-/* 3. hardware status card */
-.chip.bad{background:var(--bad-bg);color:var(--bad)}
-.hw{margin:0 0 18px}
-.hw .hwhead{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;padding:14px 18px 0}
-.hw .hwhead h3{padding:0;margin-right:auto}
-.hw .hwgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding:12px 18px 6px}
-.hw .hwi{padding:12px 14px;border-left:4px solid var(--off);border-radius:8px;background:var(--off-bg)}
-.hw .hwi.ok{border-left-color:var(--ok);background:var(--ok-bg)}
-.hw .hwi.bad{border-left-color:var(--bad);background:var(--bad-bg)}
-.hw .hwi .n{font-weight:600;font-size:.92rem;color:var(--muted)}
-.hw .hwi .s{font-family:var(--serif);font-size:1.5rem;font-weight:700;margin-top:2px}
-.hw .hwi.ok .s{color:var(--ok)}
-.hw .hwi.bad .s{color:var(--bad)}
-.hw .hwnote{padding:0 18px 14px}
-@media (max-width:720px){.hw .hwgrid{grid-template-columns:repeat(2,1fr)}}
-</style>
-
-<script>
-(function(){
-"use strict";
-var $=function(s,r){return (r||document).querySelector(s)};
-var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
-
-/* ---------- 4. simpler text ---------- */
-function txt(sel,arr){
-  var els=$$(sel); if(!Array.isArray(arr)) arr=[arr];
-  arr.forEach(function(t,i){
-    if(!els[i]||t===null) return;
-    if(t==="") els[i].style.display="none"; else els[i].textContent=t;
-  });
-}
-txt(".hero h2","Can technology make outdoor campus spaces more comfortable?");
-txt(".hero .lead","A roof-mounted misting system that watches the weather and mists automatically.");
-txt("#sec-what .lead",["The system measures temperature, humidity and wind, then mists automatically when conditions are right.",""]);
-txt("#sec-why .lead","Hot days make outdoor spaces uncomfortable. This thesis project tests whether misting helps, and records the data.");
-txt("#sec-why .ic p",["Temperature, humidity, heat index and wind.","Mists when conditions are met.","Records data over time.","Tracks water use."]);
-txt("#sec-how .step p",["Sensors read temperature, humidity and wind.","The ESP32 processes the readings.","It checks the misting conditions.","If they are met, the pump turns on.","Fine mist is released.","Data is saved to the SD card and the dashboard."]);
-$$(".step ul").forEach(function(u){u.style.display="none"});
-txt("#sec-when .lead","The pump runs only when all three conditions are met.");
-txt(".cond p",["Warm enough","Dry enough","Wind not too strong"]);
-txt("#sec-when .tag","PROJECT SETTINGS");
-txt(".sim .body > p.hnote",["Move the sliders. Simulation only.","Simulation only (NOAA/NWS formula)."]);
-txt(".simnote","The pump runs 30 s, then rests 3 min.");
-txt(".hi-block .lead","The heat index shows how hot it feels. Move the sliders to see it.");
-txt("#sec-measure .ic p",["Air temperature (DHT22).","Moisture in the air.","How hot it feels.","Air speed (anemometer).","Total water used (flow sensor).","Measured separately, not shown here."]);
-txt("#sec-water .lead",["A flow sensor counts pulses to calculate the total water used.",""]);
-txt("#sec-ready .lead","Explore the live and past data.");
-txt(".cta p","See the system in action.");
-txt("#view-live .vintro","Latest readings (about the last 3 minutes).");
-txt("#view-history .vintro","Browse past data by minute, hour, day or month.");
-txt("#view-how .prose > p",["The ESP32 reads the sensors every 2 seconds and switches the pump automatically.","If any condition fails, the pump stays OFF.","After the cooldown, conditions are checked again.","Readings upload about every 2 seconds. The SD card keeps the full record."]);
-txt("#view-how .prose li",["Temperature and humidity: average of 3 DHT22 sensors.","Heat index: NOAA/NWS formula, in °C.","Wind: anemometer.","Water: flow sensor.","Electricity: separate submeter."]);
-txt("#view-about .ab-sec:first-child > p:not(.inst)","A thesis project that monitors a waiting shed and mists automatically when conditions are met.");
-txt(".authorcard p","Came up with the idea and built the prototype.");
-txt("footer .wrap","PUP ITECH Misting System · Thesis project · Times in Philippine Time.");
-
-/* ---------- 5. hardware status card (reads your existing system_status table) ---------- */
-var URL="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/system_status?id=eq.main&select=*";
-var KEY="sb_publishable_A1pqlhoRsez27xDKXsAfhA_0lXQr4Eq";
-var OFFLINE_S=60;                       /* no update for 60 s = ESP32 offline */
-var host=$("#view-home .grid2");
-if(!host) return;
-var card=document.createElement("div");
-card.className="card hw";
-card.innerHTML=
- '<div class="hwhead"><h3>HARDWARE STATUS</h3><span class="chip" id="hwChip">CONNECTING</span><span class="updated" id="hwUpd">Last updated: –</span></div>'+
- '<div class="hwgrid" id="hwGrid"></div>'+
- '<p class="hnote hwnote" id="hwNote"></p>';
-host.parentNode.insertBefore(card,host);
-
-var ITEMS=[["dht1_ok","DHT22 #1"],["dht2_ok","DHT22 #2"],["dht3_ok","DHT22 #3"],["sd_ok","SD card"]];
-function fmtT(iso){
-  var d=new Date(iso); if(isNaN(d)) return String(iso);
-  return d.toLocaleString("en-PH",{timeZone:"Asia/Manila",month:"short",day:"2-digit",hour:"2-digit",minute:"2-digit",second:"2-digit",hour12:true});
-}
-function paint(row,err){
-  var chip=$("#hwChip"), grid=$("#hwGrid"), note=$("#hwNote"), upd=$("#hwUpd");
-  var age=row&&row.updated_at?(Date.now()-new Date(row.updated_at).getTime())/1000:Infinity;
-  var offline=!row||age>OFFLINE_S;
-  grid.innerHTML=ITEMS.map(function(it){
-    var v=row?row[it[0]]:undefined, cls="", s="–";
-    if(!offline&&v===true){cls="ok";s="OK";} else if(!offline&&v===false){cls="bad";s="FAIL";}
-    return '<div class="hwi '+cls+'"><div class="n">'+it[1]+'</div><div class="s">'+s+'</div></div>';
-  }).join("");
-  upd.textContent=row&&row.updated_at?"Last updated: "+fmtT(row.updated_at):"Last updated: –";
-  if(err){ chip.className="chip warn"; chip.textContent="NO DATA"; note.textContent="Cannot read system_status ("+err+")."; return; }
-  if(offline){ chip.className="chip warn"; chip.textContent="ESP32 OFFLINE"; note.textContent="No update received recently."; return; }
-  var all=ITEMS.every(function(it){return row[it[0]]===true});
-  chip.className="chip "+(all?"ok":"bad"); chip.textContent=all?"ALL OK":"CHECK HARDWARE";
-  var bad=ITEMS.filter(function(it){return row[it[0]]!==true}).map(function(it){return it[1]});
-  note.textContent=all?"":"Not working: "+bad.join(", ")+".";
-}
-var busy=false;
-function load(){
-  if(busy||document.hidden) return; busy=true;
-  fetch(URL,{headers:{apikey:KEY,Accept:"application/json"},cache:"no-store"})
-    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); })
-    .then(function(rows){ paint(rows[0]||null, rows.length?"":"no row yet"); if(!rows.length) paint(null,"no row yet"); })
-    .catch(function(e){ paint(null,e.message); })
-    .then(function(){ busy=false; });
-}
-load(); setInterval(load,5000);
-document.addEventListener("visibilitychange",load);
-})();
-</script>
-  <script>
-(function(){
-  var of=window.fetch;
-  var SB="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/system_status?select=*&id=eq.main";
-  window.fetch=function(input,init){
-    var u=typeof input==="string"?input:(input&&input.href)||(input&&input.url)||String(input);
-    if(u.indexOf("/rest/v1/system_status")>-1){
-      return of.call(this,SB,init).then(function(r){
-        if(!r.ok) return r;
-        return r.clone().json().then(function(rows){
-          rows=rows.map(function(x){
-            return Object.assign({},x,{recorded_at:x.updated_at||x.recorded_at||x.created_at});
-          });
-          return new Response(JSON.stringify(rows),{
-            status:200,
-            headers:{"Content-Type":"application/json","Date":r.headers.get("Date")||new Date().toUTCString()}
-          });
-        });
-      });
-    }
-    return of.apply(this,arguments);
-  };
-})();
-</script>
-  <style>
-#dvbody,#dvchip{display:none !important}
-#dvsimple{color:#e6e8ea}
-.dvs-top{display:flex;flex-wrap:wrap;align-items:center;gap:8px 14px;margin-bottom:14px}
-.dvs-chip{padding:4px 12px;border-radius:999px;font-weight:700;font-size:.85rem;background:#2a2f36;color:#a6aeb6}
-.dvs-chip.ok{background:rgba(98,212,143,.16);color:#62d48f}
-.dvs-chip.bad{background:rgba(255,123,136,.16);color:#ff7b88}
-.dvs-upd{color:#a6aeb6;font-size:.9rem}
-.dvs-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px}
-.dvs-i{background:#171a1f;border:1px solid #2b3036;border-left:4px solid #4a525a;border-radius:8px;padding:12px 14px}
-.dvs-i.ok{border-left-color:#62d48f}.dvs-i.bad{border-left-color:#ff7b88}
-.dvs-i .n{font-size:.9rem;color:#a6aeb6;font-weight:600}
-.dvs-i .s{font-size:1.35rem;font-weight:800;margin-top:2px;color:#a6aeb6}
-.dvs-i.ok .s{color:#62d48f}.dvs-i.bad .s{color:#ff7b88}
-.dvs-i .x{font-size:.85rem;margin-top:4px;color:#a6aeb6}
-.dvs-h{font-size:1.05rem;margin:22px 0 8px;color:#fff;font-family:var(--sans)}
-.dvs-card{background:#171a1f;border:1px solid #2b3036;border-radius:8px;padding:14px 16px}
-.dvs-card p{margin:0 0 10px;color:#c3c8cd}
-.dvs-card input{font:inherit;font-size:1.1rem;letter-spacing:.25em;padding:9px 12px;border-radius:8px;border:1px solid #383f47;background:#101215;color:#fff;margin-right:8px;max-width:100%}
-.dvs-ok{font-weight:800;color:#62d48f;margin-bottom:10px}
-.dvs-card .btn{margin:2px 8px 2px 0}
-.dvs-card .btn[disabled]{opacity:.45;cursor:not-allowed}
-.dvs-msg{margin-top:10px;min-height:1.3em;font-weight:600;color:#f1bd5a}
-</style>
-<script>
-(function(){
-"use strict";
-var BASE="https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/";
-var KEY="sb_publishable_A1pqlhoRsez27xDKXsAfhA_0lXQr4Eq";
-var page=document.getElementById("devpage"), body=document.getElementById("dvbody");
-if(!page||!body) return;
-var box=document.createElement("div"); box.id="dvsimple";
-box.innerHTML='<div class="dvs-top"><span class="dvs-chip" id="dvsChip">CONNECTING</span><span class="dvs-upd" id="dvsUpd"></span></div>'+
-  '<div class="dvs-grid" id="dvsGrid"></div><h3 class="dvs-h">Manual misting</h3><div class="dvs-card" id="dvsMist"></div>';
-body.parentNode.insertBefore(box,body);
-function $(id){return document.getElementById(id)}
-function api(path,opt){
-  opt=opt||{}; var h={apikey:KEY,Accept:"application/json"};
-  if(opt.body) h["Content-Type"]="application/json";
-  return fetch(BASE+path,{method:opt.method||"GET",headers:h,body:opt.body,cache:"no-store"})
-    .then(function(r){ if(!r.ok) throw new Error("HTTP "+r.status); return r.json(); });
-}
-
-/* ---------- status: DHT22 x3 + SD card ---------- */
-var OFFLINE_S=60;
-function paint(row,err){
-  var age=row&&row.updated_at?(Date.now()-new Date(row.updated_at).getTime())/1000:Infinity;
-  var off=!row||age>OFFLINE_S;
-  function item(name,v,extra){
-    var cls="",s="–";
-    if(!off&&v===true){cls="ok";s="WORKING";} else if(!off&&v===false){cls="bad";s="NOT WORKING";}
-    return '<div class="dvs-i '+cls+'"><div class="n">'+name+'</div><div class="s">'+s+'</div>'+(extra?'<div class="x">'+extra+'</div>':'')+'</div>';
-  }
-  var w="";
-  if(row&&"sd_write_ok" in row&&!off) w="Writing: "+(row.sd_write_ok===true?"YES":row.sd_write_ok===false?"NO":"–");
-  else if(row&&!off) w="Writing: not reported";
-  $("dvsGrid").innerHTML=item("DHT22 #1",row&&row.dht1_ok)+item("DHT22 #2",row&&row.dht2_ok)+item("DHT22 #3",row&&row.dht3_ok)+item("SD card",row&&row.sd_ok,w);
-  var chip=$("dvsChip");
-  if(err){chip.className="dvs-chip";chip.textContent="NO DATA";}
-  else if(off){chip.className="dvs-chip bad";chip.textContent="ESP32 OFFLINE";}
-  else{
-    var ok=row.dht1_ok===true&&row.dht2_ok===true&&row.dht3_ok===true&&row.sd_ok===true&&row.sd_write_ok!==false;
-    chip.className="dvs-chip "+(ok?"ok":"bad"); chip.textContent=ok?"ALL WORKING":"CHECK HARDWARE";
-  }
-  $("dvsUpd").textContent=row&&row.updated_at?"Last update: "+new Date(row.updated_at).toLocaleTimeString("en-PH",{timeZone:"Asia/Manila"}):"";
-}
-var busy=false;
-function loadStatus(){
-  if(busy) return; busy=true;
-  api("system_status?id=eq.main&select=*").then(function(r){paint(r[0]||null,r.length?"":"none");}).catch(function(e){paint(null,e.message);}).then(function(){busy=false;});
-}
-
-/* ---------- manual misting ---------- */
-var pw=null, watch=null, cool=null;
-function msg(t){ var m=$("mmsg"); if(m) m.textContent=t; }
-function renderMist(){
-  var el=$("dvsMist");
-  if(pw===null){
-    el.innerHTML='<p>Enter the password to control the pump.</p><input id="mpw" type="password" inputmode="numeric" autocomplete="off" aria-label="Password"><button class="btn sm" id="munlock" type="button">UNLOCK</button><div class="dvs-msg" id="mmsg"></div>';
-    var go=function(){
-      var v=$("mpw").value; if(!v) return; msg("Checking…");
-      api("rpc/verify_mist_password",{method:"POST",body:JSON.stringify({pw:v})})
-        .then(function(ok){ if(ok===true){pw=v;renderMist();} else {msg("Wrong password"); $("mpw").value="";} })
-        .catch(function(e){msg("Could not check ("+e.message+")");});
-    };
-    $("munlock").onclick=go; $("mpw").onkeydown=function(e){if(e.key==="Enter")go();};
-  } else {
-    el.innerHTML='<div class="dvs-ok">🔓 SYSTEM CONTROL UNLOCKED</div><button class="btn sm" id="mstart" type="button">START MANUAL MISTING</button><button class="btn sm ghost" id="mlock" type="button">Lock</button><div class="dvs-msg" id="mmsg"></div>';
-    $("mlock").onclick=lock; $("mstart").onclick=start;
-  }
-}
-function lock(){ pw=null; clearInterval(watch); clearTimeout(cool); renderMist(); }
-function start(){
-  var b=$("mstart"); b.disabled=true; msg("Sending request…");
-  api("rpc/request_manual_mist",{method:"POST",body:JSON.stringify({pw:pw})}).then(function(ok){
-    if(ok!==true){ msg("Rejected (wrong password)."); lock(); return; }
-    msg("Request sent. Waiting for the ESP32…");
-    var tries=0; clearInterval(watch);
-    watch=setInterval(function(){
-      tries++;
-      api("system_control?id=eq.main&select=manual_mist").then(function(r){
-        if(r[0]&&r[0].manual_mist===false){
-          clearInterval(watch); msg("✅ ESP32 received the request. Misting for 30 seconds.");
-          cool=setTimeout(function(){ var s=$("mstart"); if(s){s.disabled=false; msg("");} },35000);
-        } else if(tries>=15){
-          clearInterval(watch); msg("⚠ The ESP32 has not picked up the request (offline?). It will start when it reconnects.");
-          var s=$("mstart"); if(s) s.disabled=false;
-        }
-      }).catch(function(){});
-    },2000);
-  }).catch(function(e){ msg("Could not send ("+e.message+")"); var s=$("mstart"); if(s) s.disabled=false; });
-}
-renderMist();
-
-/* poll only while the developer console is open; lock again when it closes */
-var n=0, wasOpen=false;
-setInterval(function(){
-  var open=!page.hidden;
-  if(!open){ if(wasOpen){ wasOpen=false; lock(); } return; }
-  if(!wasOpen){ wasOpen=true; n=0; }
-  if(n%3===0) loadStatus(); n++;
-},1000);
 })();
 </script>
 </body>
