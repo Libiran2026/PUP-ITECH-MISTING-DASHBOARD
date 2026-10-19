@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PUP ITECH Automated Roof-Mounted Misting System</title>
-<meta name="description" content="A PUP ITECH thesis project: a roof-mounted misting system for an outdoor campus waiting shed, with a public live environmental monitoring dashboard.">
+<meta name="description" content="A PUP ITECH thesis project: a roof-mounted misting system for an outdoor campus waiting shed, with a live public dashboard that shows the weather at the shed.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Source+Sans+3:wght@400;500;600;700&family=Source+Serif+4:wght@600;700&display=swap" rel="stylesheet">
@@ -116,7 +116,6 @@ button{font:inherit;color:inherit}
 .step ul{margin:4px 0 0;padding-left:18px}
 .chain{display:flex;flex-direction:column;align-items:stretch;gap:0;position:sticky;top:30px}
 .chain .nd{padding:11px 14px;text-align:center;font-weight:700;letter-spacing:.06em;font-size:.86rem;border:1px solid var(--line);border-radius:8px;background:linear-gradient(180deg,var(--card2),var(--card))}
-.chain .nd.k{border-color:#8f1220;background:linear-gradient(180deg,#5b1019,#3d0c13)}
 .chain .ar{text-align:center;color:var(--accent);line-height:1.6;font-size:1.1rem}
 
 /* when */
@@ -512,8 +511,6 @@ html.dev-open{overflow:hidden}
 .dvlog div{padding:2px 0}
 .dvraw{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;color:#a6aeb6;background:#12151a;border:1px solid #2b3036;border-radius:8px;padding:10px;margin-top:6px;overflow:auto}
 
-#mistgate[hidden]{display:none !important}
-
 /* misting alert */
 #misty{--grow:54px}
 #misty .mchar svg{transform-origin:0 100%;transition:scale .55s cubic-bezier(.3,1.6,.5,1)}
@@ -637,6 +634,73 @@ html.in-dash #misty.alert{display:block}
 @keyframes nodhead{0%,100%{translate:0 0}50%{translate:0 1.5px}}
 
 
+
+/* ===== "What is this project?": each picture builds itself ===== */
+.js .concept .node,.js .concept .arr{opacity:0}
+.js .concept .node.go,.js .concept .arr.go{opacity:1}
+.concept .node{cursor:pointer}
+.concept .node.go{animation:pop .6s cubic-bezier(.2,.8,.2,1) both}
+.concept .arr.go{animation:pop .5s ease both,flow 1.8s ease-in-out 1.2s infinite}
+.concept .node svg *{transform-box:fill-box}
+@keyframes cgrow{from{scale:0 1}to{scale:1 1}}
+@keyframes cpost{from{scale:1 0}to{scale:1 1}}
+@keyframes croof{from{translate:0 -34px;opacity:0}to{translate:0 0;opacity:1}}
+@keyframes cslide{from{translate:-50px 0;opacity:0}to{translate:0 0;opacity:1}}
+@keyframes cpopn{from{scale:0;opacity:0}to{scale:1;opacity:1}}
+@keyframes cdropbox{from{translate:0 -14px;opacity:0}to{translate:0 0;opacity:1}}
+@keyframes ledb{0%,100%{opacity:1}50%{opacity:.25}}
+@keyframes cfall{0%{translate:0 0;opacity:var(--o,1)}85%{opacity:.15}100%{translate:0 14px;opacity:0}}
+.node.go .cg{transform-origin:50% 50%;animation:cgrow .35s ease-out .05s both}
+.node.go .cp{transform-origin:50% 100%;animation:cpost .3s cubic-bezier(.3,1.5,.5,1) both}
+.node.go .cp1{animation-delay:.3s}.node.go .cp2{animation-delay:.45s}
+.node.go .cr{animation:croof .55s cubic-bezier(.3,1.5,.5,1) .75s both}
+.node.go .cb{transform-origin:0 50%;animation:cgrow .3s ease-out 1.25s both}
+.node.go .r2{animation:cslide .45s cubic-bezier(.3,1.3,.5,1) .15s both}
+.node.go .pi{transform-origin:0 50%;animation:cgrow .45s ease-out .55s both}
+.node.go .nz{transform-origin:50% 50%;animation:cpopn .35s cubic-bezier(.3,1.9,.5,1) both}
+.node.go .nz1{animation-delay:1s}.node.go .nz2{animation-delay:1.2s}.node.go .nz3{animation-delay:1.4s}
+.node.go .sn{transform-origin:50% 0;animation:cdropbox .5s cubic-bezier(.3,1.5,.5,1) 1.65s both}
+.node.go .led{animation:ledb 1s ease-in-out 2.2s infinite}
+.node.go .md{transform-origin:50% 50%;animation:cpopn .4s cubic-bezier(.3,1.9,.5,1) calc(var(--i)*.13s + .2s) both,cfall 2.4s ease-in calc(var(--i)*.13s + 1.6s) infinite}
+
+/* ===== "What are we measuring?": pictures move on hover (computer) or when centred on screen (phone) ===== */
+.ic .em.vis{width:92px;height:92px;border-radius:16px;transition:box-shadow .3s}
+.ic .em.vis svg{width:80px;height:80px;display:block;overflow:visible}
+.ic:hover .em.vis{animation:none}
+.ic.play .em.vis{box-shadow:0 0 0 3px rgba(255,123,136,.28)}
+.vis svg *{transform-box:fill-box;transform-origin:center}
+.vis *{animation-play-state:paused}
+.ic.play .vis *{animation-play-state:running}
+.vis .hg{transform-origin:50% 100%;animation:hgrise 3.4s ease-in-out -1.1s infinite}
+@keyframes hgrise{0%,100%{scale:1 .08}45%,60%{scale:1 1}}
+.vis .wl{animation:wlr 4.4s ease-in-out -1.6s infinite}
+@keyframes wlr{0%,100%{translate:0 54px}50%{translate:0 24px}}
+.vis .wl2{animation:wlx 1.8s linear infinite}
+@keyframes wlx{to{translate:-32px 0}}
+.vis .sc{animation:suncore 2.8s ease-in-out -.8s infinite}
+@keyframes suncore{0%,100%{scale:.75;fill:#f1d27a}50%{scale:1.35;fill:#ff6b4a}}
+.vis .sg{animation:sunglow 2.8s ease-in-out -.8s infinite}
+@keyframes sunglow{0%,100%{scale:.6;opacity:.3}50%{scale:1.15;opacity:1}}
+.vis .sr{animation:sunrot 14s linear infinite,sunpulse 2.8s ease-in-out -.8s infinite}
+@keyframes sunrot{to{rotate:360deg}}
+@keyframes sunpulse{0%,100%{scale:.8}50%{scale:1.2}}
+.vis .wg{animation:gust 4s ease-in-out -1s infinite}
+@keyframes gust{0%,100%{scale:1 .35;opacity:.45;stroke-width:1.6}50%{scale:1.05 1.25;opacity:1;stroke-width:3.4}}
+.vis .wg path{stroke-dasharray:22 9;animation:wflow 1.2s linear infinite}
+.vis .wg .w2{animation-duration:.9s}.vis .wg .w3{animation-duration:1.5s}
+@keyframes wflow{to{stroke-dashoffset:-62}}
+.vis .tw{animation:twr 6s ease-in-out -2.4s infinite}
+@keyframes twr{0%{translate:0 26px;opacity:1}85%{translate:0 4px;opacity:1}94%{translate:0 4px;opacity:0}95%{translate:0 26px;opacity:0}100%{translate:0 26px;opacity:1}}
+.vis .dd{animation:ddrop 1.5s ease-in infinite}
+.vis .dd2{animation-delay:-.5s}.vis .dd3{animation-delay:-1s}
+@keyframes ddrop{0%{translate:0 -4px;opacity:0;scale:.6}15%{opacity:1;scale:1}80%{translate:0 17px;opacity:1}100%{translate:0 19px;opacity:0}}
+.vis .eg{animation:eglow 1.6s ease-in-out infinite}
+@keyframes eglow{0%,100%{scale:.7;opacity:.2}50%{scale:1.2;opacity:1}}
+.vis .bolt{animation:zap 1.6s ease-in-out infinite}
+@keyframes zap{0%,100%{scale:1;opacity:1}8%{opacity:.55}12%{opacity:1;scale:1.08}18%{opacity:.7}24%{opacity:1;scale:1}}
+.vis .spk{opacity:0;animation:spark 1.6s linear infinite;animation-delay:var(--d,0s)}
+@keyframes spark{0%,100%{opacity:0}10%{opacity:1}22%{opacity:0}}
+
 /* members grid: text-only cards stay centered next to photo cards */
 .mgrid{display:flex;flex-wrap:wrap;justify-content:center}
 .mgrid .m{display:flex;flex-direction:column;justify-content:center;align-items:center;flex:0 1 calc((100% - 28px)/3);max-width:calc((100% - 28px)/3)}
@@ -724,17 +788,8 @@ html.in-dash #misty.alert{display:block}
 @media (prefers-reduced-motion:reduce){.hip *,.mshed *{animation:none !important}.hip .st{opacity:.5}}
 
 /* concept flow */
-.js .concept:not(.in) .node,.js .concept:not(.in) .arr{opacity:0}
-.concept.in .node{animation:pop .75s cubic-bezier(.2,.8,.2,1) both}
-.concept.in .node:nth-child(1){animation-delay:.1s}.concept.in .node:nth-child(3){animation-delay:.5s}.concept.in .node:nth-child(5){animation-delay:.9s}
-.concept.in .arr{animation:pop .5s ease both,flow 1.8s ease-in-out 1.6s infinite}
-.concept.in .arr:nth-child(2){animation-delay:.35s,1.6s}.concept.in .arr:nth-child(4){animation-delay:.75s,1.9s}
 @keyframes pop{from{opacity:0;translate:0 26px;scale:.9}to{opacity:1;translate:0 0;scale:1}}
 @keyframes flow{0%,100%{translate:0 0}50%{translate:7px 0}}
-.concept .node:nth-child(5) circle{animation:twk 2.4s ease-in-out infinite}
-.concept .node:nth-child(5) circle:nth-child(odd){animation-delay:.5s}
-.concept .node:nth-child(5) circle:nth-child(3n){animation-delay:1.1s}
-@keyframes twk{0%,100%{opacity:.3}50%{opacity:1}}
 
 /* icon tiles */
 .js .ic .em{transform:scale(.55) rotate(-24deg);transition:transform .7s cubic-bezier(.3,1.6,.5,1);transition-delay:calc(var(--d,0s) + .25s)}
@@ -807,11 +862,11 @@ html.in-dash #misty.alert{display:block}
   .js .rv-l,.js .rv-r,.js .rv-z{transform:none}
   .js .rv .w>span{transform:none;transition:none}
   .js .ic .em{transform:none;transition:none}
-  .js .concept:not(.in) .node,.js .concept:not(.in) .arr{opacity:1}
+  .js .concept .node,.js .concept .arr{opacity:1}
   .wlk{display:none}
   #curtain{display:none}
   .lgA,.lgB,.armA,.armB,.bobg,.scr,.dts circle,.nod{animation:none}
-  .concept.in .node,.concept.in .arr,#sunGlow,.waterfill .wv,.rain i,.btn.big::after,.cmark,.cycle .a,.view.active,.view.active .readings .reading,.dot.on,.chain .ar.lit,.concept .node circle{animation:none}
+  .concept .node,.concept .arr,.concept .node *,.vis *,#sunGlow,.waterfill .wv,.rain i,.btn.big::after,.cmark,.cycle .a,.view.active,.view.active .readings .reading,.dot.on,.chain .ar.lit{animation:none}
   .js .eyebrow.rv{letter-spacing:.14em}
   .rain{display:none}
 }
@@ -848,24 +903,11 @@ html.in-dash #misty.alert{display:block}
   <div class="dgmsg" id="dgmsg" role="alert"></div>
   <div class="dgbtns"><button class="btn sm" id="dgok" type="button">Enter</button><button class="btn sm ghost" id="dgno" type="button">Cancel</button></div>
 </div></div>
-<div id="mistgate" hidden role="dialog" aria-modal="true" style="position:fixed;inset:0;z-index:170;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px">
-  <div class="dgbox">
-    <h3>Manual mist</h3><p>Enter the password to start misting</p>
-    <input id="mgpw" type="password" inputmode="numeric" autocomplete="off" aria-label="Password">
-    <div class="dgmsg" id="mgmsg" role="alert"></div>
-    <div class="dgbtns"><button class="btn sm" id="mgok" type="button">Start misting</button><button class="btn sm ghost" id="mgno" type="button">Cancel</button></div>
-  </div>
-</div>
-
 <div id="devpage" hidden role="dialog" aria-modal="true" aria-label="Developer console">
   <div class="dvwrap">
     <div class="dvhead"><h2>Developer console</h2><span class="dvchip" id="dvchip">…</span>
       <span class="dvbtns"><button class="btn sm ghost" id="dvref" type="button">Refresh</button><button class="btn sm ghost" id="dvforget" type="button">Forget this device</button><button class="btn sm" id="dvclose" type="button">Close</button></span></div>
-    <div class="dvnote" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
-  <button class="btn sm" id="dvmistbtn" type="button">💦 Manual mist</button>
-  <span id="dvmistmsg" role="status"></span>
-</div>
-<div id="dvbody"></div>
+    <div id="dvbody"></div>
   </div>
 </div>
 <div id="mistBanner" role="status" aria-live="polite">
@@ -924,14 +966,14 @@ html.in-dash #misty.alert{display:block}
   <div class="wrap hero-grid">
     <div>
       <div class="hlogos rv"><img data-logo="pup" alt="Polytechnic University of the Philippines logo"><img data-logo="itech" alt="PUP Institute of Technology logo"></div>
-      <div class="eyebrow rv" style="--d:.05s">PUP ITECH · Engineering thesis project</div>
+      <div class="eyebrow rv" style="--d:.05s">PUP ITECH · Thesis project</div>
       <h1 class="rv" style="--d:.1s">WELCOME, PUP STUDENT</h1>
-      <h2 class="rv" style="--d:.2s">Ever wondered how technology can help make an outdoor campus space more comfortable?</h2>
-      <p class="lead rv" style="--d:.3s">Explore how the PUP ITECH roof-mounted misting system watches the heat and mists a campus waiting shed automatically.</p>
+      <h2 class="rv" style="--d:.2s">Ever wondered how technology can make an outdoor campus space more comfortable?</h2>
+      <p class="lead rv" style="--d:.3s">See how a mist system on the roof cools a campus waiting shed all by itself.</p>
       <p class="pname rv" style="--d:.4s"><b>Design and Development of a Smart Roof-Mounted Misting System to Provide Thermal Comfort in Outdoor Campus Spaces</b><br>Polytechnic University of the Philippines – Institute of Technology</p>
     </div>
     <div class="rv" style="--d:.25s">
-      <svg class="illus" viewBox="0 0 520 380" role="img" aria-label="Illustration of an outdoor waiting shed with long concrete tables and low seats, people sitting, talking and walking past and a trash bin; a roof-mounted line of misting nozzles and a sensor box under the center of the roof release and monitor fine mist">
+      <svg class="illus" viewBox="0 0 520 380" role="img" aria-label="Illustration of an outdoor waiting shed with people sitting and walking past. Mist nozzles on the roof spray fine mist, and a sensor box under the roof measures the air.">
         <defs>
           <linearGradient id="roofg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#c32439"/><stop offset="1" stop-color="#8a1424"/></linearGradient>
           <radialGradient id="sung"><stop offset="0" stop-color="#ffd27a" stop-opacity=".8"/><stop offset="1" stop-color="#f1bd5a" stop-opacity="0"/></radialGradient>
@@ -1018,8 +1060,8 @@ html.in-dash #misty.alert{display:block}
         </g></g></g>
         <!-- labels -->
         <g font-family="Source Sans 3,Segoe UI,sans-serif" font-size="13" font-weight="600" fill="#d9dde1">
-          <text x="336" y="96" text-anchor="middle">Sensors (under the roof, center)</text><line x1="300" y1="102" x2="266" y2="170" stroke="#6b727a" stroke-dasharray="3 3"/>
-          <text x="112" y="96" text-anchor="middle">Misting nozzles</text><line x1="130" y1="102" x2="166" y2="160" stroke="#6b727a" stroke-dasharray="3 3"/>
+          <text x="336" y="96" text-anchor="middle">Sensors (they measure the air)</text><line x1="300" y1="102" x2="266" y2="170" stroke="#6b727a" stroke-dasharray="3 3"/>
+          <text x="112" y="96" text-anchor="middle">Mist nozzles</text><line x1="130" y1="102" x2="166" y2="160" stroke="#6b727a" stroke-dasharray="3 3"/>
           <text x="14" y="214" fill="#bfe6ff">Fine water mist</text>
           <text x="260" y="368" text-anchor="middle" fill="#a6aeb6">Outdoor campus waiting shed</text>
         </g>
@@ -1036,23 +1078,23 @@ html.in-dash #misty.alert{display:block}
     <div>
       <div class="eyebrow rv">The project</div>
       <h2 class="t rv">WHAT IS THIS PROJECT?</h2>
-      <p class="lead rv">A roof-mounted misting system for an outdoor waiting shed at PUP ITECH.</p>
-      <p class="lead rv">It checks temperature, humidity and wind, mists automatically when the conditions are right, and records the data.</p>
+      <p class="lead rv">A mist system on the roof of an outdoor waiting shed at PUP ITECH.</p>
+      <p class="lead rv">It checks how hot it is, how much moisture is in the air and how windy it is. When the weather is right, it sprays a fine mist by itself and saves the readings.</p>
     </div>
     <div class="concept rv" style="--d:.15s">
-      <div class="card node">
-        <svg viewBox="0 0 84 84" aria-hidden="true"><polygon points="8,30 76,30 70,40 14,40" fill="#8f1220" stroke="#c4283a"/><rect x="16" y="40" width="4" height="30" fill="#8a9097"/><rect x="64" y="40" width="4" height="30" fill="#8a9097"/><rect x="28" y="58" width="28" height="4" fill="#a6aeb6"/><rect x="4" y="70" width="76" height="2" fill="#4a525a"/></svg>
-        <b>Waiting shed</b><small>Outdoor campus space</small>
+      <div class="card node" title="Tap to watch it again">
+        <svg viewBox="0 0 84 84" aria-hidden="true"><rect class="cg" x="4" y="70" width="76" height="2" fill="#4a525a"/><rect class="cp cp1" x="16" y="40" width="4" height="30" fill="#8a9097"/><rect class="cp cp2" x="64" y="40" width="4" height="30" fill="#8a9097"/><rect class="cb" x="28" y="58" width="28" height="4" fill="#a6aeb6"/><polygon class="cr" points="8,30 76,30 70,40 14,40" fill="#8f1220" stroke="#c4283a"/></svg>
+        <b>Waiting shed</b><small>A shaded place to sit</small>
       </div>
       <div class="arr" aria-hidden="true">→</div>
-      <div class="card node">
-        <svg viewBox="0 0 84 84" aria-hidden="true"><polygon points="8,24 76,24 70,34 14,34" fill="#8f1220" stroke="#c4283a"/><rect x="14" y="38" width="56" height="4" rx="2" fill="#aab1b8"/><g fill="#dfe4e8"><circle cx="24" cy="46" r="3"/><circle cx="42" cy="46" r="3"/><circle cx="60" cy="46" r="3"/></g></svg>
-        <b>Roof-mounted system</b><small>Sensors, controller, nozzles</small>
+      <div class="card node" title="Tap to watch it again">
+        <svg viewBox="0 0 84 84" aria-hidden="true"><polygon class="r2" points="8,24 76,24 70,34 14,34" fill="#8f1220" stroke="#c4283a"/><rect class="pi" x="14" y="38" width="56" height="4" rx="2" fill="#aab1b8"/><g fill="#dfe4e8"><circle class="nz nz1" cx="24" cy="46" r="3"/><circle class="nz nz2" cx="42" cy="46" r="3"/><circle class="nz nz3" cx="60" cy="46" r="3"/></g><g class="sn"><line x1="16" y1="42" x2="16" y2="58" stroke="#9aa2aa" stroke-width="2"/><rect x="7" y="58" width="18" height="12" rx="2" fill="#2b3138" stroke="#9aa2aa"/><circle class="led" cx="12" cy="64" r="2.2" fill="#62d48f"/><rect x="16" y="62" width="6" height="1.6" fill="#6b727a"/><rect x="16" y="65.5" width="4" height="1.6" fill="#6b727a"/></g></svg>
+        <b>Roof system</b><small>Sensors, a small computer and nozzles</small>
       </div>
       <div class="arr" aria-hidden="true">→</div>
-      <div class="card node">
-        <svg viewBox="0 0 84 84" aria-hidden="true"><g fill="#bfe6ff"><circle cx="24" cy="20" r="3"/><circle cx="42" cy="16" r="3"/><circle cx="60" cy="20" r="3"/><circle cx="32" cy="36" r="2.6" opacity=".8"/><circle cx="50" cy="34" r="2.6" opacity=".8"/><circle cx="24" cy="50" r="2.2" opacity=".6"/><circle cx="42" cy="52" r="2.2" opacity=".6"/><circle cx="60" cy="50" r="2.2" opacity=".6"/><circle cx="34" cy="66" r="1.8" opacity=".4"/><circle cx="52" cy="66" r="1.8" opacity=".4"/></g></svg>
-        <b>Fine water mist</b><small>Released into the space</small>
+      <div class="card node" title="Tap to watch it again">
+        <svg viewBox="0 0 84 84" aria-hidden="true"><g fill="#bfe6ff"><circle class="md" style="--i:0" cx="24" cy="20" r="3"/><circle class="md" style="--i:1" cx="42" cy="16" r="3"/><circle class="md" style="--i:2" cx="60" cy="20" r="3"/><circle class="md" style="--i:3;--o:.85" cx="32" cy="36" r="2.6"/><circle class="md" style="--i:4;--o:.85" cx="50" cy="34" r="2.6"/><circle class="md" style="--i:5;--o:.7" cx="24" cy="50" r="2.2"/><circle class="md" style="--i:6;--o:.7" cx="42" cy="52" r="2.2"/><circle class="md" style="--i:7;--o:.7" cx="60" cy="50" r="2.2"/><circle class="md" style="--i:8;--o:.5" cx="34" cy="66" r="1.8"/><circle class="md" style="--i:9;--o:.5" cx="52" cy="66" r="1.8"/></g></svg>
+        <b>Fine mist</b><small>Sprayed into the shed</small>
       </div>
     </div>
   </div>
@@ -1062,12 +1104,12 @@ html.in-dash #misty.alert{display:block}
   <div class="wrap">
     <div class="eyebrow rv">The reason</div>
     <h2 class="t rv">WHY DOES IT MATTER?</h2>
-    <p class="lead rv">Outdoor campus spaces can get uncomfortably hot. This thesis project monitors the heat, mists in a controlled way, and records data so the system can be evaluated. It does not claim to solve heat discomfort.</p>
+    <p class="lead rv">Outdoor spaces on campus can get very hot. This project keeps an eye on the heat, sprays mist in a careful way, and saves the readings so we can check how well it works. It does not claim to fix heat discomfort.</p>
     <div class="cards4">
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>Thermal Conditions</h3><p>Measure temperature, humidity, heat index and wind.</p></div>
-      <div class="card ic rv" style="--d:.08s"><div class="em" aria-hidden="true">💦</div><h3>Misting</h3><p>Mist automatically when the conditions are met.</p></div>
-      <div class="card ic rv" style="--d:.16s"><div class="em" aria-hidden="true">📊</div><h3>Data</h3><p>Record the data over time.</p></div>
-      <div class="card ic rv" style="--d:.24s"><div class="em" aria-hidden="true">⚡</div><h3>Resource Use</h3><p>Track water and electricity use.</p></div>
+      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>Heat conditions</h3><p>Measures how hot, how humid and how windy it is.</p></div>
+      <div class="card ic rv" style="--d:.08s"><div class="em" aria-hidden="true">💦</div><h3>Mist</h3><p>Sprays by itself when the weather is right.</p></div>
+      <div class="card ic rv" style="--d:.16s"><div class="em" aria-hidden="true">📊</div><h3>Records</h3><p>Saves the readings over time.</p></div>
+      <div class="card ic rv" style="--d:.24s"><div class="em" aria-hidden="true">⚡</div><h3>Water and power</h3><p>Tracks how much water and electricity are used.</p></div>
     </div>
   </div>
 </section>
@@ -1081,22 +1123,22 @@ html.in-dash #misty.alert{display:block}
     <h2 class="t rv" style="max-width:none">HOW DOES THE SYSTEM WORK?</h2>
     <div class="how-grid">
       <div class="steps">
-        <div class="card step rv"><div class="n">01</div><div><h3>MEASURE</h3><p>Sensors monitor:</p><ul><li>temperature</li><li>relative humidity</li><li>wind velocity</li></ul></div></div>
-        <div class="card step rv"><div class="n">02</div><div><h3>PROCESS</h3><p>The ESP32 reads the sensors.</p></div></div>
-        <div class="card step rv"><div class="n">03</div><div><h3>DECIDE</h3><p>It checks if the misting conditions are met.</p></div></div>
-        <div class="card step rv"><div class="n">04</div><div><h3>ACTIVATE</h3><p>If they are, the pump sends water to the nozzles.</p></div></div>
-        <div class="card step rv"><div class="n">05</div><div><h3>MIST</h3><p>Fine mist is released into the waiting area.</p></div></div>
-        <div class="card step rv"><div class="n">06</div><div><h3>RECORD</h3><p>Data is saved on an SD card and shown on this website.</p></div></div>
+        <div class="card step rv"><div class="n">01</div><div><h3>MEASURE</h3><p>Sensors check:</p><ul><li>how hot it is</li><li>how humid the air is</li><li>how fast the wind blows</li></ul></div></div>
+        <div class="card step rv"><div class="n">02</div><div><h3>READ</h3><p>A small computer (the controller) reads the sensors.</p></div></div>
+        <div class="card step rv"><div class="n">03</div><div><h3>DECIDE</h3><p>It checks if the weather is right for misting.</p></div></div>
+        <div class="card step rv"><div class="n">04</div><div><h3>TURN ON</h3><p>If it is, the pump pushes water to the nozzles.</p></div></div>
+        <div class="card step rv"><div class="n">05</div><div><h3>MIST</h3><p>A fine mist sprays into the waiting area.</p></div></div>
+        <div class="card step rv"><div class="n">06</div><div><h3>SAVE</h3><p>The readings are saved on a memory card and shown on this website.</p></div></div>
       </div>
-      <div class="chain rv" aria-label="System flow from environment to data storage">
-        <div class="nd">ENVIRONMENT</div><div class="ar" aria-hidden="true">↓</div>
+      <div class="chain rv" aria-label="How the system works, step by step">
+        <div class="nd">OUTDOOR AIR</div><div class="ar" aria-hidden="true">↓</div>
         <div class="nd">SENSORS</div><div class="ar" aria-hidden="true">↓</div>
-        <div class="nd k">ESP32</div><div class="ar" aria-hidden="true">↓</div>
-        <div class="nd k">MISTING DECISION</div><div class="ar" aria-hidden="true">↓</div>
+        <div class="nd">CONTROLLER</div><div class="ar" aria-hidden="true">↓</div>
+        <div class="nd">DECISION</div><div class="ar" aria-hidden="true">↓</div>
         <div class="nd">WATER PUMP</div><div class="ar" aria-hidden="true">↓</div>
-        <div class="nd">MISTING NOZZLES</div><div class="ar" aria-hidden="true">↓</div>
-        <div class="nd">ENVIRONMENTAL DATA</div><div class="ar" aria-hidden="true">↓</div>
-        <div class="nd">SD CARD / SUPABASE</div>
+        <div class="nd">NOZZLES</div><div class="ar" aria-hidden="true">↓</div>
+        <div class="nd">READINGS</div><div class="ar" aria-hidden="true">↓</div>
+        <div class="nd">MEMORY CARD + ONLINE SAVE</div>
       </div>
     </div>
   </div>
@@ -1106,24 +1148,24 @@ html.in-dash #misty.alert{display:block}
   <div class="wrap">
     <div class="eyebrow rv">The decision</div>
     <h2 class="t rv" style="max-width:none">WHEN DOES THE SYSTEM MIST?</h2>
-    <p class="lead rv">It does not mist all day. It mists only when all three conditions are met.</p>
+    <p class="lead rv">It does not spray all day. It sprays only when all three things below are true.</p>
     <div class="cards3">
       <div class="card cond rv"><div class="l">TEMPERATURE</div><div class="v">≥ <span class="cnt" data-from="20" data-to="31">31</span> °C</div><p>The air must be at least this warm.</p></div>
-      <div class="card cond rv" style="--d:.08s"><div class="l">RELATIVE HUMIDITY</div><div class="v">&lt; <span class="cnt" data-from="100" data-to="70">70</span>%</div><p>The air must be less humid than this.</p></div>
-      <div class="card cond rv" style="--d:.16s"><div class="l">WIND VELOCITY</div><div class="v">0–<span class="cnt" data-from="0" data-to="4">4</span> m/s</div><p>Wind must be within this range.</p></div>
+      <div class="card cond rv" style="--d:.08s"><div class="l">HUMIDITY</div><div class="v">&lt; <span class="cnt" data-from="100" data-to="70">70</span>%</div><p>The air must be drier than this.</p></div>
+      <div class="card cond rv" style="--d:.16s"><div class="l">WIND SPEED</div><div class="v">0–<span class="cnt" data-from="0" data-to="4">4</span> m/s</div><p>The wind must be gentle, or it blows the mist away.</p></div>
     </div>
-    <span class="tag rv">PROJECT PROGRAMMED OPERATING CONDITIONS · NOT UNIVERSAL STANDARDS</span>
+    <span class="tag rv">THIS PROJECT'S OWN SETTINGS · NOT OFFICIAL STANDARDS</span>
 
     <div class="sim">
       <div class="card rv">
         <h3>Try it yourself</h3>
         <div class="body">
-          <p class="hnote" style="margin-top:0">Move the sliders. This is a simulation, not live data.</p>
+          <p class="hnote" style="margin-top:0">Move the sliders. This is just a demo, not real data.</p>
           <div class="slider"><label for="sT">Temperature <output id="sTo">32.0 °C</output></label><input id="sT" type="range" min="20" max="40" step="0.1" value="32"></div>
-          <div class="slider"><label for="sH">Relative humidity <output id="sHo">60 %</output></label><input id="sH" type="range" min="30" max="100" step="1" value="60"></div>
-          <div class="slider"><label for="sW">Wind velocity <output id="sWo">2.0 m/s</output></label><input id="sW" type="range" min="0" max="8" step="0.1" value="2"></div>
+          <div class="slider"><label for="sH">Humidity <output id="sHo">60 %</output></label><input id="sH" type="range" min="30" max="100" step="1" value="60"></div>
+          <div class="slider"><label for="sW">Wind speed <output id="sWo">2.0 m/s</output></label><input id="sW" type="range" min="0" max="8" step="0.1" value="2"></div>
             <div class="shedmini rv">
-              <svg class="mshed" id="mshed" viewBox="0 0 520 236" role="img" aria-label="Small picture of the waiting shed: its nozzles release mist only when all three misting conditions are met">
+              <svg class="mshed" id="mshed" viewBox="0 0 520 236" role="img" aria-label="Small picture of the waiting shed: its nozzles release mist only when all three things are true">
                 <defs><linearGradient id="mroofg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a1526"/><stop offset="1" stop-color="#5e0d17"/></linearGradient><linearGradient id="mmistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6ff" stop-opacity=".34"/><stop offset="1" stop-color="#bfe6ff" stop-opacity="0"/></linearGradient><radialGradient id="msung"><stop offset="0" stop-color="#ffb347" stop-opacity=".8"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient></defs>
                 <circle id="msunGlow" cx="452" cy="34" r="40" fill="url(#msung)" opacity=".4"/><circle id="msun" cx="452" cy="34" r="16" fill="#f1bd5a"/>
                 <g id="mwind" class="mwind"><path d="M20 30 q14 -8 28 0 t28 0" fill="none" stroke="#cfd6dd" stroke-width="2.4" stroke-linecap="round"/><path d="M8 48 q14 -8 28 0 t28 0 t28 0" fill="none" stroke="#cfd6dd" stroke-width="2.4" stroke-linecap="round"/><path d="M26 66 q14 -8 28 0 t28 0" fill="none" stroke="#cfd6dd" stroke-width="2.4" stroke-linecap="round"/></g>
@@ -1150,8 +1192,8 @@ html.in-dash #misty.alert{display:block}
         <h3>The decision</h3>
         <div class="body">
           <div class="logic" id="simOut" aria-live="polite"></div>
-          <div class="hnote" style="margin-top:16px;font-weight:600;color:var(--ink)">Operating cycle</div>
-          <div class="cycle"><div class="a" style="flex:30">30 s ON</div><div class="b" style="flex:180">3 minutes cooldown</div><span class="cmark" aria-hidden="true"></span></div>
+          <div class="hnote" style="margin-top:16px;font-weight:600;color:var(--ink)">How the pump runs</div>
+          <div class="cycle"><div class="a" style="flex:30">30 s ON</div><div class="b" style="flex:180">3 minutes rest</div><span class="cmark" aria-hidden="true"></span></div>
           <p class="simnote">The pump runs 30 seconds, then rests 3 minutes.</p>
         </div>
       </div>
@@ -1159,28 +1201,28 @@ html.in-dash #misty.alert{display:block}
 
     <div class="hi-block">
       <div class="eyebrow rv" style="margin-top:60px">Heat index</div>
-      <h3 class="hi-title rv">Try it yourself: heat index</h3>
-      <p class="lead rv" style="font-size:1.05rem">Heat index shows how hot it can feel. Move the sliders to see the result and its PAGASA class.</p>
+      <h3 class="hi-title rv">Try it yourself: how hot does it feel?</h3>
+      <p class="lead rv" style="font-size:1.05rem">The heat index tells you how hot it really feels when heat and humidity mix together. Move the sliders to see it.</p>
       <div class="sim">
         <div class="card rv">
           <h3>Temperature and humidity</h3>
           <div class="body">
-            <p class="hnote" style="margin-top:0">Simulation, not live data. Uses the NOAA/NWS formula.</p>
+            <p class="hnote" style="margin-top:0">Demo only, not real data.</p>
             <div class="slider"><label for="hT">Temperature <output id="hTo">33.0 °C</output></label><input id="hT" type="range" min="24" max="45" step="0.1" value="33"></div>
-            <div class="slider"><label for="hH">Relative humidity <output id="hHo">60 %</output></label><input id="hH" type="range" min="20" max="100" step="1" value="60"></div>
+            <div class="slider"><label for="hH">Humidity <output id="hHo">60 %</output></label><input id="hH" type="range" min="20" max="100" step="1" value="60"></div>
             <details class="formula"><summary>Show the formula</summary>
-<pre>T = air temperature in °F, RH = relative humidity in %
+<pre>T = air temperature in °F, RH = humidity in %
 
 HI = −42.379 + 2.04901523·T + 10.14333127·RH
      − 0.22475541·T·RH − 0.00683783·T²
      − 0.05481717·RH² + 0.00122874·T²·RH
      + 0.00085282·T·RH² − 0.00000199·T²·RH²
 
-Very low or high humidity is adjusted. Below 80 °F the heat index equals the air temperature. The result is converted to °C.</pre></details>
+The formula is adjusted for very dry or very humid air. Below 80 °F the heat index is just the air temperature. The answer is shown in °C.</pre></details>
           </div>
         </div>
         <div class="card rv" style="--d:.1s">
-          <h3>Heat index result</h3>
+          <h3>How hot it feels</h3>
           <div class="body hires" aria-live="polite"><div class="hitext">
             <div class="hival"><span id="hiVal">–</span><small>°C</small></div>
             <div class="hibadge" id="hiBadge">–</div>
@@ -1226,7 +1268,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
         </div>
       </div>
       <div class="card rv" style="margin-top:18px">
-        <h3>PAGASA heat index classification</h3>
+        <h3>Heat warning levels (from PAGASA, the Philippine weather bureau)</h3>
         <div class="body"><div class="tablewrap" style="max-height:none;border:0"><table class="plain hitable" id="hiTable"></table></div></div>
       </div>
     </div>
@@ -1240,13 +1282,14 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
   <div class="wrap">
     <div class="eyebrow rv">The measurements</div>
     <h2 class="t rv" style="max-width:none">WHAT ARE WE MEASURING?</h2>
+    <p class="hnote rv" id="mhint" style="font-size:1rem"></p>
     <div class="cards6">
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>TEMPERATURE</h3><p>Air temperature (DHT22 sensors).</p></div>
-      <div class="card ic rv" style="--d:.06s"><div class="em" aria-hidden="true">💧</div><h3>RELATIVE HUMIDITY</h3><p>How much moisture is in the air.</p></div>
-      <div class="card ic rv" style="--d:.12s"><div class="em" aria-hidden="true">☀️</div><h3>HEAT INDEX</h3><p>How hot it feels, from temperature and humidity.</p></div>
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌬</div><h3>WIND VELOCITY</h3><p>Wind speed (anemometer).</p></div>
-      <div class="card ic rv" style="--d:.06s"><div class="em" aria-hidden="true">💦</div><h3>WATER CONSUMPTION</h3><p>Total water used (flow sensor).</p></div>
-      <div class="card ic dim rv" style="--d:.12s"><div class="em" aria-hidden="true">⚡</div><h3>ELECTRICAL CONSUMPTION</h3><p>Measured separately with an electrical submeter. Not shown on this site.</p></div>
+      <div class="card ic rv"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="26" y="5" width="12" height="42" rx="6" fill="rgba(255,255,255,.1)" stroke="#cfd6dd" stroke-width="2"/><circle cx="32" cy="51" r="11" fill="#cfd6dd"/><circle cx="32" cy="51" r="8.6" fill="#ff5a5f"/><rect class="hg" x="29.4" y="9" width="5.2" height="42" rx="2.6" fill="#ff5a5f"/><g stroke="#cfd6dd" stroke-width="1.8" stroke-linecap="round"><line x1="42" y1="12" x2="48" y2="12"/><line x1="42" y1="20" x2="46" y2="20"/><line x1="42" y1="28" x2="48" y2="28"/><line x1="42" y1="36" x2="46" y2="36"/></g></svg></div><h3>TEMPERATURE</h3><p>How hot the air is.</p></div>
+      <div class="card ic rv" style="--d:.06s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><clipPath id="mvDrop"><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z"/></clipPath></defs><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z" fill="rgba(191,230,255,.12)"/><g clip-path="url(#mvDrop)"><g class="wl"><path class="wl2" d="M-32 0 q8 -4 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 V70 H-32Z" fill="#5fb4f0"/></g></g><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z" fill="none" stroke="#bfe6ff" stroke-width="2.5"/></svg></div><h3>HUMIDITY</h3><p>How much moisture is in the air.</p></div>
+      <div class="card ic rv" style="--d:.12s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><radialGradient id="mvSun"><stop offset="0" stop-color="#ffd27a" stop-opacity=".9"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs><circle class="sg" cx="32" cy="32" r="28" fill="url(#mvSun)"/><g class="sr"><g stroke="#ffb347" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="7"/><line x1="32" y1="50" x2="32" y2="57"/><line x1="14" y1="32" x2="7" y2="32"/><line x1="50" y1="32" x2="57" y2="32"/><line x1="44.7" y1="19.3" x2="49.7" y2="14.3"/><line x1="19.3" y1="19.3" x2="14.3" y2="14.3"/><line x1="44.7" y1="44.7" x2="49.7" y2="49.7"/><line x1="19.3" y1="44.7" x2="14.3" y2="49.7"/></g></g><circle class="sc" cx="32" cy="32" r="11" fill="#ffb347"/></svg></div><h3>HEAT INDEX</h3><p>How hot it really feels on your body, using the heat and the humidity together.</p></div>
+      <div class="card ic rv"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="wg" fill="none" stroke="#cfd6dd" stroke-linecap="round"><path class="w1" d="M6 20 q8 -9 16 0 t16 0 t16 0"/><path class="w2" d="M2 32 q8 -9 16 0 t16 0 t16 0 t8 0"/><path class="w3" d="M8 44 q8 -9 16 0 t16 0 t16 0"/></g></svg></div><h3>WIND SPEED</h3><p>How fast the wind blows.</p></div>
+      <div class="card ic rv" style="--d:.06s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><clipPath id="mvTank"><rect x="14" y="34" width="36" height="26" rx="4"/></clipPath></defs><rect x="22" y="3" width="20" height="8" rx="2" fill="#aab1b8"/><rect x="29" y="11" width="6" height="5" fill="#aab1b8"/><circle class="dd" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><circle class="dd dd2" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><circle class="dd dd3" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><rect x="14" y="34" width="36" height="26" rx="4" fill="rgba(191,230,255,.08)"/><g clip-path="url(#mvTank)"><rect class="tw" x="10" y="34" width="44" height="30" fill="#5fb4f0"/></g><rect x="14" y="34" width="36" height="26" rx="4" fill="none" stroke="#cfd6dd" stroke-width="2.4"/></svg></div><h3>WATER USED</h3><p>How much water the system sprays.</p></div>
+      <div class="card ic dim rv" style="--d:.12s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><radialGradient id="mvZap"><stop offset="0" stop-color="#ffd85a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd85a" stop-opacity="0"/></radialGradient></defs><circle class="eg" cx="32" cy="32" r="27" fill="url(#mvZap)"/><polygon class="bolt" points="36,4 16,36 29,36 26,60 48,26 34,26" fill="#f1bd5a" stroke="#fff3b0" stroke-width="1.5" stroke-linejoin="round"/><g stroke="#fff3b0" stroke-width="2" stroke-linecap="round"><line class="spk" style="--d:0s" x1="9" y1="14" x2="15" y2="18"/><line class="spk" style="--d:.5s" x1="55" y1="17" x2="49" y2="21"/><line class="spk" style="--d:1s" x1="53" y1="49" x2="47" y2="45"/><line class="spk" style="--d:.3s" x1="11" y1="51" x2="17" y2="47"/></g></svg></div><h3>ELECTRICITY USED</h3><p>Measured separately. Not shown on this site.</p></div>
     </div>
   </div>
 </section>
@@ -1257,7 +1300,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
   <div class="wrap" style="max-width:820px;text-align:center">
     <div class="eyebrow rv">Resource use</div>
     <h2 class="t rv" style="margin:0 auto;max-width:none">HOW MUCH WATER DOES THE SYSTEM USE?</h2>
-    <p class="lead rv" style="margin-left:auto;margin-right:auto">A flow sensor in the water line counts pulses, and the ESP32 turns them into liters.</p>
+    <p class="lead rv" style="margin-left:auto;margin-right:auto">A small sensor in the water pipe counts how much water passes through, and the controller turns that into liters.</p>
     <p class="lead rv" style="margin-left:auto;margin-right:auto">It is a <strong>running total</strong> that keeps adding up while the system works.</p>
   </div>
 </section>
@@ -1270,7 +1313,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
     <div class="pvgrid" aria-label="Preview of current readings">
       <div class="card pv rv"><div class="l">Temperature</div><div class="v"><span data-v="temp">–</span><small>°C</small></div></div>
       <div class="card pv rv" style="--d:.05s"><div class="l">Humidity</div><div class="v"><span data-v="rh">–</span><small>%</small></div></div>
-      <div class="card pv rv" style="--d:.1s"><div class="l">Heat index</div><div class="v"><span data-v="hi">–</span><small>°C</small></div></div>
+      <div class="card pv rv" style="--d:.1s"><div class="l">Feels like</div><div class="v"><span data-v="hi">–</span><small>°C</small></div></div>
       <div class="card pv rv" style="--d:.15s"><div class="l">Wind speed</div><div class="v"><span data-v="wind">–</span><small>m/s</small></div></div>
       <div class="card pv rv" style="--d:.2s"><div class="l">Misting</div><div class="v st" data-mist>–</div></div>
     </div>
@@ -1294,7 +1337,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
     <div class="wrap">
       <div class="row">
         <img data-logo="pup" alt="PUP logo"><img data-logo="itech" alt="PUP Institute of Technology logo">
-        <div class="tt">PUP ITECH Misting System<small>Environmental monitoring</small></div>
+        <div class="tt">PUP ITECH Misting System<small>Live weather monitor</small></div>
         <button class="pillbtn" id="toIntro" type="button">↑ Introduction</button>
       </div>
       <div class="tabswrap" id="tabswrap">
@@ -1316,7 +1359,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
 <!-- Dashboard tab -->
 <section id="view-home" class="view active" aria-labelledby="h-home">
   <div class="statusline">
-    <h2 id="h-home">LIVE ENVIRONMENTAL MONITORING</h2>
+    <h2 id="h-home">LIVE CONDITIONS AT THE SHED</h2>
     <span class="chip" data-link>CONNECTING</span>
     <span class="updated" data-updated>Last updated: –</span>
   </div>
@@ -1324,24 +1367,24 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
 
   <div class="readings">
     <div class="card reading"><div class="lab">Temperature</div><div class="val"><span data-v="temp">–</span><small>°C</small></div><div class="sub" data-s="temp"></div></div>
-    <div class="card reading"><div class="lab">Relative humidity</div><div class="val"><span data-v="rh">–</span><small>%</small></div><div class="sub" data-s="rh"></div></div>
-    <div class="card reading"><div class="lab">Heat index</div><div class="val"><span data-v="hi">–</span><small>°C</small></div><div class="sub" data-s="hi"></div></div>
+    <div class="card reading"><div class="lab">Humidity</div><div class="val"><span data-v="rh">–</span><small>%</small></div><div class="sub" data-s="rh"></div></div>
+    <div class="card reading"><div class="lab">Feels like (heat index)</div><div class="val"><span data-v="hi">–</span><small>°C</small></div><div class="sub" data-s="hi"></div></div>
     <div class="card reading"><div class="lab">Wind speed</div><div class="val"><span data-v="wind">–</span><small>m/s</small></div><div class="sub" data-s="wind"></div></div>
     <div class="card reading mist nodata" id="mistCard"><div class="lab">Misting</div><div class="val"><span class="dot" id="mistDot"></span><span id="mistText">NO DATA</span></div><div class="sub" id="mistSub"></div></div>
   </div>
 
   <div class="grid2">
-    <div class="card"><h3>WHY IS THE SYSTEM ON/OFF?</h3><div class="body" id="decisionHome"></div></div>
+    <div class="card"><h3>WHY IS THE MIST ON OR OFF?</h3><div class="body" id="decisionHome"></div></div>
     <div class="card">
-      <h3>MISTING THRESHOLDS</h3>
+      <h3>MISTING RULES</h3>
       <div class="body">
-        <div class="tag" style="margin:0 0 12px">PROJECT PROGRAMMED CONDITIONS</div>
+        <div class="tag" style="margin:0 0 12px">THIS PROJECT'S OWN SETTINGS</div>
         <div class="stack">
           <div class="thr card"><span class="t">Temperature</span><span class="v">≥ 31 °C</span></div>
-          <div class="thr card"><span class="t">Relative humidity</span><span class="v">&lt; 70%</span></div>
-          <div class="thr card"><span class="t">Wind velocity</span><span class="v">0–4 m/s</span></div>
+          <div class="thr card"><span class="t">Humidity</span><span class="v">&lt; 70%</span></div>
+          <div class="thr card"><span class="t">Wind speed</span><span class="v">0–4 m/s</span></div>
           <div class="thr card"><span class="t">Pump</span><span class="v">30 seconds ON</span></div>
-          <div class="thr card"><span class="t">Cooldown</span><span class="v">3 minutes</span></div>
+          <div class="thr card"><span class="t">Rest between sprays</span><span class="v">3 minutes</span></div>
         </div>
       </div>
     </div>
@@ -1358,14 +1401,14 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
   </div>
   <p class="vintro">The latest readings, about the last 3 minutes. Tap a graph for exact values.</p>
   <div class="grid2">
-    <div class="card"><h3>Threshold indicators</h3><div class="body" id="meters"></div></div>
-    <div class="card"><h3>WHY IS THE SYSTEM ON/OFF?</h3><div class="body" id="decisionLive"></div></div>
+    <div class="card"><h3>Is the weather right for misting?</h3><div class="body" id="meters"></div></div>
+    <div class="card"><h3>WHY IS THE MIST ON OR OFF?</h3><div class="body" id="decisionLive"></div></div>
   </div>
   <div class="charts">
-    <div class="card chartbox"><h3>Temperature and heat index (°C)</h3><div class="cv"><canvas id="cLiveTemp"></canvas></div></div>
-    <div class="card chartbox"><h3>Relative humidity (%)</h3><div class="cv"><canvas id="cLiveRh"></canvas></div></div>
-    <div class="card chartbox"><h3>Wind velocity (m/s)</h3><div class="cv"><canvas id="cLiveWind"></canvas></div></div>
-    <div class="card chartbox"><h3>Misting state</h3><div class="cv"><canvas id="cLiveMist"></canvas></div></div>
+    <div class="card chartbox"><h3>Temperature and how hot it feels (°C)</h3><div class="cv"><canvas id="cLiveTemp"></canvas></div></div>
+    <div class="card chartbox"><h3>Humidity (%)</h3><div class="cv"><canvas id="cLiveRh"></canvas></div></div>
+    <div class="card chartbox"><h3>Wind speed (m/s)</h3><div class="cv"><canvas id="cLiveWind"></canvas></div></div>
+    <div class="card chartbox"><h3>Misting ON / OFF</h3><div class="cv"><canvas id="cLiveMist"></canvas></div></div>
   </div>
 </section>
 
@@ -1376,9 +1419,9 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
   <div class="card" style="margin-bottom:18px">
     <div class="controls">
       <div>
-        <div class="updated" style="font-weight:600;margin-bottom:3px">Resolution</div>
-        <div class="seg" id="periodSeg" role="group" aria-label="Resolution">
-          <button data-p="1min" aria-pressed="true">1 minute</button>
+        <div class="updated" style="font-weight:600;margin-bottom:3px">Show data by</div>
+        <div class="seg" id="periodSeg" role="group" aria-label="Show data by">
+          <button data-p="1min" aria-pressed="true">Every minute</button>
           <button data-p="hourly" aria-pressed="false">Hourly</button>
           <button data-p="daily" aria-pressed="false">Daily</button>
           <button data-p="monthly" aria-pressed="false">Monthly</button>
@@ -1387,16 +1430,16 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
       <label class="f">From<input type="datetime-local" id="fromDt"></label>
       <label class="f">To<input type="datetime-local" id="toDt"></label>
       <button class="btn sm" id="applyBtn">Show Data</button>
-      <button class="btn sm ghost" id="csvBtn">Download CSV</button>
+      <button class="btn sm ghost" id="csvBtn">Download data (CSV)</button>
     </div>
     <div class="note" id="histMsg"></div>
   </div>
   <div class="charts">
     <div class="card chartbox"><h3>Temperature (°C)</h3><div class="cv"><canvas id="hTemp"></canvas></div></div>
-    <div class="card chartbox"><h3>Heat index (°C)</h3><div class="cv"><canvas id="hHi"></canvas></div></div>
-    <div class="card chartbox"><h3>Relative humidity (%)</h3><div class="cv"><canvas id="hRh"></canvas></div></div>
-    <div class="card chartbox"><h3>Wind velocity (m/s)</h3><div class="cv"><canvas id="hWind"></canvas></div></div>
-    <div class="card chartbox wide"><h3 id="hMistTitle">Misting operation</h3><div class="cv"><canvas id="hMist"></canvas></div></div>
+    <div class="card chartbox"><h3>How hot it feels (heat index, °C)</h3><div class="cv"><canvas id="hHi"></canvas></div></div>
+    <div class="card chartbox"><h3>Humidity (%)</h3><div class="cv"><canvas id="hRh"></canvas></div></div>
+    <div class="card chartbox"><h3>Wind speed (m/s)</h3><div class="cv"><canvas id="hWind"></canvas></div></div>
+    <div class="card chartbox wide"><h3 id="hMistTitle">Misting history</h3><div class="cv"><canvas id="hMist"></canvas></div></div>
   </div>
   <div class="card" style="margin-top:18px">
     <h3>Records</h3>
@@ -1409,31 +1452,31 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
 <section id="view-how" class="view" aria-labelledby="h-how">
   <div class="prose">
     <h2 id="h-how">HOW IT WORKS</h2>
-    <p>The system measures temperature, humidity and wind under the shed. An ESP32 checks them every 2 seconds and switches the pump automatically.</p>
+    <p>The system measures the heat, the humidity and the wind under the shed. A small computer (called the ESP32) checks them every 2 seconds and turns the pump on or off by itself.</p>
 
-    <h3>Automatic misting conditions</h3>
-    <div class="rule">Temperature ≥ 31 °C<br>AND relative humidity &lt; 70%<br>AND wind velocity between 0 and 4 m/s</div>
-    <p>If any condition fails, the pump stays OFF. These are the project's own settings, not universal standards.</p>
+    <h3>When does it mist?</h3>
+    <div class="rule">Temperature is 31 °C or hotter<br>AND humidity is below 70%<br>AND wind speed is between 0 and 4 m/s</div>
+    <p>If even one of them is not true, the pump stays OFF. These are this project's own settings, not official standards.</p>
 
-    <h3>Pump cycle</h3>
+    <h3>How the pump runs</h3>
     <div class="two" style="margin:8px 0">
       <div class="card tc"><div class="t">Pump ON</div><div class="v">30 seconds</div></div>
-      <div class="card tc"><div class="t">Cooldown</div><div class="v">3 minutes</div></div>
+      <div class="card tc"><div class="t">Rest</div><div class="v">3 minutes</div></div>
     </div>
-    <p>After the cooldown the conditions are checked again. During cooldown they can pass while the pump rests.</p>
+    <p>After the rest, the weather is checked again. The weather can be right during the rest, but the pump waits first.</p>
 
-    <h3>How values are obtained</h3>
+    <h3>Where the numbers come from</h3>
     <ul>
-      <li><strong>Temperature and humidity:</strong> average of three DHT22 sensors.</li>
-      <li><strong>Heat index:</strong> calculated with the NOAA/NWS method, in °C.</li>
-      <li><strong>Wind velocity:</strong> measured with an anemometer.</li>
-      <li><strong>Water consumption:</strong> flow sensor pulses converted to liters.</li>
-      <li><strong>Electrical consumption:</strong> measured separately with an electrical submeter.</li>
+      <li><strong>Temperature and humidity:</strong> the average of three small sensors.</li>
+      <li><strong>Heat index (how hot it feels):</strong> worked out from the temperature and humidity with a standard weather formula.</li>
+      <li><strong>Wind speed:</strong> measured with a wind meter (called an anemometer).</li>
+      <li><strong>Water used:</strong> a sensor in the pipe counts the water in liters.</li>
+      <li><strong>Electricity used:</strong> measured separately with a small electric meter.</li>
     </ul>
 
-    <h3>Data flow</h3>
-    <div class="flow"><span class="s">Sensors</span><span class="a">→</span><span class="s">ESP32</span><span class="a">→</span><span class="s">Wi-Fi</span><span class="a">→</span><span class="s">Online database</span><span class="a">→</span><span class="s">This website</span></div>
-    <p>Readings upload every 2 seconds. The database summarizes them for the Historical Data page, and the full 2-second record is saved on the SD card. This website only reads data. It cannot control the system.</p>
+    <h3>Where the data goes</h3>
+    <div class="flow"><span class="s">Sensors</span><span class="a">→</span><span class="s">Controller</span><span class="a">→</span><span class="s">Wi-Fi</span><span class="a">→</span><span class="s">Online storage</span><span class="a">→</span><span class="s">This website</span></div>
+    <p>A new reading is sent every 2 seconds. The online storage also makes minute, hourly, daily and monthly summaries for the Historical Data page, and every reading is saved on a memory card too. This website only shows the data. It cannot control the system.</p>
   </div>
 </section>
 
@@ -1446,7 +1489,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
       <h2 id="h-about">ABOUT THE PROJECT</h2><div class="bar"></div>
       <div class="title-box">Design and Development of a Smart Roof-Mounted Misting System to Provide Thermal Comfort in Outdoor Campus Spaces</div>
       <p class="inst">Polytechnic University of the Philippines – Institute of Technology (PUP ITECH)</p>
-      <p>An automated system that monitors an outdoor waiting shed and mists when conditions are right. It records data, including water and electricity use, so it can be evaluated. This website shows only real measurements.</p>
+      <p>A system that watches the weather in an outdoor waiting shed and sprays mist when the weather is right. It saves its readings, including how much water and electricity it uses, so we can check how well it works. This website shows real measurements only.</p>
     </div>
 
     <div class="ab-sec">
@@ -1455,7 +1498,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
         <img data-logo="author" alt="Photo of Henry Michael S. Libiran Jr.">
         <div class="nm">Henry Michael S. Libiran Jr.</div>
         <div class="pr">Diploma in Mechanical Engineering Technology (DMET)</div>
-        <div class="role">Concept and prototype development</div>
+        <div class="role">Idea and prototype builder</div>
         <p>Henry came up with the main idea and developed the mechanical concept. He also designed and built the prototype and played a major role in making it work.</p>
       </div>
     </div>
@@ -1511,7 +1554,7 @@ Very low or high humidity is adjusted. Below 80 °F the heat index equals the ai
 
 </div></main>
 
-<footer><div class="wrap">PUP ITECH Automated Misting System · Thesis project of the PUP ITECH research group · Public read-only website. Times are shown in Philippine Time.</div></footer>
+<footer><div class="wrap">PUP ITECH Automated Misting System · Thesis project of the PUP ITECH research group · Public website: you can only view data here. Times are in Philippine Time.</div></footer>
 </div>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
@@ -1556,16 +1599,16 @@ async function query(table, params){
   return r.json();
 }
 const HI_CLASSES=[
-  {min:27,max:32,label:"Caution",emoji:"🟡",range:"27–32 °C",effect:"Fatigue is possible with prolonged exposure/activity.",color:"#f1bd5a"},
-  {min:33,max:41,label:"Extreme Caution",emoji:"🟠",range:"33–41 °C",effect:"Heat cramps and heat exhaustion are possible.",color:"#ff9a3c"},
-  {min:42,max:51,label:"Danger",emoji:"🔴",range:"42–51 °C",effect:"Heat cramps and heat exhaustion are likely; heat stroke is possible with continued exposure.",color:"#ff6b6b"},
-  {min:52,max:Infinity,label:"Extreme Danger",emoji:"🟣",range:"52 °C and above",effect:"Heat stroke is imminent.",color:"#b98cff"}
+  {min:27,max:32,label:"Caution",emoji:"🟡",range:"27–32 °C",effect:"You may feel tired if you stay in the heat for a long time.",color:"#f1bd5a"},
+  {min:33,max:41,label:"Extreme Caution",emoji:"🟠",range:"33–41 °C",effect:"Muscle cramps and heat exhaustion (feeling very weak and dizzy) are possible.",color:"#ff9a3c"},
+  {min:42,max:51,label:"Danger",emoji:"🔴",range:"42–51 °C",effect:"Cramps and heat exhaustion are likely. Heat stroke (a dangerous emergency) is possible if you stay in the heat.",color:"#ff6b6b"},
+  {min:52,max:Infinity,label:"Extreme Danger",emoji:"🟣",range:"52 °C and above",effect:"Heat stroke is about to happen. This is very dangerous.",color:"#b98cff"}
 ];
 function hiClass(c){ if(!Number.isFinite(c)) return null; const r=Math.round(c); return HI_CLASSES.find(k=>r>=k.min&&r<=k.max)||null; }
 function hiCategory(c){
   if(!Number.isFinite(c)) return "";
   const k=hiClass(c);
-  return k ? "PAGASA: "+k.label : "Below PAGASA caution range";
+  return k ? "Warning level: "+k.label : "Not in the warning levels";
 }
 /* NOAA/NWS heat index (Rothfusz regression with NWS adjustments), same method as the controller. Input °C, RH %, output °C. */
 function heatIndexC(tc, rh){
@@ -1699,6 +1742,16 @@ const SFX={
   mood_run(t){ SFX.boing(t); }
 };
 Object.assign(SFX,{
+  build(t,k){
+    if(k===0){ osc("sine",110,60,t,.18,.2); nz(t,.12,.06,900,300,.8); }
+    else if(k===1){ osc("triangle",190,95,t,.14,.22); nz(t,.07,.1,2400,900,1.2); }
+    else if(k===2){ osc("sine",95,38,t,.35,.3); osc("triangle",150,60,t,.2,.2); nz(t,.28,.2,1400,200,.7); }
+    else { osc("triangle",520,780,t,.07,.12); osc("sine",1040,null,t+.04,.06,.06); nz(t,.1,.05,3000,1200,1); }
+  },
+  slide(t){ nz(t,.4,.12,500,3200,.9); osc("sine",300,700,t,.35,.05); },
+  nozzle(t,k){ const f=520+(k||0)*160; bubble(t,f,.12,.14); osc("triangle",f*1.5,null,t+.02,.1,.07); nz(t,.04,.05,4500,7000,1,"highpass"); },
+  sensor(t){ osc("square",880,null,t,.07,.05); osc("square",1320,null,t+.11,.1,.05); },
+  mistpuff(t){ nz(t,1.4,.16,3800,6800,.7); bubbles(t+.05,10,1.1,500,1400,.09); bell(t+.05,1568,.5,.05); },
   unlock(t){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>bell(t+i*.1,f,.6,.1)); },
   click(t){ bubble(t,760,.1,.07); nz(t,.03,.035,5000,7000,1,"highpass"); },
   pop(t){ bubble(t,420,.09,.09); },
@@ -2038,7 +2091,7 @@ let simT1=null, simT2=null;
   if(mistyCur!=="sec-when" || mistyEl.classList.contains("moving") || demoState.active) return;
   clearTimeout(simT2); simT2=setTimeout(()=>{
     const hi=heatIndexC(+$("#hT").value,+$("#hH").value), k=hiClass(hi);
-    if(!k) mistyReact("Heat index "+hi.toFixed(0)+" °C: below the caution range. 🙂","happy");
+    if(!k) mistyReact("Heat index "+hi.toFixed(0)+" °C: still comfortable. 🙂","happy");
     else if(k.label==="Danger"||k.label==="Extreme Danger") mistyReact("Heat index "+hi.toFixed(0)+" °C: "+k.label+"! "+k.emoji,"wow");
     else mistyReact("Heat index "+hi.toFixed(0)+" °C: "+k.label+". "+k.emoji,"cool");
   },350);
@@ -2203,42 +2256,11 @@ function openDev(){
   devOpen=true; $("#devpage").hidden=false; rootEl.classList.add("dev-open");
   devStatusStart=Date.now(); devStatusKey=null; devPoll(); clearInterval(devTimer); devTimer=setInterval(devPoll,2000); renderDev();
 }
-function closeDev(){ $("#mistgate").hidden=true; devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
+function closeDev(){ devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
 $("#dvclose").addEventListener("click",closeDev);
 $("#dvref").addEventListener("click",()=>{ devPoll(); poll(); });
 $("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupDev"); }catch(e){} closeDev(); });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(!$("#mistgate").hidden){ $("#mistgate").hidden=true; return; } if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
-/* manual mist (password is checked inside Supabase, not here) */
-const mg=$("#mistgate");
-$("#dvmistbtn").addEventListener("click",()=>{ if(!devOpen || $("#devpage").hidden) return; mg.hidden=false; $("#mgmsg").textContent=""; const i=$("#mgpw"); i.value=""; setTimeout(()=>i.focus(),60); });
-$("#mgno").addEventListener("click",()=>{ mg.hidden=true; });
-$("#mgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") mistSubmit(); });
-$("#mgok").addEventListener("click",mistSubmit);
-let mistBusy=false;
-async function mistSubmit(){
-  if(mistBusy) return;
-  const pw=$("#mgpw").value, msg=$("#mgmsg"), out=$("#dvmistmsg");
-  if(!pw){ msg.textContent="Enter the password"; return; }
-  mistBusy=true; msg.textContent="Sending…";
-  try{
-    const r=await fetch(SUPABASE_URL+"rpc/request_manual_mist",{
-      method:"POST",
-      headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},
-      body:JSON.stringify({p_password:pw})
-    });
-    if(!r.ok){
-      const t=await r.text();
-      msg.textContent=/wrong password/i.test(t)?"Incorrect password":"Failed ("+r.status+")";
-      const box=mg.querySelector(".dgbox"); box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
-      $("#mgpw").value="";
-    } else {
-      mg.hidden=true; sfx("enter");
-      out.textContent="✅ Manual mist sent at "+new Date().toLocaleTimeString("en-PH",{timeZone:TZ});
-    }
-  }catch(e){ msg.textContent="Network error. Try again."; }
-  mistBusy=false;
-}
-
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
 let devStatus=null, devStatusState="loading", devStatusKey=null, devStatusChanged=0, devStatusStart=0, devLastVal={}, devSince={};
 async function devPoll(){
   if(!devOpen) return;
@@ -2335,11 +2357,64 @@ if("IntersectionObserver" in window){
   $$("#hero, .sec").forEach(el=>vis.observe(el));
   new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting) sfx("water"); }),{threshold:.45}).observe($("#sec-water"));
 }
+/* "What is this project?": the three pictures build themselves, one after another, with sounds */
+const cNodes=$$(".concept .node"), cArrs=$$(".concept .arr");
+cNodes.forEach((n,i)=>{ n.dataset.i=i; });
+const CSND=[
+  [[40,"build",0],[330,"build",1],[480,"build",1],[950,"build",2],[1320,"build",3]],
+  [[150,"slide"],[550,"build",3],[1030,"nozzle",0],[1230,"nozzle",1],[1430,"nozzle",2],[1700,"sensor"]],
+  [[250,"mistpuff"]]
+];
+function conceptPlay(n){
+  const i=+n.dataset.i;
+  (n._t||[]).forEach(clearTimeout); n._t=[];
+  n.classList.remove("go"); void n.offsetWidth; n.classList.add("go");
+  if(reduceMotion) return;
+  CSND[i].forEach(([ms,name,arg])=>n._t.push(setTimeout(()=>sfx(name,arg),ms)));
+}
+cNodes.forEach(n=>n.addEventListener("click",()=>{ if(n.classList.contains("go")) conceptPlay(n); }));
+let conceptDone=false;
+function conceptStart(){
+  if(conceptDone) return; conceptDone=true;
+  if(reduceMotion || !("IntersectionObserver" in window)){ cNodes.concat(cArrs).forEach(e=>e.classList.add("go")); return; }
+  if(window.matchMedia("(max-width:720px)").matches){
+    /* phone: the pictures are stacked, so each one builds when it is in view */
+    const io2=new IntersectionObserver(es=>es.forEach(e=>{
+      if(!e.isIntersecting) return;
+      const n=e.target, i=+n.dataset.i; io2.unobserve(n);
+      if(i>0) cArrs[i-1].classList.add("go");
+      conceptPlay(n);
+    }),{threshold:.7});
+    cNodes.forEach(n=>io2.observe(n));
+  } else {
+    const T=[100,2000,4150];
+    cNodes.forEach((n,i)=>{
+      if(i>0) setTimeout(()=>cArrs[i-1].classList.add("go"),T[i]-220);
+      setTimeout(()=>conceptPlay(n),T[i]);
+    });
+  }
+}
+
+/* "What are we measuring?": a picture starts moving when the mouse is over its card (computer),
+   or when the card is in the middle of the screen (phone) */
+(function(){
+  const cards=$$("#sec-measure .ic"), canHover=window.matchMedia("(hover:hover) and (pointer:fine)").matches, hint=$("#mhint");
+  if(hint) hint.textContent=canHover?"Move your mouse over a card to see it in action.":"Scroll slowly: the card in the middle of the screen starts moving.";
+  if(reduceMotion) return;
+  if(canHover){
+    cards.forEach(c=>{ c.addEventListener("pointerenter",()=>c.classList.add("play")); c.addEventListener("pointerleave",()=>c.classList.remove("play")); });
+  } else if("IntersectionObserver" in window){
+    const io3=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle("play",e.isIntersecting)),{rootMargin:"-40% 0px -40% 0px"});
+    cards.forEach(c=>io3.observe(c));
+  }
+})();
+
 /* reveal helpers */
 function markIn(t){
   t.classList.add("in");
   if(t.matches(".step")) sfx("bloop"); else if(t.matches("h2.t,.cta h2,.hero h1")) sfx("sparkle"); else sfx("pop");
   t.querySelectorAll(".cnt").forEach(countUp);
+  if(t.matches(".concept")) conceptStart();
   setTimeout(()=>t.classList.add("rvd"),1600);
 }
 let pendingMid=$$(".step, .chain");
@@ -2357,7 +2432,7 @@ if("IntersectionObserver" in window){
   /* the steps and the flow chart are handled by revealMid(): they start appearing when they reach the middle of the screen */
   const heroArt=$(".hero-grid > .rv:last-child"); if(heroArt) heroArt.classList.add("in","rvd");   /* the shed picture is shown at full strength from the start */
   $$(".rv, .concept").forEach(el=>{ if(!el.matches(".step, .chain, .hero-grid > .rv:last-child")) io.observe(el); });
-} else { $$(".rv, .concept").forEach(el=>el.classList.add("in")); $$(".cnt").forEach(c=>c.textContent=c.dataset.to); pendingMid=[]; }
+} else { $$(".rv, .concept").forEach(el=>el.classList.add("in")); $$(".cnt").forEach(c=>c.textContent=c.dataset.to); pendingMid=[]; conceptStart(); }
 
 /* "how it works": highlight the step in view and light up the flow chain */
 const steps=$$(".step"), nds=$$(".chain .nd"), ars=$$(".chain .ar");
@@ -2497,13 +2572,13 @@ function evaluate(row){
   const t=num(row.temperature), h=num(row.humidity), w=num(row.wind_speed);
   const tOK=t>=TH.tempMin, hOK=h<TH.rhMax, wOK=w>=TH.windMin && w<=TH.windMax;
   const reasons=[];
-  if(!Number.isFinite(t)) reasons.push("Temperature reading is unavailable"); else if(!tOK) reasons.push("Temperature is below 31 °C");
-  if(!Number.isFinite(h)) reasons.push("Humidity reading is unavailable"); else if(!hOK) reasons.push("Humidity is 70% or higher");
-  if(!Number.isFinite(w)) reasons.push("Wind reading is unavailable"); else if(!wOK) reasons.push("Wind is above 4 m/s");
+  if(!Number.isFinite(t)) reasons.push("No temperature reading"); else if(!tOK) reasons.push("Temperature is below 31 °C");
+  if(!Number.isFinite(h)) reasons.push("No humidity reading"); else if(!hOK) reasons.push("Humidity is 70% or higher");
+  if(!Number.isFinite(w)) reasons.push("No wind reading"); else if(!wOK) reasons.push("Wind is above 4 m/s");
   return {t,h,w,tOK,hOK,wOK,all:tOK&&hOK&&wOK,reasons,pumpOn:isOn(row.misting_status)};
 }
 function rowHTML(label,val,unit,ok,req){
-  const mark = ok===null ? '<span class="na">–</span>' : ok ? '<span class="pass">✓ PASS</span>' : '<span class="fail">✕ FAIL</span>';
+  const mark = ok===null ? '<span class="na">–</span>' : ok ? '<span class="pass">✓ YES</span>' : '<span class="fail">✕ NO</span>';
   return `<tr><td>${label}<div class="hnote" style="margin:0">${req}</div></td><td class="num">${val} ${unit}</td><td>${mark}</td></tr>`;
 }
 function decisionHTML(row, fresh){
@@ -2517,10 +2592,10 @@ function decisionHTML(row, fresh){
     else { cls="off"; big="🔴 MISTING OFF"; detail=e.reasons.join(". ")+"."; }
   }
   return `<table class="plain">
-    <thead><tr><th>Condition</th><th>Reading</th><th>Result</th></tr></thead><tbody>
-    ${rowHTML("Temperature",fmt(e.t,1),"°C",tv?e.tOK:null,"Required: ≥ 31 °C")}
-    ${rowHTML("Relative humidity",fmt(e.h,0),"%",hv?e.hOK:null,"Required: &lt; 70%")}
-    ${rowHTML("Wind speed",fmt(e.w,1),"m/s",wv?e.wOK:null,"Required: 0–4 m/s")}
+    <thead><tr><th>What we check</th><th>Right now</th><th>Good for misting?</th></tr></thead><tbody>
+    ${rowHTML("Temperature",fmt(e.t,1),"°C",tv?e.tOK:null,"Needs: 31 °C or more")}
+    ${rowHTML("Humidity",fmt(e.h,0),"%",hv?e.hOK:null,"Needs: below 70%")}
+    ${rowHTML("Wind speed",fmt(e.w,1),"m/s",wv?e.wOK:null,"Needs: 0–4 m/s")}
     </tbody></table>
     <div class="decision ${cls}"><div class="big">${big}</div><p>${detail}</p></div>`;
 }
@@ -2530,7 +2605,7 @@ function meter(label, val, unit, min, max, zoneFrom, zoneTo, ok, scaleLabels){
   const pct = v => Math.min(100,Math.max(0,(v-min)/(max-min)*100));
   const z0=pct(zoneFrom), z1=pct(zoneTo);
   const mk = Number.isFinite(val) ? `<div class="mark" style="left:${pct(val)}%"></div>` : "";
-  const st = ok===null?'<span class="na">–</span>':ok?'<span class="pass">✓ WITHIN RANGE</span>':'<span class="fail">✕ OUTSIDE RANGE</span>';
+  const st = ok===null?'<span class="na">–</span>':ok?'<span class="pass">✓ MET</span>':'<span class="fail">✕ NOT MET</span>';
   return `<div class="meter"><div class="row"><span>${label}: ${fmt(val,1)} ${unit}</span>${st}</div>
     <div class="track"><div class="zone" style="left:${z0}%;width:${z1-z0}%"></div>${mk}</div>
     <div class="scale">${scaleLabels.map(s=>`<span>${s}</span>`).join("")}</div></div>`;
@@ -2538,10 +2613,10 @@ function meter(label, val, unit, min, max, zoneFrom, zoneTo, ok, scaleLabels){
 function metersHTML(row){
   if(!row) return '<p class="hnote">Waiting for data…</p>';
   const e = evaluate(row);
-  return meter("Temperature",e.t,"°C",20,40,TH.tempMin,40,Number.isFinite(e.t)?e.tOK:null,["20","Threshold ≥ 31","40"])
-       + meter("Relative humidity",e.h,"%",0,100,0,TH.rhMax,Number.isFinite(e.h)?e.hOK:null,["0","Threshold &lt; 70","100"])
-       + meter("Wind velocity",e.w,"m/s",0,8,TH.windMin,TH.windMax,Number.isFinite(e.w)?e.wOK:null,["0","Range 0–4","8"])
-       + '<p class="hnote">The green band marks the range in which each condition is satisfied. The white marker is the current reading.</p>';
+  return meter("Temperature",e.t,"°C",20,40,TH.tempMin,40,Number.isFinite(e.t)?e.tOK:null,["20","Needs 31 or more","40"])
+       + meter("Humidity",e.h,"%",0,100,0,TH.rhMax,Number.isFinite(e.h)?e.hOK:null,["0","Needs below 70","100"])
+       + meter("Wind speed",e.w,"m/s",0,8,TH.windMin,TH.windMax,Number.isFinite(e.w)?e.wOK:null,["0","Needs 0–4","8"])
+       + '<p class="hnote">The green part is the range that is good for misting. The white marker is the reading right now.</p>';
 }
 
 /* ================= LIVE CHARTS ================= */
@@ -2569,13 +2644,13 @@ function initLiveCharts(){
   if(typeof Chart==="undefined") return;
   liveCharts.temp = mkChart("cLiveTemp",[
     {label:"Temperature", data:[], borderColor:C.maroon, backgroundColor:C.maroon},
-    {label:"Heat index", data:[], borderColor:C.red, backgroundColor:C.red},
-    thrLine(TH.tempMin,"31 °C threshold")], true);
+    {label:"Feels like", data:[], borderColor:C.red, backgroundColor:C.red},
+    thrLine(TH.tempMin,"31 °C needed")], true);
   liveCharts.rh = mkChart("cLiveRh",[
-    {label:"Relative humidity", data:[], borderColor:C.blue, backgroundColor:C.blue},
-    thrLine(TH.rhMax,"70% threshold")], true);
+    {label:"Humidity", data:[], borderColor:C.blue, backgroundColor:C.blue},
+    thrLine(TH.rhMax,"70% limit")], true);
   liveCharts.wind = mkChart("cLiveWind",[
-    {label:"Wind velocity", data:[], borderColor:C.ink, backgroundColor:C.ink},
+    {label:"Wind speed", data:[], borderColor:C.ink, backgroundColor:C.ink},
     thrLine(TH.windMax,"4 m/s limit")], true);
   liveCharts.mist = mkChart("cLiveMist",[
     {label:"Misting", data:[], borderColor:C.maroon, backgroundColor:"rgba(255,107,122,.18)", fill:true, stepped:true}], false, cfg=>{
@@ -2617,10 +2692,10 @@ function renderLive(){
   setAll("rh", fmt(v("humidity"),0));
   setAll("hi", fmt(v("heat_index"),1));
   setAll("wind", fmt(v("wind_speed"),1));
-  $('[data-s="temp"]').textContent = e ? (e.tOK?"Meets ≥ 31 °C":"Below 31 °C threshold") : "";
-  $('[data-s="rh"]').textContent   = e ? (e.hOK?"Meets < 70%":"At or above 70%") : "";
+  $('[data-s="temp"]').textContent = e ? (e.tOK?"Hot enough (31 °C or more)":"Not hot enough yet (below 31 °C)") : "";
+  $('[data-s="rh"]').textContent   = e ? (e.hOK?"Dry enough (below 70%)":"Too humid (70% or more)") : "";
   $('[data-s="hi"]').textContent   = row ? hiCategory(v("heat_index")) : "";
-  $('[data-s="wind"]').textContent = e ? (e.wOK?"Within 0–4 m/s":"Above 4 m/s") : "";
+  $('[data-s="wind"]').textContent = e ? (e.wOK?"Calm enough (0–4 m/s)":"Too windy (above 4 m/s)") : "";
 
   // misting card
   const mc=$("#mistCard"), mt=$("#mistText"), md=$("#mistDot"), ms=$("#mistSub");
@@ -2628,10 +2703,10 @@ function renderLive(){
   if(!row || !fresh){
     mc.className="card reading mist nodata"; md.className="dot"; mtxt = row?"UNKNOWN":"NO DATA"; ms.textContent=row?"No recent data":"";
   } else if(e.pumpOn){
-    mc.className="card reading mist on"; md.className="dot on"; mtxt="ACTIVE"; ms.textContent="Pump ON (30-second cycle)";
+    mc.className="card reading mist on"; md.className="dot on"; mtxt="ACTIVE"; ms.textContent="Pump is running (30 seconds)";
   } else {
     mc.className="card reading mist off"; md.className="dot off"; mtxt="OFF";
-    ms.textContent = e.all ? "Conditions satisfied · pump resting" : "Conditions not satisfied";
+    ms.textContent = e.all ? "Weather is right · pump is resting" : "Weather is not right yet";
   }
   mt.textContent = mtxt;
   $$("[data-mist]").forEach(x=>x.textContent = (fresh?(mtxt==="ACTIVE"?"● ACTIVE":"● OFF"):"No recent data"));
@@ -2660,7 +2735,7 @@ async function poll(){
     failCount=0; $("#errBanner").classList.remove("show");
   }catch(err){
     failCount++; devFails++;
-    if(failCount>=2){ const b=$("#errBanner"); b.textContent="Cannot reach the database right now ("+err.message+"). Retrying automatically."; b.classList.add("show"); }
+    if(failCount>=2){ const b=$("#errBanner"); b.textContent="Cannot reach the data server right now ("+err.message+"). Trying again automatically."; b.classList.add("show"); }
   }
   renderLive();
   polling=false;
@@ -2724,22 +2799,22 @@ function renderHist(){
     {label:"Average",data:series(rows,F.t),borderColor:C.maroon},
     {label:"Maximum",data:series(rows,F.tmax),borderColor:C.red,borderDash:[5,4]},
     {label:"Minimum",data:series(rows,F.tmin),borderColor:C.blue,borderDash:[5,4]},
-    dash(TH.tempMin,"Threshold 31 °C")]);
+    dash(TH.tempMin,"31 °C needed")]);
   drawHist("hHi",labels,[
     {label:"Average",data:series(rows,F.hi),borderColor:C.maroon},
     {label:"Maximum",data:series(rows,F.himax),borderColor:C.red,borderDash:[5,4]}]);
   drawHist("hRh",labels,[
-    {label:"Relative humidity",data:series(rows,F.h),borderColor:C.blue},
-    dash(TH.rhMax,"Threshold 70%")]);
+    {label:"Humidity",data:series(rows,F.h),borderColor:C.blue},
+    dash(TH.rhMax,"70% limit")]);
   drawHist("hWind",labels,[
-    {label:"Wind velocity",data:series(rows,F.w),borderColor:C.ink},
+    {label:"Wind speed",data:series(rows,F.w),borderColor:C.ink},
     dash(TH.windMax,"4 m/s limit")]);
   const m=mistSeries(rows);
   if(period==="1min"){
-    $("#hMistTitle").textContent="Misting operation (ON/OFF)";
+    $("#hMistTitle").textContent="Misting history (ON/OFF)";
     drawHist("hMist",labels,[{label:"Misting (1 = ON, 0 = OFF)",data:m,borderColor:C.maroon,backgroundColor:"rgba(255,107,122,.16)",fill:true}],{step:true,yMax:1,ticks:{stepSize:1,callback:v=>v===1?"ON":v===0?"OFF":""}});
   } else {
-    $("#hMistTitle").textContent="Misting operation (minutes per period)";
+    $("#hMistTitle").textContent="Misting history (minutes of misting)";
     drawHist("hMist",labels,[{label:"Misting minutes",data:m,borderColor:C.maroon,backgroundColor:C.maroon}],{type:"bar",yMin:0});
   }
   const t=$("#histTable");
@@ -2794,9 +2869,9 @@ function sim(){
   $("#sTo").textContent=t.toFixed(1)+" °C"; $("#sHo").textContent=h+" %"; $("#sWo").textContent=w.toFixed(1)+" m/s";
   const tOK=t>=TH.tempMin, hOK=h<TH.rhMax, wOK=w>=TH.windMin&&w<=TH.windMax, all=tOK&&hOK&&wOK;
   shedUpdate(all,t,w);
-  const r=(n,ok)=>`<div class="r"><span>${n}</span>${ok?'<span class="pass">✓ PASS</span>':'<span class="fail">✕ FAIL</span>'}</div>`;
+  const r=(n,ok)=>`<div class="r"><span>${n}</span>${ok?'<span class="pass">✓ YES</span>':'<span class="fail">✕ NO</span>'}</div>`;
   $("#simOut").innerHTML = r("Temperature",tOK)+r("Humidity",hOK)+r("Wind",wOK)+
-    `<div class="result ${all?"on":"off"}">${all?"MISTING CONDITIONS SATISFIED → PUMP ON":"CONDITIONS NOT SATISFIED → PUMP OFF"}<small>${all?"The pump would run for 30 seconds, then rest for 3 minutes.":"The pump stays off until all three conditions are satisfied."}</small></div>`;
+    `<div class="result ${all?"on":"off"}">${all?"ALL THREE ARE TRUE → PUMP ON":"NOT ALL THREE ARE TRUE → PUMP OFF"}<small>${all?"The pump would run for 30 seconds, then rest for 3 minutes.":"The pump stays off until all three are true."}</small></div>`;
 }
 ["sT","sH","sW"].forEach(id=>$("#"+id).addEventListener("input",sim));
 sim();
@@ -2815,7 +2890,7 @@ function shedUpdate(all,t,w){
   if(shedPrev!==undefined && shedPrev!==all) sfx(all?"mistOn":"mistOff"); shedPrev=all;
   sh.classList.toggle("on",all);
   $("#mled").setAttribute("fill",all?"#62d48f":"#ff7b88");
-  const bar=$("#shedbar"); bar.classList.toggle("on",all); $("#shedtxt").textContent = all ? "Misting ON: all three conditions are met 💦" : "Misting OFF: not all conditions are met";
+  const bar=$("#shedbar"); bar.classList.toggle("on",all); $("#shedtxt").textContent = all ? "Misting ON: all three are true 💦" : "Misting OFF: not all three are true";
   const f=Math.min(1,Math.max(0,(t-20)/20)), sun=$("#msun");
   sun.setAttribute("r",(11+f*17).toFixed(1));
   sun.setAttribute("fill", t>=36?"#ff6b4a": t>=31?"#ff9a3c": t>=26?"#f1bd5a":"#f1d27a");
@@ -2836,9 +2911,9 @@ function simHI(){
   $("#hiPin").style.left=(Math.min(1,Math.max(0,(hi-24)/36))*100).toFixed(1)+"%";
   const badge=$("#hiBadge");
   if(k){ badge.style.setProperty("--c",k.color); badge.textContent=k.emoji+" "+k.label; $("#hiEffect").textContent=k.effect; }
-  else { badge.style.setProperty("--c","#a6aeb6"); badge.textContent="Below the caution range"; $("#hiEffect").textContent="At this level the heat index is below the lowest PAGASA classification."; }
+  else { badge.style.setProperty("--c","#a6aeb6"); badge.textContent="Not in the warning levels"; $("#hiEffect").textContent="It does not feel hot enough to reach the lowest warning level."; }
   personUpdate(k);
-  $("#hiTable").innerHTML='<thead><tr><th>Heat index</th><th>PAGASA classification</th><th>General effect</th></tr></thead><tbody>'+
+  $("#hiTable").innerHTML='<thead><tr><th>Feels like</th><th>Warning level</th><th>What can happen</th></tr></thead><tbody>'+
     HI_CLASSES.map(c=>`<tr class="${c===k?"cur":""}" style="--c:${c.color}"><td>${c.range}</td><td>${c.emoji} ${c.label}${c===k?' <span class="pass" style="color:'+c.color+'">← current</span>':''}</td><td>${c.effect}</td></tr>`).join("")+'</tbody>';
 }
 ["hT","hH"].forEach(id=>$("#"+id).addEventListener("input",simHI));
