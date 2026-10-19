@@ -512,6 +512,8 @@ html.dev-open{overflow:hidden}
 .dvlog div{padding:2px 0}
 .dvraw{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;color:#a6aeb6;background:#12151a;border:1px solid #2b3036;border-radius:8px;padding:10px;margin-top:6px;overflow:auto}
 
+#mistgate[hidden]{display:none}
+
 /* misting alert */
 #misty{--grow:54px}
 #misty .mchar svg{transform-origin:0 100%;transition:scale .55s cubic-bezier(.3,1.6,.5,1)}
@@ -846,11 +848,24 @@ html.in-dash #misty.alert{display:block}
   <div class="dgmsg" id="dgmsg" role="alert"></div>
   <div class="dgbtns"><button class="btn sm" id="dgok" type="button">Enter</button><button class="btn sm ghost" id="dgno" type="button">Cancel</button></div>
 </div></div>
+<div id="mistgate" hidden role="dialog" aria-modal="true" style="position:fixed;inset:0;z-index:170;background:rgba(0,0,0,.72);display:grid;place-items:center;padding:20px">
+  <div class="dgbox">
+    <h3>Manual mist</h3><p>Enter the password to start misting</p>
+    <input id="mgpw" type="password" inputmode="numeric" autocomplete="off" aria-label="Password">
+    <div class="dgmsg" id="mgmsg" role="alert"></div>
+    <div class="dgbtns"><button class="btn sm" id="mgok" type="button">Start misting</button><button class="btn sm ghost" id="mgno" type="button">Cancel</button></div>
+  </div>
+</div>
+
 <div id="devpage" hidden role="dialog" aria-modal="true" aria-label="Developer console">
   <div class="dvwrap">
     <div class="dvhead"><h2>Developer console</h2><span class="dvchip" id="dvchip">…</span>
       <span class="dvbtns"><button class="btn sm ghost" id="dvref" type="button">Refresh</button><button class="btn sm ghost" id="dvforget" type="button">Forget this device</button><button class="btn sm" id="dvclose" type="button">Close</button></span></div>
-    <div id="dvbody"></div>
+    <div class="dvnote" style="display:flex;flex-wrap:wrap;align-items:center;gap:10px">
+  <button class="btn sm" id="dvmistbtn" type="button">💦 Manual mist</button>
+  <span id="dvmistmsg" role="status"></span>
+</div>
+<div id="dvbody"></div>
   </div>
 </div>
 <div id="mistBanner" role="status" aria-live="polite">
@@ -2192,7 +2207,38 @@ function closeDev(){ devOpen=false; $("#devpage").hidden=true; rootEl.classList.
 $("#dvclose").addEventListener("click",closeDev);
 $("#dvref").addEventListener("click",()=>{ devPoll(); poll(); });
 $("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupDev"); }catch(e){} closeDev(); });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(!$("#mistgate").hidden){ $("#mistgate").hidden=true; return; } if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
+/* manual mist (password is checked inside Supabase, not here) */
+const mg=$("#mistgate");
+$("#dvmistbtn").addEventListener("click",()=>{ mg.hidden=false; $("#mgmsg").textContent=""; const i=$("#mgpw"); i.value=""; setTimeout(()=>i.focus(),60); });
+$("#mgno").addEventListener("click",()=>{ mg.hidden=true; });
+$("#mgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") mistSubmit(); });
+$("#mgok").addEventListener("click",mistSubmit);
+let mistBusy=false;
+async function mistSubmit(){
+  if(mistBusy) return;
+  const pw=$("#mgpw").value, msg=$("#mgmsg"), out=$("#dvmistmsg");
+  if(!pw){ msg.textContent="Enter the password"; return; }
+  mistBusy=true; msg.textContent="Sending…";
+  try{
+    const r=await fetch(SUPABASE_URL+"rpc/request_manual_mist",{
+      method:"POST",
+      headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},
+      body:JSON.stringify({p_password:pw})
+    });
+    if(!r.ok){
+      const t=await r.text();
+      msg.textContent=/wrong password/i.test(t)?"Incorrect password":"Failed ("+r.status+")";
+      const box=mg.querySelector(".dgbox"); box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake");
+      $("#mgpw").value="";
+    } else {
+      mg.hidden=true; sfx("enter");
+      out.textContent="✅ Manual mist sent at "+new Date().toLocaleTimeString("en-PH",{timeZone:TZ});
+    }
+  }catch(e){ msg.textContent="Network error. Try again."; }
+  mistBusy=false;
+}
+
 let devStatus=null, devStatusState="loading", devStatusKey=null, devStatusChanged=0, devStatusStart=0, devLastVal={}, devSince={};
 async function devPoll(){
   if(!devOpen) return;
