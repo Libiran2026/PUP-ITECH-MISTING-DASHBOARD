@@ -512,7 +512,7 @@ html.dev-open{overflow:hidden}
 .dvlog div{padding:2px 0}
 .dvraw{white-space:pre-wrap;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.76rem;color:#a6aeb6;background:#12151a;border:1px solid #2b3036;border-radius:8px;padding:10px;margin-top:6px;overflow:auto}
 
-#mistgate[hidden]{display:none}
+#mistgate[hidden]{display:none !important}
 
 /* misting alert */
 #misty{--grow:54px}
@@ -2203,14 +2203,14 @@ function openDev(){
   devOpen=true; $("#devpage").hidden=false; rootEl.classList.add("dev-open");
   devStatusStart=Date.now(); devStatusKey=null; devPoll(); clearInterval(devTimer); devTimer=setInterval(devPoll,2000); renderDev();
 }
-function closeDev(){ devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
+function closeDev(){ $("#mistgate").hidden=true; devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
 $("#dvclose").addEventListener("click",closeDev);
 $("#dvref").addEventListener("click",()=>{ devPoll(); poll(); });
 $("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupDev"); }catch(e){} closeDev(); });
 document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(!$("#mistgate").hidden){ $("#mistgate").hidden=true; return; } if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
 /* manual mist (password is checked inside Supabase, not here) */
 const mg=$("#mistgate");
-$("#dvmistbtn").addEventListener("click",()=>{ mg.hidden=false; $("#mgmsg").textContent=""; const i=$("#mgpw"); i.value=""; setTimeout(()=>i.focus(),60); });
+$("#dvmistbtn").addEventListener("click",()=>{ if(!devOpen || $("#devpage").hidden) return; mg.hidden=false; $("#mgmsg").textContent=""; const i=$("#mgpw"); i.value=""; setTimeout(()=>i.focus(),60); });
 $("#mgno").addEventListener("click",()=>{ mg.hidden=true; });
 $("#mgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") mistSubmit(); });
 $("#mgok").addEventListener("click",mistSubmit);
