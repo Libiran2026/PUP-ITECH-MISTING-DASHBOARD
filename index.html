@@ -924,6 +924,12 @@ html.in-dash #misty.alert{display:block}
 .mo-modal p{color:#c3c8cd;margin:0 0 10px;font-size:.92rem}
 @media (max-width:720px){.mo-stats{grid-template-columns:repeat(2,1fr)}.mo-head{flex-wrap:wrap}}
 @media (prefers-reduced-motion:reduce){.mo,.mo-chip{animation:none !important}}
+
+/* project video (between "What is this project?" and "Why does it matter?") */
+.sec.vid{min-height:auto;padding:70px 0}
+.vframe{max-width:900px;margin:26px auto 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000;box-shadow:0 14px 36px rgba(0,0,0,.45),0 0 0 4px rgba(143,18,32,.18)}
+.vframe video{display:block;width:100%;aspect-ratio:16/9;background:#000}
+.vcap{text-align:center;color:var(--muted);font-size:.92rem;margin-top:12px}
 </style>
 <script>if(/^#(dashboard|live-data|historical-data|how-it-works|about)$/.test(location.hash))document.documentElement.classList.add("in-dash");</script>
 </head>
@@ -1190,6 +1196,21 @@ html.in-dash #misty.alert{display:block}
         <b>Fine mist</b><small>Sprayed into the shed</small>
       </div>
     </div>
+  </div>
+</section>
+
+<section class="sec vid" id="sec-video">
+  <div class="wrap" style="text-align:center">
+    <div class="eyebrow rv">Watch</div>
+    <h2 class="t rv" style="margin:0 auto;max-width:none">SEE THE PROJECT IN ACTION</h2>
+    <div class="vframe rv rv-z">
+      <!-- CHANGE "project-video.mp4" to the exact file name of your video in the repo -->
+      <video controls playsinline preload="metadata" poster="">
+        <source src="misting-system-demo.mp4" type="video/mp4">
+        Your browser cannot play this video.
+      </video>
+    </div>
+    <p class="vcap rv">A short video about the PUP ITECH misting system.</p>
   </div>
 </section>
 
