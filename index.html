@@ -875,6 +875,55 @@ html.in-dash #misty.alert{display:block}
   .js .rv{opacity:1;transform:none;transition:none}
   .drop,.cue .ar{animation:none}.drop{opacity:.7}
 }
+
+/* ===== Manual Misting Override (Developer Mode only) ===== */
+#mistgate[hidden],#mistconfirm[hidden]{display:none !important}
+.mo{position:relative;margin:0 0 18px;border:2px solid #6e1420;border-radius:10px;background:linear-gradient(180deg,#0c0d10,#150a0d);box-shadow:0 0 0 1px #000,0 0 24px rgba(196,40,58,.16);overflow:hidden;transition:border-color .3s,box-shadow .3s}
+.mo-hz{height:9px;background:repeating-linear-gradient(-45deg,#f1bd5a 0 10px,#15171b 10px 20px);opacity:.9}
+.mo-head{display:flex;align-items:center;gap:12px;padding:12px 16px 4px}
+.mo-ic{width:38px;height:38px;flex:none;display:grid;place-items:center;border-radius:8px;background:rgba(255,123,136,.12);border:1px solid rgba(255,123,136,.5);font-size:1.2rem;color:#ff7b88}
+.mo-kicker{font-size:.68rem;font-weight:800;letter-spacing:.14em;color:#ff7b88}
+.mo h3{margin:2px 0 0;font-family:var(--sans);font-size:1.12rem;letter-spacing:.06em;color:#fff}
+.mo-chip{margin-left:auto;padding:4px 11px;border-radius:4px;font-weight:800;font-size:.76rem;letter-spacing:.08em;border:1px solid currentColor;color:#ff7b88;white-space:nowrap}
+.mo-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:10px 16px}
+.mo-stat{background:#08090b;border:1px solid #2b3036;border-left:3px solid #4a525a;border-radius:6px;padding:7px 10px}
+.mo-stat span{display:block;font-size:.64rem;letter-spacing:.12em;color:#8a929a;font-weight:700}
+.mo-stat b{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.82rem;color:#e6e8ea;word-break:break-word}
+.mo-stat.ok{border-left-color:#62d48f}.mo-stat.ok b{color:#62d48f}
+.mo-stat.warn{border-left-color:#f1bd5a}.mo-stat.warn b{color:#f1bd5a}
+.mo-stat.bad{border-left-color:#ff7b88}.mo-stat.bad b{color:#ff7b88}
+.mo-body{padding:4px 16px 16px}
+.mo-state{padding:12px 14px;border-radius:8px;background:#08090b;border:1px solid #2b3036}
+.mo-st1{font-weight:800;letter-spacing:.05em;font-size:1.04rem;color:#e6e8ea}
+.mo-st2{margin-top:3px;font-size:.84rem;letter-spacing:.06em;color:#a6aeb6;font-weight:600}
+.mo-cd{margin-top:6px;font-size:.84rem;color:#ffb0b8;font-family:ui-monospace,Menlo,Consolas,monospace}
+.mo-bar{height:10px;border-radius:5px;background:#1b1f24;margin-top:10px;overflow:hidden;border:1px solid #2b3036}
+.mo-bar i{display:block;height:100%;width:0;background:repeating-linear-gradient(-45deg,#ff5a6a 0 8px,#c4283a 8px 16px);transition:width .3s linear}
+.mo-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.mo-guard{margin-top:12px;padding:7px;border-radius:10px;background:repeating-linear-gradient(-45deg,#f1bd5a 0 9px,#15171b 9px 18px)}
+.mo-go{display:block;width:100%;padding:15px 12px;border-radius:6px;border:2px solid #ff7b88;background:linear-gradient(180deg,#b0192a,#6b0d19);color:#fff;font:800 1.02rem var(--sans);letter-spacing:.08em;cursor:pointer;box-shadow:inset 0 0 0 1px rgba(255,255,255,.12)}
+.mo-go:hover:not(:disabled){background:linear-gradient(180deg,#c4283a,#7a0f1c)}
+.mo-go:disabled{cursor:not-allowed;color:#6b727a;border-color:#2b3036;background:#15171b repeating-linear-gradient(-45deg,transparent 0 8px,rgba(255,255,255,.03) 8px 16px);box-shadow:none}
+.mo[data-state="locked"] .mo-guard,.mo[data-state="sending"] .mo-guard,.mo[data-state="waiting"] .mo-guard,.mo[data-state="active"] .mo-guard,.mo[data-state="complete"] .mo-guard,.mo[data-state="failed"] .mo-guard{filter:grayscale(1) brightness(.55)}
+.mo-note{margin:8px 2px 0;font-size:.84rem;color:#a6aeb6}
+.mo-sub{margin:8px 2px 0;font-size:.8rem;color:#f1bd5a;font-weight:700;letter-spacing:.04em}
+.mo[data-state="unlocked"],.mo[data-state="confirming"]{border-color:#f1bd5a;box-shadow:0 0 0 1px #000,0 0 22px rgba(241,189,90,.2)}
+.mo[data-state="unlocked"] .mo-chip,.mo[data-state="confirming"] .mo-chip{color:#f1bd5a}
+.mo[data-state="sending"],.mo[data-state="waiting"]{border-color:#f1bd5a}
+.mo[data-state="sending"] .mo-chip,.mo[data-state="waiting"] .mo-chip{color:#f1bd5a;animation:moblink 1s steps(2) infinite}
+.mo[data-state="active"]{border-color:#ff4a5c;animation:mopulse 1.6s ease-in-out infinite}
+.mo[data-state="active"] .mo-chip{color:#ff4a5c;animation:moblink 1s steps(2) infinite}
+.mo[data-state="active"] .mo-st1{color:#ff7b88}
+.mo[data-state="complete"]{border-color:#62d48f}.mo[data-state="complete"] .mo-chip,.mo[data-state="complete"] .mo-st1{color:#62d48f}
+.mo[data-state="failed"]{border-color:#f1bd5a}.mo[data-state="failed"] .mo-chip,.mo[data-state="failed"] .mo-st1{color:#f1bd5a}
+@keyframes mopulse{0%,100%{box-shadow:0 0 0 1px #000,0 0 14px rgba(255,60,80,.25)}50%{box-shadow:0 0 0 1px #000,0 0 36px rgba(255,60,80,.6)}}
+@keyframes moblink{50%{opacity:.35}}
+.mo-modal{border:2px solid #6e1420;background:#0c0d10}
+.mo-modal.warn{border-color:#f1bd5a}
+.mo-mh{font-weight:800;letter-spacing:.06em;font-size:1.02rem;margin:-4px 0 10px;padding-bottom:8px;border-bottom:3px solid #f1bd5a;color:#fff}
+.mo-modal p{color:#c3c8cd;margin:0 0 10px;font-size:.92rem}
+@media (max-width:720px){.mo-stats{grid-template-columns:repeat(2,1fr)}.mo-head{flex-wrap:wrap}}
+@media (prefers-reduced-motion:reduce){.mo,.mo-chip{animation:none !important}}
 </style>
 <script>if(/^#(dashboard|live-data|historical-data|how-it-works|about)$/.test(location.hash))document.documentElement.classList.add("in-dash");</script>
 </head>
@@ -903,10 +952,54 @@ html.in-dash #misty.alert{display:block}
   <div class="dgmsg" id="dgmsg" role="alert"></div>
   <div class="dgbtns"><button class="btn sm" id="dgok" type="button">Enter</button><button class="btn sm ghost" id="dgno" type="button">Cancel</button></div>
 </div></div>
+<div id="mistgate" hidden role="dialog" aria-modal="true" aria-labelledby="mgt" style="position:fixed;inset:0;z-index:170;background:rgba(0,0,0,.78);display:grid;place-items:center;padding:20px">
+  <div class="dgbox mo-modal">
+    <div class="mo-mh" id="mgt">🔐 MANUAL CONTROL AUTHORIZATION</div>
+    <p>Enter the authorization password to unlock remote control of the physical misting system.</p>
+    <input id="mgpw" type="password" autocomplete="off" aria-label="Authorization password">
+    <div class="dgmsg" id="mgmsg" role="alert"></div>
+    <div class="dgbtns"><button class="btn sm ghost" id="mgno" type="button">CANCEL</button><button class="btn sm" id="mgok" type="button">UNLOCK CONTROL</button></div>
+  </div>
+</div>
+<div id="mistconfirm" hidden role="alertdialog" aria-modal="true" aria-labelledby="mct" style="position:fixed;inset:0;z-index:171;background:rgba(0,0,0,.82);display:grid;place-items:center;padding:20px">
+  <div class="dgbox mo-modal warn">
+    <div class="mo-mh" id="mct">⚠ MANUAL MISTING COMMAND</div>
+    <p>This will send a remote command to the physical ESP32 misting system.</p>
+    <p>The misting cycle will run for approximately 30 seconds.</p>
+    <p><b>Make sure the surrounding area is safe before continuing.</b></p>
+    <div class="dgbtns"><button class="btn sm ghost" id="mcno" type="button">CANCEL</button><button class="btn sm" id="mcok" type="button">CONFIRM &amp; SEND COMMAND</button></div>
+  </div>
+</div>
+
 <div id="devpage" hidden role="dialog" aria-modal="true" aria-label="Developer console">
   <div class="dvwrap">
     <div class="dvhead"><h2>Developer console</h2><span class="dvchip" id="dvchip">…</span>
       <span class="dvbtns"><button class="btn sm ghost" id="dvref" type="button">Refresh</button><button class="btn sm ghost" id="dvforget" type="button">Forget this device</button><button class="btn sm" id="dvclose" type="button">Close</button></span></div>
+    <section class="mo" id="mo" data-state="locked" aria-labelledby="mo-title">
+      <div class="mo-hz" aria-hidden="true"></div>
+      <div class="mo-head">
+        <span class="mo-ic" aria-hidden="true">⚠</span>
+        <div><div class="mo-kicker">RESTRICTED CONTROL · AUTHORIZED ACCESS ONLY</div><h3 id="mo-title">MANUAL MISTING OVERRIDE</h3></div>
+        <span class="mo-chip" id="mo-chip">🔒 LOCKED</span>
+      </div>
+      <div class="mo-stats">
+        <div class="mo-stat" id="mo-s1"><span>DEVICE</span><b>…</b></div>
+        <div class="mo-stat" id="mo-s2"><span>SYSTEM</span><b>…</b></div>
+        <div class="mo-stat" id="mo-s3"><span>PUMP</span><b>…</b></div>
+        <div class="mo-stat" id="mo-s4"><span>LAST REPORT</span><b>…</b></div>
+      </div>
+      <div class="mo-body">
+        <div class="mo-state" aria-live="polite"><div class="mo-st1" id="mo-st1"></div><div class="mo-st2" id="mo-st2"></div><div class="mo-cd" id="mo-cd" hidden></div><div class="mo-bar" id="mo-bar" hidden><i id="mo-fill"></i></div></div>
+        <div class="mo-row">
+          <button class="btn sm" id="mo-unlock" type="button">🔒 UNLOCK MANUAL CONTROL</button>
+          <button class="btn sm ghost" id="mo-relock" type="button" hidden>LOCK NOW</button>
+          <button class="btn sm ghost" id="mo-dismiss" type="button" hidden>DISMISS &amp; RE-LOCK</button>
+        </div>
+        <div class="mo-guard"><button class="mo-go" id="mo-go" type="button" disabled>ACTIVATE MANUAL MISTING</button></div>
+        <p class="mo-note" id="mo-note">Runs the physical misting system for 30 seconds.</p>
+        <p class="mo-sub" id="mo-sub" hidden></p>
+      </div>
+    </section>
     <div id="dvbody"></div>
   </div>
 </div>
@@ -2252,15 +2345,162 @@ async function devSubmit(){
 $("#dgok").addEventListener("click",devSubmit);
 $("#dgno").addEventListener("click",()=>{ $("#devgate").hidden=true; });
 $("#dgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") devSubmit(); });
-function openDev(){
+function openDev(){ moStart();
   devOpen=true; $("#devpage").hidden=false; rootEl.classList.add("dev-open");
   devStatusStart=Date.now(); devStatusKey=null; devPoll(); clearInterval(devTimer); devTimer=setInterval(devPoll,2000); renderDev();
 }
-function closeDev(){ devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
+function closeDev(){ moStop(); devOpen=false; $("#devpage").hidden=true; rootEl.classList.remove("dev-open"); clearInterval(devTimer); }
 $("#dvclose").addEventListener("click",closeDev);
 $("#dvref").addEventListener("click",()=>{ devPoll(); poll(); });
 $("#dvforget").addEventListener("click",()=>{ try{ localStorage.removeItem("pupDev"); }catch(e){} closeDev(); });
-document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
+document.addEventListener("keydown",e=>{ if(e.key==="Escape"){ if(moEscape()) return; if(devOpen) closeDev(); else if(!$("#devgate").hidden) $("#devgate").hidden=true; } });
+/* ================= MANUAL MISTING OVERRIDE (Developer Mode only) =================
+   Path: WEBSITE -> Supabase (rpc/request_manual_mist) -> ESP32 (consume_manual_mist) -> pump.
+   "MISTING ACTIVE" is shown ONLY when the ESP32's own misting_status says true. */
+const MO={state:"locked",pw:null,verified:false,lastAct:0,sentAt:0,startedAt:0,doneAt:0,fail:null,note:"",tick:null,fastAt:0,busy:false,bad:0,lockUntil:0};
+const MO_RUN_S=30, MO_CONFIRM_MS=25000, MO_IDLE_MS=60000, MO_DONE_MS=6000;
+const moEl=id=>document.getElementById(id);
+function moLive(){
+  const r=liveRows[0], age=r?(Date.now()-new Date(r.recorded_at).getTime())/1000:Infinity, online=!!r&&age<=STALE_S;
+  return {row:r,age,online,misting:online&&isOn(r.misting_status)};
+}
+function moSys(L){
+  if(!L.online) return ["UNKNOWN","na"];
+  const s=devStatus; if(!s) return ["CHECKING…","na"];
+  const dht=["dht1_ok","dht2_ok","dht3_ok"].filter(k=>s[k]===true).length, bad=[];
+  if(dht<3) bad.push("DHT "+dht+"/3"); if(s.sd_ok===false) bad.push("SD");
+  return bad.length?["CHECK · "+bad.join(", "),"warn"]:["READY","ok"];
+}
+function moStat(id,txt,cls){ const e=moEl(id); e.className="mo-stat "+(cls||""); e.querySelector("b").textContent=txt; }
+function moLock(reason){
+  MO.state="locked"; MO.pw=null; MO.verified=false; MO.fail=null; MO.note=reason||"";
+  moEl("mistgate").hidden=true; moEl("mistconfirm").hidden=true; moEl("mgpw").value="";
+  moRender();
+}
+function moFail(kind,detail){
+  const M={
+    req:["⚠ SUPABASE REQUEST FAILED","The command was NOT delivered. "+(detail||"")+" Check the connection and try again."],
+    timeout:["⚠ COMMAND SENT — NO DEVICE CONFIRMATION","The ESP32 has not confirmed that misting started. Check the device connection or system status. The command may still be queued."],
+    offline:["⚠ DEVICE OFFLINE","No recent data from the ESP32. The command was blocked and NOT sent."]
+  }[kind];
+  MO.state="failed"; MO.fail={t1:M[0],t2:M[1]};
+}
+function moRender(){
+  const el=moEl("mo"); if(!el) return;
+  const now=Date.now(), L=moLive();
+  /* state changes come from REAL ESP32 data, never from the click itself */
+  if(MO.state==="waiting"){
+    if(L.misting){ MO.state="active"; MO.startedAt=now; }
+    else if(now-MO.sentAt>MO_CONFIRM_MS) moFail("timeout");
+  } else if(MO.state==="active"){
+    if(L.online && !L.misting && now-MO.startedAt>1500){ MO.state="complete"; MO.doneAt=now; }
+  } else if(MO.state==="complete"){
+    if(now-MO.doneAt>MO_DONE_MS){ moLock("Cycle complete. Control re-locked."); return; }
+  } else if(MO.state==="unlocked"||MO.state==="confirming"){
+    if(now-MO.lastAct>MO_IDLE_MS){ moLock("Auto-locked after inactivity."); return; }
+  }
+  if((MO.state==="sending"||MO.state==="waiting"||MO.state==="active") && now-MO.fastAt>1000){ MO.fastAt=now; poll(); }
+  const S=MO.state; el.dataset.state=S;
+  moEl("mo-chip").textContent={locked:"🔒 LOCKED",unlocked:"🔓 ARMED",confirming:"🔓 ARMED",sending:"📡 SENDING",waiting:"📡 COMMAND PENDING",active:"● ACTIVE",complete:"✔ COMPLETE",failed:"⚠ FAULT"}[S];
+  const sys=moSys(L);
+  moStat("mo-s1",L.online?"ONLINE":(L.row?"OFFLINE":"NO DATA"),L.online?"ok":(L.row?"bad":""));
+  moStat("mo-s2",sys[0],sys[1]);
+  moStat("mo-s3",L.online?(L.misting?"RUNNING":"IDLE"):"UNKNOWN",L.misting?"bad":(L.online?"ok":""));
+  moStat("mo-s4",Number.isFinite(L.age)?Math.round(L.age)+" s ago":"–",L.online?"":"warn");
+  let t1="",t2="",cd="";
+  if(S==="locked"){ t1="🔒 MANUAL CONTROL LOCKED"; t2="AUTHORIZED ACCESS REQUIRED"; }
+  else if(S==="unlocked"||S==="confirming"){ t1="🔓 MANUAL CONTROL UNLOCKED"; t2="REMOTE HARDWARE CONTROL ENABLED"; }
+  else if(S==="sending"){ t1="SENDING COMMAND…"; t2="CONTACTING SUPABASE"; }
+  else if(S==="waiting"){ t1="COMMAND SENT — WAITING FOR ESP32"; t2="REQUEST PENDING · NOT YET CONFIRMED BY THE HARDWARE ("+Math.round((now-MO.sentAt)/1000)+" s)"; }
+  else if(S==="active"){
+    const rem=Math.max(0,MO_RUN_S-(now-MO.startedAt)/1000);
+    t1="● MISTING ACTIVE"; t2="MANUAL CYCLE IN PROGRESS";
+    cd=!L.online?"NO RECENT DEVICE DATA — STATUS UNCONFIRMED":rem>0?"≈ "+Math.ceil(rem)+" s remaining (estimate: the ESP32 controls the real duration)":"Waiting for the ESP32 to report pump OFF…";
+    moEl("mo-fill").style.width=Math.min(100,(now-MO.startedAt)/(MO_RUN_S*10))+"%";
+  }
+  else if(S==="complete"){ t1="✔ MISTING COMPLETE"; t2="ESP32 REPORTS PUMP OFF · RE-LOCKING…"; }
+  else if(S==="failed"){ t1=MO.fail.t1; t2=MO.fail.t2; }
+  moEl("mo-st1").textContent=t1; moEl("mo-st2").textContent=t2;
+  const cdE=moEl("mo-cd"); cdE.hidden=!cd; cdE.textContent=cd; moEl("mo-bar").hidden=S!=="active";
+  const canGo=S==="unlocked"&&L.online&&!L.misting;
+  moEl("mo-go").disabled=!canGo;
+  moEl("mo-unlock").hidden=S!=="locked";
+  moEl("mo-relock").hidden=!(S==="unlocked"||S==="confirming");
+  moEl("mo-dismiss").hidden=S!=="failed";
+  let note="Runs the physical misting system for 30 seconds.";
+  if(S==="unlocked"||S==="confirming"){
+    if(!L.online) note="⚠ DEVICE OFFLINE — activation blocked.";
+    else if(L.misting) note="Pump is already running — activation blocked.";
+    else note+=" Auto-lock in "+Math.max(0,Math.ceil((MO_IDLE_MS-(now-MO.lastAct))/1000))+" s.";
+  }
+  moEl("mo-note").textContent=note;
+  const sub=moEl("mo-sub"); let st="";
+  if(S==="locked"&&MO.note) st=MO.note; else if((S==="unlocked"||S==="confirming")&&!MO.verified) st="Password is verified by the server when the command is sent.";
+  sub.hidden=!st; sub.textContent=st;
+}
+async function moVerify(pw){
+  try{
+    const r=await fetch(SUPABASE_URL+"rpc/verify_manual_mist_password",{method:"POST",headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_password:pw})});
+    const t=(await r.text()).trim();
+    if(r.ok) return t==="false"?"bad":"ok";
+    if(/wrong password|incorrect|invalid/i.test(t)) return "bad";
+    if(r.status===404||/PGRST202|could not find/i.test(t)) return "defer";   /* optional check function not installed */
+    return "net";
+  }catch(e){ return "net"; }
+}
+async function moAuth(){
+  const msg=moEl("mgmsg"), pw=moEl("mgpw").value, now=Date.now();
+  if(MO.busy) return;
+  if(now<MO.lockUntil){ msg.textContent="Too many attempts. Try again in "+Math.ceil((MO.lockUntil-now)/1000)+" s."; return; }
+  if(!pw){ msg.textContent="Enter the authorization password"; return; }
+  MO.busy=true; msg.textContent="Verifying…";
+  const v=await moVerify(pw); MO.busy=false;
+  if(v==="bad"){
+    MO.bad++; msg.textContent="Authorization rejected";
+    if(MO.bad>=5){ MO.lockUntil=Date.now()+30000; MO.bad=0; msg.textContent="Too many attempts. Locked for 30 s."; }
+    const box=moEl("mistgate").querySelector(".dgbox"); box.classList.remove("shake"); void box.offsetWidth; box.classList.add("shake"); moEl("mgpw").value=""; return;
+  }
+  if(v==="net"){ msg.textContent="Could not reach the server. Try again."; return; }
+  MO.bad=0; MO.pw=pw; MO.verified=(v==="ok"); MO.state="unlocked"; MO.lastAct=Date.now(); MO.note="";
+  moEl("mgpw").value=""; moEl("mistgate").hidden=true; sfx("enter"); moRender();
+}
+async function moSend(){
+  if(MO.state!=="confirming") return;
+  moEl("mistconfirm").hidden=true;
+  const L=moLive();
+  if(!L.online){ moFail("offline"); moRender(); return; }
+  if(L.misting){ MO.state="unlocked"; MO.lastAct=Date.now(); moRender(); return; }
+  MO.state="sending"; moRender();                         /* state changes BEFORE the request: one click = one command */
+  try{
+    const r=await fetch(SUPABASE_URL+"rpc/request_manual_mist",{method:"POST",headers:{apikey:SUPABASE_KEY,"Content-Type":"application/json"},body:JSON.stringify({p_password:MO.pw})});
+    if(!r.ok){
+      const t=await r.text();
+      if(/wrong password|incorrect|invalid password/i.test(t)){ moLock("Authorization rejected by the server."); return; }
+      moFail("req","HTTP "+r.status+"."); moRender(); return;
+    }
+    MO.state="waiting"; MO.sentAt=Date.now(); MO.fastAt=0;
+  }catch(e){ moFail("req","Network error."); }
+  moRender();
+}
+function moStart(){ clearInterval(MO.tick); MO.tick=setInterval(moRender,250); moRender(); }
+function moStop(){ clearInterval(MO.tick); MO.tick=null; moLock(""); }
+function moEscape(){
+  if(!moEl("mistconfirm").hidden){ moEl("mistconfirm").hidden=true; if(MO.state==="confirming") MO.state="unlocked"; moRender(); return true; }
+  if(!moEl("mistgate").hidden){ moEl("mistgate").hidden=true; return true; }
+  return false;
+}
+moEl("mo-unlock").addEventListener("click",()=>{ moEl("mgmsg").textContent=""; moEl("mgpw").value=""; moEl("mistgate").hidden=false; setTimeout(()=>moEl("mgpw").focus(),60); });
+moEl("mgno").addEventListener("click",()=>{ moEl("mistgate").hidden=true; });
+moEl("mgok").addEventListener("click",moAuth);
+moEl("mgpw").addEventListener("keydown",e=>{ if(e.key==="Enter") moAuth(); });
+moEl("mo-go").addEventListener("click",()=>{ if(MO.state!=="unlocked") return; MO.state="confirming"; MO.lastAct=Date.now(); moEl("mistconfirm").hidden=false; moRender(); setTimeout(()=>moEl("mcno").focus(),60); });
+moEl("mcno").addEventListener("click",()=>{ moEl("mistconfirm").hidden=true; if(MO.state==="confirming") MO.state="unlocked"; MO.lastAct=Date.now(); moRender(); });
+moEl("mcok").addEventListener("click",moSend);
+moEl("mo-relock").addEventListener("click",()=>moLock("Locked manually."));
+moEl("mo-dismiss").addEventListener("click",()=>moLock(""));
+["pointerdown","keydown"].forEach(ev=>moEl("mo").addEventListener(ev,()=>{ MO.lastAct=Date.now(); },{passive:true}));
+document.addEventListener("visibilitychange",()=>{ if(document.hidden && (MO.state==="unlocked"||MO.state==="confirming")) moLock("Auto-locked: page was hidden."); });
+
 let devStatus=null, devStatusState="loading", devStatusKey=null, devStatusChanged=0, devStatusStart=0, devLastVal={}, devSince={};
 async function devPoll(){
   if(!devOpen) return;
