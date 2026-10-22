@@ -87,7 +87,7 @@ button{font:inherit;color:inherit}
 .two-col{display:grid;grid-template-columns:1fr 1fr;gap:44px;align-items:center}
 .cards4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
 .cards3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:30px}
-.cards6{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:34px}
+.cards6{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:34px}
 .ic{padding:22px 20px}
 .ic .em{width:52px;height:52px;display:flex;align-items:center;justify-content:center;font-size:1.65rem;line-height:1;border-radius:12px;background:rgba(143,18,32,.28);border:1px solid rgba(196,40,58,.45);font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
 .card.ic h3{font-size:1.15rem;margin:14px 0 6px;padding:0}
@@ -658,9 +658,9 @@ html.in-dash #misty.alert{display:block}
 .node.go .r2{animation:cslide .45s cubic-bezier(.3,1.3,.5,1) .15s both}
 .node.go .pi{transform-origin:0 50%;animation:cgrow .45s ease-out .55s both}
 .node.go .nz{transform-origin:50% 50%;animation:cpopn .35s cubic-bezier(.3,1.9,.5,1) both}
-.node.go .nz1{animation-delay:1s}.node.go .nz2{animation-delay:1.2s}.node.go .nz3{animation-delay:1.4s}
-.node.go .sn{transform-origin:50% 0;animation:cdropbox .5s cubic-bezier(.3,1.5,.5,1) 1.65s both}
-.node.go .led{animation:ledb 1s ease-in-out 2.2s infinite}
+.node.go .nz1{animation-delay:1s}.node.go .nz2{animation-delay:1.15s}.node.go .nz3{animation-delay:1.3s}.node.go .nz4{animation-delay:1.45s}
+.node.go .sn{transform-origin:50% 0;animation:cdropbox .5s cubic-bezier(.3,1.5,.5,1) 1.7s both}
+.node.go .lt{animation:ltb 1.8s ease-in-out infinite}.node.go .lt1{animation-delay:2.3s}.node.go .lt2{animation-delay:2.6s}.node.go .lt3{animation-delay:2.9s}
 .node.go .md{transform-origin:50% 50%;animation:cpopn .4s cubic-bezier(.3,1.9,.5,1) calc(var(--i)*.13s + .2s) both,cfall 2.4s ease-in calc(var(--i)*.13s + 1.6s) infinite}
 
 /* ===== "What are we measuring?": pictures move on hover (computer) or when centred on screen (phone) ===== */
@@ -930,10 +930,55 @@ html.in-dash #misty.alert{display:block}
 .vframe{max-width:900px;margin:26px auto 0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#000;box-shadow:0 14px 36px rgba(0,0,0,.45),0 0 0 4px rgba(143,18,32,.18)}
 .vframe video{display:block;width:100%;aspect-ratio:16/9;background:#000}
 .vcap{text-align:center;color:var(--muted);font-size:.92rem;margin-top:12px}
+
+/* ===== start-up intro ===== */
+#boot{display:none;position:fixed;inset:0;z-index:300;overflow:hidden}
+html.booting #boot{display:block}
+html.booting{overflow:hidden}
+html.booting #misty,html.bootfly #misty{opacity:0}
+#bootbg{position:absolute;inset:0;transition:opacity .9s ease;background-color:var(--bg);background-image:radial-gradient(900px 480px at 88% -100px, rgba(176,25,42,.34), transparent 70%),radial-gradient(760px 560px at -8% 42%, rgba(143,18,32,.20), transparent 70%),linear-gradient(rgba(255,255,255,.028) 1px, transparent 1px),linear-gradient(90deg, rgba(255,255,255,.028) 1px, transparent 1px);background-size:auto,auto,34px 34px,34px 34px;background-repeat:no-repeat,no-repeat,repeat,repeat}
+#boot.fade #bootbg{opacity:0}
+#boot.fade{pointer-events:none}
+#bootm{position:absolute;transform:translate(var(--tx,0px),var(--ty,0px)) scale(var(--sc,0));transition:transform .55s cubic-bezier(.3,1.7,.5,1);will-change:transform;filter:drop-shadow(0 10px 22px rgba(0,0,0,.45))}
+#bootm.fly{transition:transform 1s cubic-bezier(.55,0,.2,1)}
+#bootm .bm-in{transform-origin:50% 100%}
+#bootm .bm-in svg{width:100%;height:auto;display:block;overflow:visible}
+#bootm.bounce .bm-in{animation:bmbounce 1.7s ease-in-out both}
+@keyframes bmbounce{0%{translate:0 0;scale:1 1}10%{translate:0 -20px;scale:.94 1.08}26%{translate:0 0;scale:1.12 .86}34%{translate:0 -11px;scale:.97 1.04}48%{translate:0 0;scale:1.08 .92}56%{translate:0 -5px;scale:1 1}66%{translate:0 0;scale:1.04 .96}100%{translate:0 0;scale:1 1}}
+#bootm .mf{display:none}
+#bootm[data-mood="wow"] :is(.e-wow,.m-o,.x-bang),#bootm[data-mood="excited"] :is(.e-happy,.m-open,.x-spark),#bootm[data-mood="hello"] :is(.e-norm,.m-open,.x-spark),#bootm[data-mood="joy"] :is(.e-happy,.m-open,.x-drops){display:inline}
+#bootm .eye{transform-box:fill-box;transform-origin:center;animation:blink 3.2s infinite}
+#bootm .arm{transform-origin:55px 62px}
+#bootm[data-mood="hello"] .arm,#bootm[data-mood="excited"] .arm{animation:marm .42s ease-in-out infinite alternate}
+#bootm .tw{transform-box:fill-box;transform-origin:center;animation:twk2 1s ease-in-out infinite}#bootm .tw.d2{animation-delay:.4s}
+#bootm .dp{animation:dpf 1.1s ease-in infinite}#bootm .dp.d2{animation-delay:.35s}#bootm .dp.d3{animation-delay:.7s}
+#bootm .x-bang .pp{transform-box:fill-box;transform-origin:center;animation:xpop .55s cubic-bezier(.3,1.8,.5,1) both}
+.bm-bub{position:absolute;left:50%;top:var(--bt,70%);transform:translate(-50%,10px) scale(.9);max-width:90vw;padding:12px 20px;border-radius:16px;background:rgba(36,41,48,.97);border:1px solid rgba(255,123,136,.6);font-weight:700;font-size:clamp(1rem,3.6vw,1.4rem);color:#fff;opacity:0;white-space:nowrap;transition:opacity .3s,transform .45s cubic-bezier(.3,1.6,.5,1);box-shadow:0 10px 26px rgba(0,0,0,.45)}
+.bm-bub.show{opacity:1;transform:translate(-50%,0) scale(1)}
+#boottap{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);padding:8px 16px;border-radius:999px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.35);color:#d9dde1;font-weight:600;font-size:.88rem;animation:bounceTap 1.6s ease-in-out infinite}
+@keyframes bounceTap{50%{translate:0 -5px}}
+#boottap.gone{display:none}
+#bootskip{position:absolute;right:16px;bottom:18px;border:1px solid rgba(255,255,255,.25);background:rgba(0,0,0,.3);color:#c3c8cd;border-radius:999px;padding:6px 14px;font-weight:600;cursor:pointer}
+#boot .bb{position:absolute;width:10px;height:10px;border-radius:50%;margin:-5px;background:var(--c,#bfe6ff);animation:bbp 1s ease-out forwards}
+@keyframes bbp{from{transform:translate(0,0) scale(1);opacity:1}to{transform:translate(var(--dx),var(--dy)) scale(.3);opacity:0}}
+/* roof system: three separate lights */
+@keyframes ltb{0%,100%{opacity:1}50%{opacity:.3}}
+/* what are we measuring: 2 cards per row on a computer, 1 on a phone; picture on the left */
+.cards6 .card.ic{display:grid;grid-template-columns:auto 1fr;column-gap:20px;align-items:center;text-align:left;padding:20px 22px}
+.cards6 .card.ic .em{grid-row:1 / span 2}
+.cards6 .card.ic h3{margin:0 0 4px;align-self:end}
+.cards6 .card.ic p{margin:0;align-self:start}
 </style>
-<script>if(/^#(dashboard|live-data|historical-data|how-it-works|about)$/.test(location.hash))document.documentElement.classList.add("in-dash");</script>
+<script>(function(){var h=document.documentElement,x=/^#(dashboard|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>
 </head>
 <body>
+<div id="boot" aria-hidden="true">
+  <div id="bootbg"></div>
+  <div id="bootm" data-mood="wow"><div class="bm-in"></div></div>
+  <div id="bootbub" class="bm-bub"></div>
+  <div id="boottap">🔊 Tap anywhere for sound</div>
+  <button id="bootskip" type="button">Skip ›</button>
+</div>
 <div id="sbar" aria-hidden="true"></div>
 
 <!-- ===== landing: floating bar + progress guide ===== -->
@@ -1187,7 +1232,7 @@ html.in-dash #misty.alert{display:block}
       </div>
       <div class="arr" aria-hidden="true">→</div>
       <div class="card node" title="Tap to watch it again">
-        <svg viewBox="0 0 84 84" aria-hidden="true"><polygon class="r2" points="8,24 76,24 70,34 14,34" fill="#8f1220" stroke="#c4283a"/><rect class="pi" x="14" y="38" width="56" height="4" rx="2" fill="#aab1b8"/><g fill="#dfe4e8"><circle class="nz nz1" cx="24" cy="46" r="3"/><circle class="nz nz2" cx="42" cy="46" r="3"/><circle class="nz nz3" cx="60" cy="46" r="3"/></g><g class="sn"><line x1="16" y1="42" x2="16" y2="58" stroke="#9aa2aa" stroke-width="2"/><rect x="7" y="58" width="18" height="12" rx="2" fill="#2b3138" stroke="#9aa2aa"/><circle class="led" cx="12" cy="64" r="2.2" fill="#62d48f"/><rect x="16" y="62" width="6" height="1.6" fill="#6b727a"/><rect x="16" y="65.5" width="4" height="1.6" fill="#6b727a"/></g></svg>
+        <svg viewBox="0 0 84 84" aria-hidden="true"><polygon class="r2" points="8,24 76,24 70,34 14,34" fill="#8f1220" stroke="#c4283a"/><rect class="pi" x="14" y="38" width="56" height="4" rx="2" fill="#aab1b8"/><g fill="#dfe4e8"><circle class="nz nz1" cx="21" cy="46" r="2.8"/><circle class="nz nz2" cx="31" cy="46" r="2.8"/><circle class="nz nz3" cx="53" cy="46" r="2.8"/><circle class="nz nz4" cx="63" cy="46" r="2.8"/></g><g class="sn"><line x1="42" y1="42" x2="42" y2="55" stroke="#9aa2aa" stroke-width="2"/><rect x="28" y="55" width="28" height="15" rx="3" fill="#2b3138" stroke="#9aa2aa"/><circle class="lt lt1" cx="35" cy="62.5" r="3.2" fill="#ff5a5f"/><circle class="lt lt2" cx="42" cy="62.5" r="3.2" fill="#62d48f"/><circle class="lt lt3" cx="49" cy="62.5" r="3.2" fill="#f1bd5a"/></g></svg>
         <b>Roof system</b><small>Sensors, a small computer and nozzles</small>
       </div>
       <div class="arr" aria-hidden="true">→</div>
@@ -1214,16 +1259,18 @@ html.in-dash #misty.alert{display:block}
   </div>
 </section>
 
-<section class="sec" id="sec-why">
+<section class="sec alt" id="sec-measure">
   <div class="wrap">
-    <div class="eyebrow rv">The reason</div>
-    <h2 class="t rv">WHY DOES IT MATTER?</h2>
-    <p class="lead rv">Outdoor spaces on campus can get very hot. This project keeps an eye on the heat, sprays mist in a careful way, and saves the readings so we can check how well it works. It does not claim to fix heat discomfort.</p>
-    <div class="cards4">
-      <div class="card ic rv"><div class="em" aria-hidden="true">🌡</div><h3>Heat conditions</h3><p>Measures how hot, how humid and how windy it is.</p></div>
-      <div class="card ic rv" style="--d:.08s"><div class="em" aria-hidden="true">💦</div><h3>Mist</h3><p>Sprays by itself when the weather is right.</p></div>
-      <div class="card ic rv" style="--d:.16s"><div class="em" aria-hidden="true">📊</div><h3>Records</h3><p>Saves the readings over time.</p></div>
-      <div class="card ic rv" style="--d:.24s"><div class="em" aria-hidden="true">⚡</div><h3>Water and power</h3><p>Tracks how much water and electricity are used.</p></div>
+    <div class="eyebrow rv">The measurements</div>
+    <h2 class="t rv" style="max-width:none">WHAT ARE WE MEASURING?</h2>
+    <p class="hnote rv" id="mhint" style="font-size:1rem"></p>
+    <div class="cards6">
+      <div class="card ic rv"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="26" y="5" width="12" height="42" rx="6" fill="rgba(255,255,255,.1)" stroke="#cfd6dd" stroke-width="2"/><circle cx="32" cy="51" r="11" fill="#cfd6dd"/><circle cx="32" cy="51" r="8.6" fill="#ff5a5f"/><rect class="hg" x="29.4" y="9" width="5.2" height="42" rx="2.6" fill="#ff5a5f"/><g stroke="#cfd6dd" stroke-width="1.8" stroke-linecap="round"><line x1="42" y1="12" x2="48" y2="12"/><line x1="42" y1="20" x2="46" y2="20"/><line x1="42" y1="28" x2="48" y2="28"/><line x1="42" y1="36" x2="46" y2="36"/></g></svg></div><h3>TEMPERATURE</h3><p>How hot the air is.</p></div>
+      <div class="card ic rv" style="--d:.06s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><clipPath id="mvDrop"><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z"/></clipPath></defs><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z" fill="rgba(191,230,255,.12)"/><g clip-path="url(#mvDrop)"><g class="wl"><path class="wl2" d="M-32 0 q8 -4 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 V70 H-32Z" fill="#5fb4f0"/></g></g><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z" fill="none" stroke="#bfe6ff" stroke-width="2.5"/></svg></div><h3>HUMIDITY</h3><p>How much moisture is in the air.</p></div>
+      <div class="card ic rv" style="--d:.12s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><radialGradient id="mvSun"><stop offset="0" stop-color="#ffd27a" stop-opacity=".9"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs><circle class="sg" cx="32" cy="32" r="28" fill="url(#mvSun)"/><g class="sr"><g stroke="#ffb347" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="7"/><line x1="32" y1="50" x2="32" y2="57"/><line x1="14" y1="32" x2="7" y2="32"/><line x1="50" y1="32" x2="57" y2="32"/><line x1="44.7" y1="19.3" x2="49.7" y2="14.3"/><line x1="19.3" y1="19.3" x2="14.3" y2="14.3"/><line x1="44.7" y1="44.7" x2="49.7" y2="49.7"/><line x1="19.3" y1="44.7" x2="14.3" y2="49.7"/></g></g><circle class="sc" cx="32" cy="32" r="11" fill="#ffb347"/></svg></div><h3>HEAT INDEX</h3><p>How hot it really feels on your body, using the heat and the humidity together.</p></div>
+      <div class="card ic rv"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="wg" fill="none" stroke="#cfd6dd" stroke-linecap="round"><path class="w1" d="M6 20 q8 -9 16 0 t16 0 t16 0"/><path class="w2" d="M2 32 q8 -9 16 0 t16 0 t16 0 t8 0"/><path class="w3" d="M8 44 q8 -9 16 0 t16 0 t16 0"/></g></svg></div><h3>WIND SPEED</h3><p>How fast the wind blows.</p></div>
+      <div class="card ic rv" style="--d:.06s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><clipPath id="mvTank"><rect x="14" y="34" width="36" height="26" rx="4"/></clipPath></defs><rect x="22" y="3" width="20" height="8" rx="2" fill="#aab1b8"/><rect x="29" y="11" width="6" height="5" fill="#aab1b8"/><circle class="dd" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><circle class="dd dd2" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><circle class="dd dd3" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><rect x="14" y="34" width="36" height="26" rx="4" fill="rgba(191,230,255,.08)"/><g clip-path="url(#mvTank)"><rect class="tw" x="10" y="34" width="44" height="30" fill="#5fb4f0"/></g><rect x="14" y="34" width="36" height="26" rx="4" fill="none" stroke="#cfd6dd" stroke-width="2.4"/></svg></div><h3>WATER USED</h3><p>How much water the system sprays.</p></div>
+      <div class="card ic dim rv" style="--d:.12s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><radialGradient id="mvZap"><stop offset="0" stop-color="#ffd85a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd85a" stop-opacity="0"/></radialGradient></defs><circle class="eg" cx="32" cy="32" r="27" fill="url(#mvZap)"/><polygon class="bolt" points="36,4 16,36 29,36 26,60 48,26 34,26" fill="#f1bd5a" stroke="#fff3b0" stroke-width="1.5" stroke-linejoin="round"/><g stroke="#fff3b0" stroke-width="2" stroke-linecap="round"><line class="spk" style="--d:0s" x1="9" y1="14" x2="15" y2="18"/><line class="spk" style="--d:.5s" x1="55" y1="17" x2="49" y2="21"/><line class="spk" style="--d:1s" x1="53" y1="49" x2="47" y2="45"/><line class="spk" style="--d:.3s" x1="11" y1="51" x2="17" y2="47"/></g></svg></div><h3>ELECTRICITY USED</h3><p>Measured separately. Not shown on this site.</p></div>
     </div>
   </div>
 </section>
@@ -1231,7 +1278,7 @@ html.in-dash #misty.alert{display:block}
 
 <!-- ===== HOW IT WORKS ===== -->
 <div id="how-wrap" data-ch="how">
-<section class="sec alt" id="sec-how">
+<section class="sec" id="sec-how">
   <div class="wrap">
     <div class="eyebrow rv">The system</div>
     <h2 class="t rv" style="max-width:none">HOW DOES THE SYSTEM WORK?</h2>
@@ -1258,7 +1305,7 @@ html.in-dash #misty.alert{display:block}
   </div>
 </section>
 
-<section class="sec" id="sec-when">
+<section class="sec alt" id="sec-when">
   <div class="wrap">
     <div class="eyebrow rv">The decision</div>
     <h2 class="t rv" style="max-width:none">WHEN DOES THE SYSTEM MIST?</h2>
@@ -1392,21 +1439,7 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
 
 <!-- ===== DATA ===== -->
 <div id="data-wrap" data-ch="data">
-<section class="sec alt" id="sec-measure">
-  <div class="wrap">
-    <div class="eyebrow rv">The measurements</div>
-    <h2 class="t rv" style="max-width:none">WHAT ARE WE MEASURING?</h2>
-    <p class="hnote rv" id="mhint" style="font-size:1rem"></p>
-    <div class="cards6">
-      <div class="card ic rv"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><rect x="26" y="5" width="12" height="42" rx="6" fill="rgba(255,255,255,.1)" stroke="#cfd6dd" stroke-width="2"/><circle cx="32" cy="51" r="11" fill="#cfd6dd"/><circle cx="32" cy="51" r="8.6" fill="#ff5a5f"/><rect class="hg" x="29.4" y="9" width="5.2" height="42" rx="2.6" fill="#ff5a5f"/><g stroke="#cfd6dd" stroke-width="1.8" stroke-linecap="round"><line x1="42" y1="12" x2="48" y2="12"/><line x1="42" y1="20" x2="46" y2="20"/><line x1="42" y1="28" x2="48" y2="28"/><line x1="42" y1="36" x2="46" y2="36"/></g></svg></div><h3>TEMPERATURE</h3><p>How hot the air is.</p></div>
-      <div class="card ic rv" style="--d:.06s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><clipPath id="mvDrop"><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z"/></clipPath></defs><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z" fill="rgba(191,230,255,.12)"/><g clip-path="url(#mvDrop)"><g class="wl"><path class="wl2" d="M-32 0 q8 -4 16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 t16 0 V70 H-32Z" fill="#5fb4f0"/></g></g><path d="M32 6 C32 6 13 28 13 41 A19 19 0 0 0 51 41 C51 28 32 6 32 6Z" fill="none" stroke="#bfe6ff" stroke-width="2.5"/></svg></div><h3>HUMIDITY</h3><p>How much moisture is in the air.</p></div>
-      <div class="card ic rv" style="--d:.12s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><radialGradient id="mvSun"><stop offset="0" stop-color="#ffd27a" stop-opacity=".9"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient></defs><circle class="sg" cx="32" cy="32" r="28" fill="url(#mvSun)"/><g class="sr"><g stroke="#ffb347" stroke-width="3" stroke-linecap="round"><line x1="32" y1="14" x2="32" y2="7"/><line x1="32" y1="50" x2="32" y2="57"/><line x1="14" y1="32" x2="7" y2="32"/><line x1="50" y1="32" x2="57" y2="32"/><line x1="44.7" y1="19.3" x2="49.7" y2="14.3"/><line x1="19.3" y1="19.3" x2="14.3" y2="14.3"/><line x1="44.7" y1="44.7" x2="49.7" y2="49.7"/><line x1="19.3" y1="44.7" x2="14.3" y2="49.7"/></g></g><circle class="sc" cx="32" cy="32" r="11" fill="#ffb347"/></svg></div><h3>HEAT INDEX</h3><p>How hot it really feels on your body, using the heat and the humidity together.</p></div>
-      <div class="card ic rv"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><g class="wg" fill="none" stroke="#cfd6dd" stroke-linecap="round"><path class="w1" d="M6 20 q8 -9 16 0 t16 0 t16 0"/><path class="w2" d="M2 32 q8 -9 16 0 t16 0 t16 0 t8 0"/><path class="w3" d="M8 44 q8 -9 16 0 t16 0 t16 0"/></g></svg></div><h3>WIND SPEED</h3><p>How fast the wind blows.</p></div>
-      <div class="card ic rv" style="--d:.06s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><clipPath id="mvTank"><rect x="14" y="34" width="36" height="26" rx="4"/></clipPath></defs><rect x="22" y="3" width="20" height="8" rx="2" fill="#aab1b8"/><rect x="29" y="11" width="6" height="5" fill="#aab1b8"/><circle class="dd" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><circle class="dd dd2" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><circle class="dd dd3" cx="32" cy="19" r="2.6" fill="#7ec8ff"/><rect x="14" y="34" width="36" height="26" rx="4" fill="rgba(191,230,255,.08)"/><g clip-path="url(#mvTank)"><rect class="tw" x="10" y="34" width="44" height="30" fill="#5fb4f0"/></g><rect x="14" y="34" width="36" height="26" rx="4" fill="none" stroke="#cfd6dd" stroke-width="2.4"/></svg></div><h3>WATER USED</h3><p>How much water the system sprays.</p></div>
-      <div class="card ic dim rv" style="--d:.12s"><div class="em vis" aria-hidden="true"><svg viewBox="0 0 64 64"><defs><radialGradient id="mvZap"><stop offset="0" stop-color="#ffd85a" stop-opacity=".85"/><stop offset="1" stop-color="#ffd85a" stop-opacity="0"/></radialGradient></defs><circle class="eg" cx="32" cy="32" r="27" fill="url(#mvZap)"/><polygon class="bolt" points="36,4 16,36 29,36 26,60 48,26 34,26" fill="#f1bd5a" stroke="#fff3b0" stroke-width="1.5" stroke-linejoin="round"/><g stroke="#fff3b0" stroke-width="2" stroke-linecap="round"><line class="spk" style="--d:0s" x1="9" y1="14" x2="15" y2="18"/><line class="spk" style="--d:.5s" x1="55" y1="17" x2="49" y2="21"/><line class="spk" style="--d:1s" x1="53" y1="49" x2="47" y2="45"/><line class="spk" style="--d:.3s" x1="11" y1="51" x2="17" y2="47"/></g></svg></div><h3>ELECTRICITY USED</h3><p>Measured separately. Not shown on this site.</p></div>
-    </div>
-  </div>
-</section>
+
 
 <section class="sec" id="sec-water">
   <div class="waterfill" aria-hidden="true"><svg class="wv" viewBox="0 0 2400 40" preserveAspectRatio="none"><path d="M0 20 Q150 2 300 20 T600 20 T900 20 T1200 20 T1500 20 T1800 20 T2100 20 T2400 20 V40 H0Z"/></svg><div class="wb"></div></div>
@@ -1460,10 +1493,9 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
         <button role="tab" data-view="home" aria-selected="true">Dashboard</button>
         <button role="tab" data-view="live" aria-selected="false">Live Data</button>
         <button role="tab" data-view="history" aria-selected="false">Historical Data</button>
-        <button role="tab" data-view="how" aria-selected="false">How It Works</button>
         <button role="tab" data-view="about" aria-selected="false">About</button>
       </nav>
-        <div class="fade r"><button type="button" class="tarrow" data-dir="1" aria-label="Show more sections: How It Works and About">›</button></div>
+        <div class="fade r"><button type="button" class="tarrow" data-dir="1" aria-label="Show more sections">›</button></div>
       </div>
     </div>
   </div>
@@ -1559,38 +1591,6 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
     <h3>Records</h3>
     <div class="note" id="tblNote" style="padding-top:4px"></div>
     <div class="tablewrap"><table id="histTable"></table></div>
-  </div>
-</section>
-
-<!-- How it works tab -->
-<section id="view-how" class="view" aria-labelledby="h-how">
-  <div class="prose">
-    <h2 id="h-how">HOW IT WORKS</h2>
-    <p>The system measures the heat, the humidity and the wind under the shed. A small computer (called the ESP32) checks them every 2 seconds and turns the pump on or off by itself.</p>
-
-    <h3>When does it mist?</h3>
-    <div class="rule">Temperature is 31 °C or hotter<br>AND humidity is below 70%<br>AND wind speed is between 0 and 4 m/s</div>
-    <p>If even one of them is not true, the pump stays OFF. These are this project's own settings, not official standards.</p>
-
-    <h3>How the pump runs</h3>
-    <div class="two" style="margin:8px 0">
-      <div class="card tc"><div class="t">Pump ON</div><div class="v">30 seconds</div></div>
-      <div class="card tc"><div class="t">Rest</div><div class="v">3 minutes</div></div>
-    </div>
-    <p>After the rest, the weather is checked again. The weather can be right during the rest, but the pump waits first.</p>
-
-    <h3>Where the numbers come from</h3>
-    <ul>
-      <li><strong>Temperature and humidity:</strong> the average of three small sensors.</li>
-      <li><strong>Heat index (how hot it feels):</strong> worked out from the temperature and humidity with a standard weather formula.</li>
-      <li><strong>Wind speed:</strong> measured with a wind meter (called an anemometer).</li>
-      <li><strong>Water used:</strong> a sensor in the pipe counts the water in liters.</li>
-      <li><strong>Electricity used:</strong> measured separately with a small electric meter.</li>
-    </ul>
-
-    <h3>Where the data goes</h3>
-    <div class="flow"><span class="s">Sensors</span><span class="a">→</span><span class="s">Controller</span><span class="a">→</span><span class="s">Wi-Fi</span><span class="a">→</span><span class="s">Online storage</span><span class="a">→</span><span class="s">This website</span></div>
-    <p>A new reading is sent every 2 seconds. The online storage also makes minute, hourly, daily and monthly summaries for the Historical Data page, and every reading is saved on a memory card too. This website only shows the data. It cannot control the system.</p>
   </div>
 </section>
 
@@ -1856,6 +1856,16 @@ const SFX={
   mood_run(t){ SFX.boing(t); }
 };
 Object.assign(SFX,{
+  m_temp(t){ osc("sine",260,1100,t,1.3,.09); for(let i=0;i<4;i++) osc("triangle",520+i*180,null,t+.2+i*.28,.09,.07); osc("sine",1100,330,t+1.7,1.2,.06); },
+  m_hum(t){ bubbles(t,9,1.6,380,1100,.09); bubble(t+1.9,300,.2,.12); bubble(t+2.3,420,.18,.1); },
+  m_sun(t){ bell(t,523.25,1,.08); bell(t+.35,783.99,1,.08); bell(t+.7,1046.5,1.4,.09); nz(t+.5,1.4,.05,2500,6000,.8); },
+  m_wind(t){ nz(t,2.2,.14,300,1900,.9); nz(t+1.8,1.8,.1,1900,350,.9); },
+  m_water(t){ for(let i=0;i<3;i++){ osc("sine",950+i*90,480,t+i*.5,.12,.1); bubble(t+i*.5+.08,700,.08,.07); } nz(t+1.7,1,.05,1200,500,.8); },
+  m_elec(t){ for(let i=0;i<5;i++){ nz(t+i*.3,.09,.12,3500,1200,2); osc("sawtooth",110+i*14,60,t+i*.3,.1,.05); } osc("square",60,null,t,1.4,.02); },
+  bootpop(t){ osc("sine",180,900,t,.45,.16); osc("triangle",360,1500,t,.4,.07); [1046.5,1318.5,1568,2093].forEach((f,i)=>bell(t+.12+i*.07,f,.5,.07)); bubbles(t+.1,6,.5,500,1400,.08); },
+  bootbounce(t,k){ const f=[240,300,380][k||0]; osc("sine",f,f*2.4,t,.16,.2); bubble(t,f*2.2,.09,.12); osc("triangle",f*.5,f*.25,t,.12,.12); },
+  bootjingle(t){ [523.25,659.25,783.99,1046.5,1318.5].forEach((f,i)=>{ bell(t+i*.1,f,.7,.1); osc("triangle",f/2,null,t+i*.1,.2,.05); }); bubbles(t+.2,10,.8,600,1600,.08); [1568,2093,2637].forEach((f,i)=>bell(t+.6+i*.06,f,.4,.05)); },
+  bootwhoosh(t){ nz(t,.8,.16,400,4200,.8); osc("sine",300,1400,t,.7,.07); [1318.5,1760,2349].forEach((f,i)=>bell(t+.35+i*.08,f,.5,.06)); },
   build(t,k){
     if(k===0){ osc("sine",110,60,t,.18,.2); nz(t,.12,.06,900,300,.8); }
     else if(k===1){ osc("triangle",190,95,t,.14,.22); nz(t,.07,.1,2400,900,1.2); }
@@ -1864,7 +1874,7 @@ Object.assign(SFX,{
   },
   slide(t){ nz(t,.4,.12,500,3200,.9); osc("sine",300,700,t,.35,.05); },
   nozzle(t,k){ const f=520+(k||0)*160; bubble(t,f,.12,.14); osc("triangle",f*1.5,null,t+.02,.1,.07); nz(t,.04,.05,4500,7000,1,"highpass"); },
-  sensor(t){ osc("square",880,null,t,.07,.05); osc("square",1320,null,t+.11,.1,.05); },
+  sensor(t){ osc("square",880,null,t,.07,.05); osc("square",1100,null,t+.12,.07,.05); osc("square",1320,null,t+.24,.1,.05); },
   mistpuff(t){ nz(t,1.4,.16,3800,6800,.7); bubbles(t+.05,10,1.1,500,1400,.09); bell(t+.05,1568,.5,.05); },
   unlock(t){ [523.25,659.25,783.99,1046.5].forEach((f,i)=>bell(t+i*.1,f,.6,.1)); },
   click(t){ bubble(t,760,.1,.07); nz(t,.03,.035,5000,7000,1,"highpass"); },
@@ -1925,7 +1935,7 @@ document.addEventListener("mouseover",e=>{ const c=e.target; if(c && c.classList
 updSndBtns();
 
 /* ================= NAVIGATION ================= */
-const HASH = {home:"dashboard", live:"live-data", history:"historical-data", how:"how-it-works", about:"about"};
+const HASH = {home:"dashboard", live:"live-data", history:"historical-data", about:"about"};
 let histLoaded=false;
 const dashEl = $("#dashboard");
 const dashTop = () => dashEl.getBoundingClientRect().top + window.scrollY;
@@ -2020,7 +2030,6 @@ const addCls=(sel,cls)=>$$(sel).forEach(e=>cls.split(" ").forEach(c=>e.classList
 addCls("#sec-why .ic","rv-flip"); addCls("#sec-measure .ic","rv-spin"); addCls(".pvgrid .pv","rv-drop");
 addCls("#view-home .grid2 > .card, #view-live .grid2 > .card","rv"); $$("#view-home .grid2 > .card, #view-live .grid2 > .card").forEach((c,i)=>c.classList.add(i%2?"rv-r":"rv-l"));
 addCls("#view-live .chartbox, #view-history .chartbox, #view-history > .card","rv rv-z");
-addCls("#view-how .prose > *:not(h2), #view-how .prose .card","rv");
 addCls(".step","rv rv-l"); addCls(".chain","rv-r"); addCls(".cond, .ic, .pv","rv-z tilt"); addCls(".cta","rv-z");
 $$(".sim > .card").forEach((c,i)=>c.classList.add(i%2?"rv-r":"rv-l"));
 $$("#sec-why .ic, #sec-measure .ic, .pvgrid .pv, .cgrid .pcard, .advcard, .authorcard, .mgrid .m").forEach(e=>{ if(e.matches("#sec-why .ic, .cgrid .pcard, .advcard, .authorcard, .mgrid .m")){ e.classList.remove("rv-z"); e.classList.add("rv-flip"); } else if(e.matches("#sec-measure .ic")){ e.classList.remove("rv-z"); e.classList.add("rv-spin"); } else { e.classList.remove("rv-z"); e.classList.add("rv-drop"); } });
@@ -2051,9 +2060,9 @@ if(!reduceMotion) $$(".cnt").forEach(c=>{ c.textContent=c.dataset.from; });
 const LAB_ICONS=["🌡️","💧","☀️","🌬️","💦"];
 $$(".readings .reading .lab").forEach((l,i)=>{ if(LAB_ICONS[i]) l.insertAdjacentHTML("afterbegin",'<span class="lico" aria-hidden="true">'+LAB_ICONS[i]+'</span>'); });
 $$(".pvgrid .pv .l").forEach((l,i)=>{ if(LAB_ICONS[i]) l.insertAdjacentHTML("afterbegin",'<span class="lico" aria-hidden="true">'+LAB_ICONS[i]+'</span>'); });
-const TAB_ICONS={home:"📊",live:"📈",history:"🗓️",how:"⚙️",about:"🎓"};
+const TAB_ICONS={home:"📊",live:"📈",history:"🗓️",about:"🎓"};
 $$("nav.tabs button").forEach(b=>b.insertAdjacentHTML("afterbegin",'<span class="tico" aria-hidden="true">'+TAB_ICONS[b.dataset.view]+'</span>'));
-const DASH_ICONS={"h-home":"🌡️","h-live":"📈","h-hist":"🗓️","h-how":"⚙️"};
+const DASH_ICONS={"h-home":"🌡️","h-live":"📈","h-hist":"🗓️"};
 Object.keys(DASH_ICONS).forEach(id=>{ const h=document.getElementById(id); if(h) h.insertAdjacentHTML("beforeend",' <span class="ticon" aria-hidden="true">'+DASH_ICONS[id]+'</span>'); });
 
 /* paragraphs: words light up one by one as you scroll them up the screen */
@@ -2087,7 +2096,7 @@ function leadFX(){
   });
 }
 const parItems=[];
-[[".cards3 .cond",3],[".cards4 .ic",4],[".cards6 .ic",3],[".pvgrid .pv",5]].forEach(([sel,cols])=>{
+[[".cards3 .cond",3],[".cards4 .ic",4],[".cards6 .ic",2],[".pvgrid .pv",5]].forEach(([sel,cols])=>{
   $$(sel).forEach((el,i)=>parItems.push({el,k:((i%cols)-(cols-1)/2)*0.035}));
 });
 function parFX(){
@@ -2111,15 +2120,15 @@ function updSwipe(){ swWraps.forEach(f=>f()); }
 
 /* Misty: a little water-drop guide that comments on each section */
 const mistyEl=$("#misty"), mbub=$("#mbub"), mchar=$("#mchar");
-const MISTY=[["hero","Hi PUP student! I'm Misty 👋 Scroll down with me!"],["sec-what","This is a PUP ITECH thesis project. 🏫"],["sec-why","We study heat conditions and record the data. 🌡️"],["sec-how","Watch the steps light up as you scroll! ✨"],["sec-when","Try the sliders and play with the numbers! 🎛️"],["sec-measure","So many things to measure! 📏"],["sec-water","Water use is measured too. 💦"],["sec-ready","Ready? Tap Enter Main Dashboard! 🚀"]];
+const MISTY=[["hero","Hi PUP student! I'm Misty 👋 Scroll down with me!"],["sec-what","This is a PUP ITECH thesis project. 🏫"],["sec-measure","So many things to measure! Try the cards 📏"],["sec-how","Watch the steps light up as you scroll! ✨"],["sec-when","Try the sliders and play with the numbers! 🎛️"],["sec-water","Water use is measured too. 💦"],["sec-ready","Ready? Tap Enter Main Dashboard! 🚀"]];
 let mistyCur="", mistyTimer=null, mistyMsg="";
 function mistySay(t){
   sfx("blip"); mistyMsg=t; mbub.textContent=t; mbub.classList.remove("show"); void mbub.offsetWidth; mbub.classList.add("show");
   clearTimeout(mistyTimer); mistyTimer=setTimeout(()=>mbub.classList.remove("show"),6500);
 }
 /* where Misty stands in each section: [0 = left / 1 = right, 0 = top ... 1 = bottom] */
-const MSPOT={"hero":[0,1],"sec-what":[1,1],"sec-why":[0,.78],"sec-how":[1,.82],"sec-when":[0,.66],"sec-measure":[1,1],"sec-water":[0,.8],"sec-ready":[1,.9]};
-const MSPOT_PHONE={"hero":[0,1],"sec-what":[1,1],"sec-why":[0,.94],"sec-how":[1,1],"sec-when":[0,1],"sec-measure":[1,.94],"sec-water":[0,1],"sec-ready":[1,1]};
+const MSPOT={"hero":[0,1],"sec-what":[1,1],"sec-why":[0,.78],"sec-how":[1,.82],"sec-when":[0,.66],"sec-measure":[0,.78],"sec-water":[0,.8],"sec-ready":[1,.9]};
+const MSPOT_PHONE={"hero":[0,1],"sec-what":[1,1],"sec-why":[0,.94],"sec-how":[1,1],"sec-when":[0,1],"sec-measure":[0,.94],"sec-water":[0,1],"sec-ready":[1,1]};
 function mistyXY(id){
   const sp=(window.innerWidth<=720?MSPOT_PHONE:MSPOT)[id]||[0,1];
   const w=mchar.offsetWidth||62, h=mchar.offsetHeight||80, vw=window.innerWidth, vh=window.innerHeight, padX=14, top=70, bot=14;
@@ -2623,7 +2632,7 @@ const cNodes=$$(".concept .node"), cArrs=$$(".concept .arr");
 cNodes.forEach((n,i)=>{ n.dataset.i=i; });
 const CSND=[
   [[40,"build",0],[330,"build",1],[480,"build",1],[950,"build",2],[1320,"build",3]],
-  [[150,"slide"],[550,"build",3],[1030,"nozzle",0],[1230,"nozzle",1],[1430,"nozzle",2],[1700,"sensor"]],
+  [[150,"slide"],[550,"build",3],[1030,"nozzle",0],[1180,"nozzle",1],[1330,"nozzle",2],[1480,"nozzle",3],[1800,"sensor"]],
   [[250,"mistpuff"]]
 ];
 function conceptPlay(n){
@@ -2656,20 +2665,27 @@ function conceptStart(){
   }
 }
 
-/* "What are we measuring?": a picture starts moving when the mouse is over its card (computer),
+/* "What are we measuring?": a picture starts moving, with its own sound, when the mouse is over its card (computer)
    or when the card is in the middle of the screen (phone) */
 (function(){
   const cards=$$("#sec-measure .ic"), canHover=window.matchMedia("(hover:hover) and (pointer:fine)").matches, hint=$("#mhint");
+  const KIND=["m_temp","m_hum","m_sun","m_wind","m_water","m_elec"], CYC=[3400,4400,2800,4000,6000,1600];
   if(hint) hint.textContent=canHover?"Move your mouse over a card to see it in action.":"Scroll slowly: the card in the middle of the screen starts moving.";
+  function setPlay(c,on){
+    if(on===c.classList.contains("play")) return;
+    const i=cards.indexOf(c); c.classList.toggle("play",on); clearInterval(c._snd);
+    if(on){ sfx(KIND[i]); c._snd=setInterval(()=>sfx(KIND[i]),CYC[i]); }
+  }
   if(reduceMotion) return;
   if(canHover){
-    cards.forEach(c=>{ c.addEventListener("pointerenter",()=>c.classList.add("play")); c.addEventListener("pointerleave",()=>c.classList.remove("play")); });
+    cards.forEach(c=>{ c.addEventListener("pointerenter",()=>setPlay(c,true)); c.addEventListener("pointerleave",()=>setPlay(c,false)); });
   } else if("IntersectionObserver" in window){
-    const io3=new IntersectionObserver(es=>es.forEach(e=>e.target.classList.toggle("play",e.isIntersecting)),{rootMargin:"-40% 0px -40% 0px"});
+    const io3=new IntersectionObserver(es=>es.forEach(e=>setPlay(e.target,e.isIntersecting)),{rootMargin:"-40% 0px -40% 0px"});
     cards.forEach(c=>io3.observe(c));
   }
 })();
 
+let bootOn=document.documentElement.classList.contains("booting"); const bootQ=[];   /* hero reveals wait until the intro is over */
 /* reveal helpers */
 function markIn(t){
   t.classList.add("in");
@@ -2688,10 +2704,11 @@ function revealMid(){
 if("IntersectionObserver" in window){
   const io = new IntersectionObserver(es=>es.forEach(e=>{
     if(!e.isIntersecting) return;
+    if(bootOn){ bootQ.push(e.target); io.unobserve(e.target); return; }
     markIn(e.target); io.unobserve(e.target);
   }),{threshold:.12});
   /* the steps and the flow chart are handled by revealMid(): they start appearing when they reach the middle of the screen */
-  const heroArt=$(".hero-grid > .rv:last-child"); if(heroArt) heroArt.classList.add("in","rvd");   /* the shed picture is shown at full strength from the start */
+  const heroArt=$(".hero-grid > .rv:last-child"); if(heroArt){ if(bootOn) bootQ.push(heroArt); else heroArt.classList.add("in","rvd"); }   /* the shed picture is shown at full strength from the start */
   $$(".rv, .concept").forEach(el=>{ if(!el.matches(".step, .chain, .hero-grid > .rv:last-child")) io.observe(el); });
 } else { $$(".rv, .concept").forEach(el=>el.classList.add("in")); $$(".cnt").forEach(c=>c.textContent=c.dataset.to); pendingMid=[]; conceptStart(); }
 
@@ -3194,6 +3211,40 @@ const h = location.hash.slice(1);
 const hit = Object.keys(HASH).find(k=>HASH[k]===h);
 if(hit){ rootEl.classList.add("in-dash"); show(hit); updTabs(); }
 else { rootEl.classList.remove("in-dash"); }
+
+/* ================= START-UP INTRO: blank screen -> Misty bounces in BIG, waves -> shrinks and the welcome page appears ================= */
+function bootRun(){
+  const B=$("#boot"), M=$("#bootm"), BUB=$("#bootbub"), tap=$("#boottap"), skip=$("#bootskip");
+  const mw=mchar.offsetWidth||62, mh=mw*84/64, vw=window.innerWidth, vh=window.innerHeight;
+  const big=Math.max(1.8,Math.min(3.7,Math.min(vw*.7,vh*.38)/mh)), cx=vw/2, cy=vh*.42;
+  M.style.width=mw+"px"; M.style.left=(cx-mw/2)+"px"; M.style.top=(cy-mh/2)+"px";
+  BUB.style.setProperty("--bt",(cy+mh*big/2+22)+"px");
+  const svg=mchar.querySelector("svg").cloneNode(true); svg.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id")); $(".bm-in",M).appendChild(svg);
+  const T=[]; let done=false; const at=(ms,fn)=>T.push(setTimeout(fn,ms)), mood=m=>{ M.dataset.mood=m; };
+  const chk=setInterval(()=>{ if(SND.unlocked){ tap.classList.add("gone"); clearInterval(chk); } },200);
+  function burst(){
+    const cols=["#bfe6ff","#ff9aa6","#f1bd5a","#ffffff","#62d48f"];
+    for(let i=0;i<22;i++){ const e=document.createElement("i"), a=Math.random()*6.283, d=120+Math.random()*180; e.className="bb";
+      e.style.cssText="left:"+cx+"px;top:"+cy+"px;--dx:"+(Math.cos(a)*d).toFixed(0)+"px;--dy:"+(Math.sin(a)*d).toFixed(0)+"px;--c:"+cols[i%5];
+      B.appendChild(e); setTimeout(()=>e.remove(),1100); }
+  }
+  function finish(skipped){
+    if(done) return; done=true; T.forEach(clearTimeout); clearInterval(chk);
+    const r=mchar.getBoundingClientRect(), ok=r.width>0;
+    mood("joy"); BUB.classList.remove("show"); M.classList.remove("bounce"); M.classList.add("fly");
+    M.style.setProperty("--tx",((ok?r.left+r.width/2:40)-cx).toFixed(1)+"px"); M.style.setProperty("--ty",((ok?r.top+r.height/2:vh-60)-cy).toFixed(1)+"px"); M.style.setProperty("--sc",1);
+    tap.classList.add("gone"); skip.style.display="none"; sfx("bootwhoosh"); rootEl.classList.add("bootfly");
+    setTimeout(()=>{ B.classList.add("fade"); rootEl.classList.remove("booting"); bootOn=false; bootQ.splice(0).forEach(markIn); },skipped?60:380);
+    setTimeout(()=>{ rootEl.classList.remove("bootfly"); B.remove(); mistySay(MISTY[0][1]); },1450);
+  }
+  skip.addEventListener("click",()=>finish(true));
+  at(700,()=>{ mood("wow"); M.style.setProperty("--sc",big.toFixed(2)); sfx("bootpop"); });
+  at(1250,()=>{ mood("excited"); M.classList.add("bounce"); });
+  at(1700,()=>sfx("bootbounce",0)); at(2080,()=>sfx("bootbounce",1)); at(2420,()=>sfx("bootbounce",2));
+  at(3100,()=>{ mood("hello"); BUB.textContent="Hi PUP student! I'm Misty 👋"; BUB.classList.add("show"); sfx("bootjingle"); burst(); });
+  at(5000,()=>finish(false));
+}
+if(rootEl.classList.contains("booting")) bootRun(); else { const bb=$("#boot"); if(bb) bb.remove(); }
 })();
 </script>
 </body>
