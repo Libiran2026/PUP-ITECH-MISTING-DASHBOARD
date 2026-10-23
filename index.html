@@ -1016,6 +1016,70 @@ html{scrollbar-gutter:stable}
   .stop .info{width:100%}
 }
 @media (prefers-reduced-motion:reduce){.stop .info{opacity:1;translate:none}.pin .em{opacity:1;scale:1}}
+
+/* ===== glass sliders ===== */
+input[type=range]{display:block;height:34px;--c1:#ff7b88;--c2:#ff4d62}
+input[type=range].heat{--c1:#4aa3e8;--c2:#ff4d62}
+input[type=range].hum{--c1:#7fdcff;--c2:#3a86e8}
+input[type=range].wind{--c1:#a6ecd9;--c2:#4fb8d8}
+input[type=range]::-webkit-slider-runnable-track{height:12px;border-radius:999px;background:linear-gradient(90deg,transparent var(--fill),rgba(14,16,20,.93) var(--fill)),linear-gradient(90deg,var(--c1),var(--c2));border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 2px 5px rgba(0,0,0,.6),inset 0 -1px 0 rgba(255,255,255,.07),0 0 16px rgba(255,90,106,.14)}
+input[type=range]::-moz-range-track{height:12px;border-radius:999px;background:rgba(14,16,20,.93);border:1px solid rgba(255,255,255,.18);box-shadow:inset 0 2px 5px rgba(0,0,0,.6)}
+input[type=range]::-moz-range-progress{height:12px;border-radius:999px;background:linear-gradient(90deg,var(--c1),var(--c2))}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:30px;height:30px;margin-top:-10px;border-radius:50%;border:1px solid rgba(255,255,255,.8);background:radial-gradient(circle at 32% 26%,#fff 0,rgba(255,255,255,.85) 16%,rgba(255,255,255,.34) 46%,rgba(255,120,135,.5) 100%);box-shadow:0 6px 16px rgba(0,0,0,.55),0 0 0 5px rgba(255,90,106,.16),inset 0 -3px 6px rgba(255,90,106,.35);transition:transform .15s,box-shadow .2s}
+input[type=range]::-moz-range-thumb{width:28px;height:28px;border-radius:50%;border:1px solid rgba(255,255,255,.8);background:radial-gradient(circle at 32% 26%,#fff 0,rgba(255,255,255,.85) 16%,rgba(255,255,255,.34) 46%,rgba(255,120,135,.5) 100%);box-shadow:0 6px 16px rgba(0,0,0,.55),0 0 0 5px rgba(255,90,106,.16)}
+input[type=range]:active::-webkit-slider-thumb{transform:scale(1.18);box-shadow:0 8px 22px rgba(0,0,0,.6),0 0 0 8px rgba(255,90,106,.28),0 0 24px rgba(255,90,106,.7),inset 0 -3px 6px rgba(255,90,106,.4)}
+@keyframes thumbpulse{0%{box-shadow:0 6px 16px rgba(0,0,0,.55),0 0 0 0 rgba(255,123,136,.9)}100%{box-shadow:0 6px 16px rgba(0,0,0,.55),0 0 0 16px rgba(255,123,136,0)}}
+.slider{margin:12px 0 8px}
+.slider:has(.smark){margin-bottom:30px}
+.smark{position:absolute;top:0;left:calc(15px + (100% - 30px) * var(--p));width:0;height:0;pointer-events:none}
+.smark::before{content:"";position:absolute;top:49px;left:-1px;width:2px;height:8px;border-radius:1px;background:rgba(255,255,255,.5)}
+.smark::after{content:attr(data-l);position:absolute;top:58px;left:0;transform:translateX(-50%);font-size:.66rem;color:#a6aeb6;white-space:nowrap}
+.sbub{position:absolute;top:24px;left:0;transform:translate(-50%,-115%) scale(.8);padding:3px 11px;border-radius:999px;font-size:.78rem;font-weight:800;color:#fff;background:rgba(255,90,106,.3);border:1px solid rgba(255,140,150,.7);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .15s,transform .15s;white-space:nowrap;box-shadow:0 6px 16px rgba(0,0,0,.45);z-index:5}
+.sbub.on{opacity:1;transform:translate(-50%,-115%) scale(1)}
+/* ===== the mini shed scene ===== */
+.mshed{border-radius:16px;background:none;box-shadow:0 14px 34px rgba(0,0,0,.5)}
+#mtree{transform-box:fill-box;transform-origin:50% 100%;animation:msway var(--swd,2.4s) ease-in-out infinite alternate}
+@keyframes msway{from{rotate:calc(var(--swa,1deg) * -1)}to{rotate:var(--swa,1deg)}}
+.mshed .mcl1{animation:mcloud var(--cd,40s) linear infinite}.mshed .mcl2{animation:mcloud calc(var(--cd,40s) * 1.5) linear -20s infinite}
+@keyframes mcloud{from{translate:-130px 0}to{translate:640px 0}}
+#msrays{transform-box:fill-box;transform-origin:center;animation:msr 24s linear infinite}
+@keyframes msr{to{rotate:360deg}}
+#mshim path{animation:mshim 2.2s ease-in-out infinite alternate}
+@keyframes mshim{from{translate:-6px 0}to{translate:6px -2px}}
+.mshed .lt{opacity:.2;transition:opacity .3s}
+.mshed .lt.lit{opacity:1;animation:ltb 1.4s ease-in-out infinite}
+#mlr.lit{filter:drop-shadow(0 0 5px #ff5a5f)}#mlg.lit{filter:drop-shadow(0 0 5px #62d48f)}#mly.lit{filter:drop-shadow(0 0 5px #f1bd5a)}
+.mshed .mspr{opacity:0;transition:opacity .5s}
+.mshed.on .mspr{opacity:1;animation:msprp 1.2s ease-in-out infinite alternate}
+@keyframes msprp{from{opacity:.45}to{opacity:1}}
+.mchips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.mchip{flex:1 1 0;min-width:96px;display:flex;flex-direction:column;gap:1px;padding:8px 10px;border-radius:12px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(255,255,255,.14);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);font-size:.78rem;color:#a6aeb6;transition:border-color .3s,box-shadow .3s}
+.mchip b{color:#fff;font-size:1.02rem}.mchip i{font-style:normal;font-size:.7rem}
+.mchip.ok{border-color:rgba(98,212,143,.75);box-shadow:0 0 14px rgba(98,212,143,.2)}.mchip.ok b{color:#62d48f}
+.mchip.no{border-color:rgba(255,123,136,.55)}.mchip.no b{color:#ff9aa4}
+.shedbar{padding:9px 14px;border-radius:12px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.12)}
+/* ===== Misty peeks over the author's box ===== */
+.aw{position:relative;max-width:720px;margin:18px auto 0}
+.aw .authorcard{margin:0;position:relative;z-index:1}
+.apk{position:absolute;right:56px;top:0;width:96px;z-index:0;pointer-events:none;transform:translateY(62%) rotate(8deg);opacity:0;transition:transform .55s cubic-bezier(.3,1.5,.5,1),opacity .3s}
+.apk.up{transform:translateY(-60%) rotate(-6deg);opacity:1}
+.apk-in{animation:apkbob 2.4s ease-in-out infinite}
+@keyframes apkbob{0%,100%{translate:0 0}50%{translate:0 -6px}}
+.apk-in svg{width:100%;height:auto;display:block;overflow:visible}
+.apk .mf{display:none}
+.apk[data-mood="hello"] :is(.e-norm,.m-open,.x-spark),.apk[data-mood="wow"] :is(.e-wow,.m-o,.x-bang),.apk[data-mood="joy"] :is(.e-happy,.m-open,.x-drops),.apk[data-mood="excited"] :is(.e-happy,.m-open,.x-spark){display:inline}
+.apk .eye{transform-box:fill-box;transform-origin:center;animation:blink 3.2s infinite}
+.apk .arm{transform-origin:55px 62px}
+.apk[data-mood="hello"] .arm,.apk[data-mood="excited"] .arm{animation:marm .42s ease-in-out infinite alternate}
+.apk .tw{transform-box:fill-box;transform-origin:center;animation:twk2 1s ease-in-out infinite}.apk .tw.d2{animation-delay:.4s}
+.apk .dp{animation:dpf 1.1s ease-in infinite}.apk .dp.d2{animation-delay:.35s}.apk .dp.d3{animation-delay:.7s}
+.apk .x-bang .pp{transform-box:fill-box;transform-origin:center;animation:xpop .55s cubic-bezier(.3,1.8,.5,1) both}
+.apk-bub{position:absolute;right:100%;top:14px;margin-right:6px;padding:7px 13px;border-radius:14px 14px 4px 14px;background:rgba(36,41,48,.95);border:1px solid rgba(255,123,136,.6);font-size:.86rem;font-weight:700;color:#fff;white-space:nowrap;opacity:0;transform:scale(.85);transform-origin:right center;transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.apk-bub.show{opacity:1;transform:scale(1)}
+/* video: sound button */
+.vframe{position:relative}
+.vunmute{position:absolute;left:12px;bottom:56px;z-index:3;padding:7px 14px;border-radius:999px;border:1px solid rgba(255,255,255,.4);background:rgba(0,0,0,.5);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:#fff;font-weight:700;font-size:.82rem;cursor:pointer}
+@media (prefers-reduced-motion:reduce){#mtree,#msrays,#mshim path,.mshed .mcl,.apk-in{animation:none}}
 </style>
 <script>(function(){var h=document.documentElement,x=/^#(dashboard|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>
 </head>
@@ -1298,10 +1362,11 @@ html{scrollbar-gutter:stable}
     <h2 class="t rv" style="margin:0 auto;max-width:none">SEE THE PROJECT IN ACTION</h2>
     <div class="vframe rv rv-z">
       <!-- CHANGE "project-video.mp4" to the exact file name of your video in the repo -->
-      <video controls playsinline preload="metadata" poster="">
+      <video id="projVideo" controls muted playsinline preload="auto" poster="">
         <source src="misting-system-demo.mp4" type="video/mp4">
         Your browser cannot play this video.
       </video>
+      <button class="vunmute" id="vunmute" type="button" hidden>🔇 Tap to turn sound on</button>
     </div>
     <p class="vcap rv">A short video about the PUP ITECH misting system.</p>
   </div>
@@ -1359,29 +1424,65 @@ html{scrollbar-gutter:stable}
         <h3>Try it yourself</h3>
         <div class="body">
           <p class="hnote" style="margin-top:0">Move the sliders. This is just a demo, not real data.</p>
-          <div class="slider"><label for="sT">Temperature <output id="sTo">32.0 °C</output></label><input id="sT" type="range" min="20" max="40" step="0.1" value="32"></div>
-          <div class="slider"><label for="sH">Humidity <output id="sHo">60 %</output></label><input id="sH" type="range" min="30" max="100" step="1" value="60"></div>
-          <div class="slider"><label for="sW">Wind speed <output id="sWo">2.0 m/s</output></label><input id="sW" type="range" min="0" max="8" step="0.1" value="2"></div>
+          <div class="slider"><label for="sT">Temperature <output id="sTo">32.0 °C</output></label><input id="sT" class="heat" type="range" min="20" max="40" step="0.1" value="32"><span class="smark" style="--p:.55" data-l="31 °C needed"></span></div>
+          <div class="slider"><label for="sH">Humidity <output id="sHo">60 %</output></label><input id="sH" class="hum" type="range" min="30" max="100" step="1" value="60"><span class="smark" style="--p:.5714" data-l="70 % limit"></span></div>
+          <div class="slider"><label for="sW">Wind speed <output id="sWo">2.0 m/s</output></label><input id="sW" class="wind" type="range" min="0" max="8" step="0.1" value="2"><span class="smark" style="--p:.5" data-l="4 m/s limit"></span></div>
             <div class="shedmini rv">
-              <svg class="mshed" id="mshed" viewBox="0 0 520 236" role="img" aria-label="Small picture of the waiting shed: its nozzles release mist only when all three things are true">
-                <defs><linearGradient id="mroofg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9a1526"/><stop offset="1" stop-color="#5e0d17"/></linearGradient><linearGradient id="mmistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#bfe6ff" stop-opacity=".34"/><stop offset="1" stop-color="#bfe6ff" stop-opacity="0"/></linearGradient><radialGradient id="msung"><stop offset="0" stop-color="#ffb347" stop-opacity=".8"/><stop offset="1" stop-color="#ffb347" stop-opacity="0"/></radialGradient></defs>
-                <circle id="msunGlow" cx="452" cy="34" r="40" fill="url(#msung)" opacity=".4"/><circle id="msun" cx="452" cy="34" r="16" fill="#f1bd5a"/>
-                <g id="mwind" class="mwind"><path d="M20 30 q14 -8 28 0 t28 0" fill="none" stroke="#cfd6dd" stroke-width="2.4" stroke-linecap="round"/><path d="M8 48 q14 -8 28 0 t28 0 t28 0" fill="none" stroke="#cfd6dd" stroke-width="2.4" stroke-linecap="round"/><path d="M26 66 q14 -8 28 0 t28 0" fill="none" stroke="#cfd6dd" stroke-width="2.4" stroke-linecap="round"/></g>
-                <rect x="0" y="218" width="520" height="4" fill="#7a2a36"/>
-                <rect x="62" y="96" width="9" height="122" fill="#7a4b3a"/><rect x="437" y="96" width="9" height="122" fill="#7a4b3a"/>
-                <path class="mmist" d="M44 104 H462 L486 218 H20 Z" fill="url(#mmistg)"/>
-                <rect x="150" y="184" width="100" height="34" fill="#d9dcde"/><rect x="150" y="180" width="100" height="7" rx="1" fill="#eef0f1"/>
-                <rect x="296" y="184" width="92" height="34" fill="#d9dcde"/><rect x="296" y="180" width="92" height="7" rx="1" fill="#eef0f1"/>
-                <rect x="108" y="200" width="38" height="18" rx="2" fill="#8a2a2a"/><rect x="258" y="200" width="36" height="18" rx="2" fill="#8a2a2a"/><rect x="390" y="200" width="38" height="18" rx="2" fill="#8a2a2a"/>
-                <g transform="translate(114 200) scale(0.8 0.8)" style="color:#b0192a;--skin:#d9a77b;--hair:#1b1b1f;--pants:#2f3a4a"><rect x="24" y="-8" width="8" height="26.5" rx="3" fill="var(--pants)"/><rect x="0" y="-9" width="31" height="9" rx="4" fill="var(--pants)"/><ellipse cx="31" cy="19.0" rx="9" ry="3.5" fill="#1b1d21"/><path d="M-2 -8 L-4 -48 Q-3 -57 6 -57 L13 -55 Q15 -45 13 -8 Z" fill="currentColor"/><circle cx="9" cy="-67" r="9.5" fill="var(--skin)"/><path d="M-.5 -68 Q-1 -80 10 -78 Q19 -77 19.5 -70 Q13 -73 7 -70 Q3 -66 -.5 -62 Z" fill="var(--hair)"/><path d="M18.5 -67 L22.5 -63.5 L18.5 -62.5 Z" fill="var(--skin)"/><path d="M6 -50 L19 -38 L24 -52" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.5" cy="-53" r="3.2" fill="var(--skin)"/><g transform="rotate(-10 26 -58)"><rect x="24" y="-64" width="5.5" height="11" rx="1.2" fill="#14161a"/><rect class="scr" x="25" y="-63" width="3.5" height="9" rx=".8" fill="#8fd0ff"/></g></g>
+              <svg class="mshed" id="mshed" viewBox="0 0 520 250" role="img" aria-label="A picture of the waiting shed. Its nozzles spray mist only when the air is hot enough, dry enough and the wind is gentle. Three lights on the sensor box show red, yellow or green.">
+<defs>
+<clipPath id="mclip"><rect width="520" height="250" rx="16"/></clipPath>
+<linearGradient id="mskyg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16243a"/><stop offset=".6" stop-color="#2c4560"/><stop offset="1" stop-color="#506a82"/></linearGradient>
+<linearGradient id="mskyw" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ff7a3c" stop-opacity=".05"/><stop offset="1" stop-color="#ffb347" stop-opacity=".7"/></linearGradient>
+<radialGradient id="msung"><stop offset="0" stop-color="#ffd27a" stop-opacity=".95"/><stop offset="1" stop-color="#ff9a3c" stop-opacity="0"/></radialGradient>
+<linearGradient id="mroofg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d12a40"/><stop offset="1" stop-color="#7a1020"/></linearGradient>
+<linearGradient id="mpostg" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#5b4036"/><stop offset=".5" stop-color="#a8694c"/><stop offset="1" stop-color="#5b4036"/></linearGradient>
+<linearGradient id="mgrdg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2d323a"/><stop offset="1" stop-color="#14171b"/></linearGradient>
+<linearGradient id="mtabg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f4f6f8"/><stop offset="1" stop-color="#b9c0c7"/></linearGradient>
+<linearGradient id="mmistg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#cfeaff" stop-opacity=".5"/><stop offset="1" stop-color="#bfe6ff" stop-opacity="0"/></linearGradient>
+<linearGradient id="mhazeg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dfe8f0" stop-opacity=".1"/><stop offset="1" stop-color="#dfe8f0" stop-opacity=".9"/></linearGradient>
+<linearGradient id="mshine" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".16"/><stop offset=".4" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<g clip-path="url(#mclip)">
+<rect width="520" height="250" fill="url(#mskyg)"/>
+<rect id="mskywarm" width="520" height="250" fill="url(#mskyw)" opacity="0"/>
+<circle id="msunGlow" cx="440" cy="44" r="46" fill="url(#msung)" opacity=".4"/>
+<g id="msrays" stroke="#ffcf7a" stroke-width="3" stroke-linecap="round" opacity=".85"><line x1="466" y1="44" x2="476" y2="44"/><line x1="440" y1="70" x2="440" y2="80"/><line x1="414" y1="44" x2="404" y2="44"/><line x1="440" y1="18" x2="440" y2="8"/><line x1="458.4" y1="62.4" x2="465.5" y2="69.5"/><line x1="421.6" y1="62.4" x2="414.5" y2="69.5"/><line x1="421.6" y1="25.6" x2="414.5" y2="18.5"/><line x1="458.4" y1="25.6" x2="465.5" y2="18.5"/></g>
+<circle id="msun" cx="440" cy="44" r="16" fill="#f1bd5a"/>
+<g class="mcl mcl1" fill="rgba(255,255,255,.3)"><ellipse cx="60" cy="40" rx="30" ry="9"/><ellipse cx="82" cy="32" rx="18" ry="8"/><ellipse cx="44" cy="34" rx="14" ry="7"/></g>
+<g class="mcl mcl2" fill="rgba(255,255,255,.2)"><ellipse cx="60" cy="22" rx="24" ry="7"/><ellipse cx="76" cy="16" rx="14" ry="6"/></g>
+<g transform="translate(150 8)"><g id="mwind" class="mwind"><path d="M20 30 q14 -8 28 0 t28 0" fill="none" stroke="#e3ecf3" stroke-width="2.4" stroke-linecap="round"/><path d="M8 48 q14 -8 28 0 t28 0 t28 0" fill="none" stroke="#e3ecf3" stroke-width="2.4" stroke-linecap="round"/><path d="M26 66 q14 -8 28 0 t28 0" fill="none" stroke="#e3ecf3" stroke-width="2.4" stroke-linecap="round"/></g></g>
+<path d="M0 190 Q70 150 140 176 T290 168 T430 180 T520 160 V230 H0Z" fill="#0f1a28" opacity=".55"/>
+<g id="mtree"><rect x="32" y="150" width="8" height="68" fill="#4a3a30"/><circle cx="36" cy="138" r="24" fill="#2f7a52"/><circle cx="21" cy="152" r="16" fill="#3a8f60"/><circle cx="52" cy="153" r="17" fill="#357f56"/></g>
+<rect y="216" width="520" height="34" fill="url(#mgrdg)"/><rect y="216" width="520" height="2" fill="rgba(255,255,255,.16)"/>
+<path d="M30 218 L10 250 M110 218 L100 250 M190 218 L186 250 M270 218 L272 250 M350 218 L358 250 M430 218 L444 250 M500 218 L520 250" stroke="rgba(255,255,255,.06)" stroke-width="1" fill="none"/>
+<ellipse cx="260" cy="222" rx="252" ry="8" fill="rgba(0,0,0,.4)"/>
+<g id="mshim" opacity="0" fill="none" stroke="rgba(255,196,130,.55)" stroke-width="2" stroke-linecap="round"><path d="M70 204 q12 -6 24 0 t24 0 t24 0 t24 0"/><path d="M290 207 q12 -6 24 0 t24 0 t24 0 t24 0"/><path d="M180 211 q12 -6 24 0 t24 0 t24 0"/></g>
+<rect x="56" y="92" width="10" height="126" fill="url(#mpostg)"/><rect x="434" y="92" width="10" height="126" fill="url(#mpostg)"/>
+<rect x="51" y="214" width="20" height="5" rx="1" fill="#cbbfae"/><rect x="429" y="214" width="20" height="5" rx="1" fill="#cbbfae"/>
+<rect x="150" y="184" width="100" height="34" rx="2" fill="url(#mtabg)"/><rect x="150" y="180" width="100" height="7" rx="2" fill="#fff"/>
+<rect x="296" y="184" width="92" height="34" rx="2" fill="url(#mtabg)"/><rect x="296" y="180" width="92" height="7" rx="2" fill="#fff"/>
+<rect x="108" y="200" width="38" height="18" rx="4" fill="#c93a3a"/><rect x="258" y="200" width="36" height="18" rx="4" fill="#c93a3a"/><rect x="390" y="200" width="38" height="18" rx="4" fill="#c93a3a"/>
+<g transform="translate(114 200) scale(0.8 0.8)" style="color:#b0192a;--skin:#d9a77b;--hair:#1b1b1f;--pants:#2f3a4a"><rect x="24" y="-8" width="8" height="26.5" rx="3" fill="var(--pants)"/><rect x="0" y="-9" width="31" height="9" rx="4" fill="var(--pants)"/><ellipse cx="31" cy="19.0" rx="9" ry="3.5" fill="#1b1d21"/><path d="M-2 -8 L-4 -48 Q-3 -57 6 -57 L13 -55 Q15 -45 13 -8 Z" fill="currentColor"/><circle cx="9" cy="-67" r="9.5" fill="var(--skin)"/><path d="M-.5 -68 Q-1 -80 10 -78 Q19 -77 19.5 -70 Q13 -73 7 -70 Q3 -66 -.5 -62 Z" fill="var(--hair)"/><path d="M18.5 -67 L22.5 -63.5 L18.5 -62.5 Z" fill="var(--skin)"/><path d="M6 -50 L19 -38 L24 -52" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="24.5" cy="-53" r="3.2" fill="var(--skin)"/><g transform="rotate(-10 26 -58)"><rect x="24" y="-64" width="5.5" height="11" rx="1.2" fill="#14161a"/><rect class="scr" x="25" y="-63" width="3.5" height="9" rx=".8" fill="#8fd0ff"/></g></g>
                 <g transform="translate(262 200) scale(0.8 0.8)" style="color:#3a6ea5;--skin:#c68c63;--hair:#241a14;--pants:#3b3f46"><rect x="24" y="-8" width="8" height="26.5" rx="3" fill="var(--pants)"/><rect x="0" y="-9" width="31" height="9" rx="4" fill="var(--pants)"/><ellipse cx="31" cy="19.0" rx="9" ry="3.5" fill="#1b1d21"/><path d="M-2 -8 L-4 -48 Q-3 -57 6 -57 L13 -55 Q15 -45 13 -8 Z" fill="currentColor"/><circle cx="9" cy="-67" r="9.5" fill="var(--skin)"/><path d="M-.5 -68 Q-1 -80 10 -78 Q19 -77 19.5 -70 Q13 -73 7 -70 Q3 -66 -.5 -62 Z" fill="var(--hair)"/><path d="M18.5 -67 L22.5 -63.5 L18.5 -62.5 Z" fill="var(--skin)"/><path d="M6 -50 L14 -28 L27 -12" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="28" cy="-11" r="3.2" fill="var(--skin)"/></g>
                 <g transform="translate(424 200) scale(-0.8 0.8)" style="color:#d8dde2;--skin:#e0b48a;--hair:#2a2118;--pants:#4a3f35"><rect x="24" y="-8" width="8" height="26.5" rx="3" fill="var(--pants)"/><rect x="0" y="-9" width="31" height="9" rx="4" fill="var(--pants)"/><ellipse cx="31" cy="19.0" rx="9" ry="3.5" fill="#1b1d21"/><path d="M-2 -8 L-4 -48 Q-3 -57 6 -57 L13 -55 Q15 -45 13 -8 Z" fill="currentColor"/><circle cx="9" cy="-67" r="9.5" fill="var(--skin)"/><path d="M-.5 -68 Q-1 -80 10 -78 Q19 -77 19.5 -70 Q13 -73 7 -70 Q3 -66 -.5 -62 Z" fill="var(--hair)"/><path d="M18.5 -67 L22.5 -63.5 L18.5 -62.5 Z" fill="var(--skin)"/><path d="M6 -50 L14 -28 L27 -12" fill="none" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/><circle cx="28" cy="-11" r="3.2" fill="var(--skin)"/></g>
-                <polygon points="40,56 468,56 502,90 6,90" fill="url(#mroofg)" stroke="#c4283a" stroke-width="1.5"/>
-                <rect x="52" y="94" width="400" height="4" rx="2" fill="#aab1b8"/>
-                <g fill="#dfe4e8"><circle cx="90" cy="104" r="3.6"/><circle cx="150" cy="104" r="3.6"/><circle cx="210" cy="104" r="3.6"/><circle cx="296" cy="104" r="3.6"/><circle cx="356" cy="104" r="3.6"/><circle cx="416" cy="104" r="3.6"/></g>
-                <g id="mdrops" class="mdrops"></g>
-                <line x1="253" y1="90" x2="253" y2="110" stroke="#9aa2aa" stroke-width="3"/><rect x="231" y="108" width="44" height="24" rx="3" fill="#2b3138" stroke="#9aa2aa"/><circle id="mled" cx="242" cy="120" r="4" fill="#ff7b88"/><rect x="251" y="115" width="17" height="3" fill="#6b727a"/><rect x="251" y="122" width="11" height="3" fill="#6b727a"/>
-              </svg>
+                <path class="mmist" d="M36 108 H478 L506 216 H10 Z" fill="url(#mmistg)"/>
+<path class="mspr" d="M90 108 L70 172 Q90 180 110 172 Z" fill="rgba(210,238,255,.15)"/><path class="mspr" d="M150 108 L130 172 Q150 180 170 172 Z" fill="rgba(210,238,255,.15)"/><path class="mspr" d="M210 108 L190 172 Q210 180 230 172 Z" fill="rgba(210,238,255,.15)"/><path class="mspr" d="M296 108 L276 172 Q296 180 316 172 Z" fill="rgba(210,238,255,.15)"/><path class="mspr" d="M356 108 L336 172 Q356 180 376 172 Z" fill="rgba(210,238,255,.15)"/><path class="mspr" d="M416 108 L396 172 Q416 180 436 172 Z" fill="rgba(210,238,255,.15)"/>
+<g id="mdrops" class="mdrops"></g>
+<polygon points="30,54 490,54 512,92 8,92" fill="url(#mroofg)" stroke="#e24a5e" stroke-width="1"/>
+<path d="M30 55 H490" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/><rect x="8" y="92" width="504" height="5" fill="rgba(0,0,0,.4)"/>
+<g stroke="rgba(0,0,0,.28)" stroke-width="1"><line x1="110" y1="54" x2="100" y2="92"/><line x1="200" y1="54" x2="196" y2="92"/><line x1="320" y1="54" x2="324" y2="92"/><line x1="410" y1="54" x2="420" y2="92"/></g>
+<text x="260" y="79" text-anchor="middle" fill="rgba(255,255,255,.88)" font-family="Source Sans 3,Segoe UI,sans-serif" font-size="13" font-weight="700" letter-spacing="4">PUP ITECH</text>
+<rect x="36" y="97" width="448" height="5" rx="2.5" fill="#b6bdc4"/><rect x="36" y="97" width="448" height="1.6" rx="1" fill="rgba(255,255,255,.6)"/>
+<circle cx="90" cy="106" r="3.6" fill="#e6ebef"/><rect x="87" y="101" width="6" height="3" rx="1" fill="#8d959c"/><circle cx="150" cy="106" r="3.6" fill="#e6ebef"/><rect x="147" y="101" width="6" height="3" rx="1" fill="#8d959c"/><circle cx="210" cy="106" r="3.6" fill="#e6ebef"/><rect x="207" y="101" width="6" height="3" rx="1" fill="#8d959c"/><circle cx="296" cy="106" r="3.6" fill="#e6ebef"/><rect x="293" y="101" width="6" height="3" rx="1" fill="#8d959c"/><circle cx="356" cy="106" r="3.6" fill="#e6ebef"/><rect x="353" y="101" width="6" height="3" rx="1" fill="#8d959c"/><circle cx="416" cy="106" r="3.6" fill="#e6ebef"/><rect x="413" y="101" width="6" height="3" rx="1" fill="#8d959c"/>
+<line x1="260" y1="97" x2="260" y2="112" stroke="#9aa2aa" stroke-width="2.5"/>
+<rect x="236" y="112" width="48" height="26" rx="5" fill="#1b1f25" stroke="rgba(255,255,255,.4)"/>
+<circle id="mlr" class="lt" cx="248" cy="125" r="4" fill="#ff5a5f"/><circle id="mlg" class="lt" cx="260" cy="125" r="4" fill="#62d48f"/><circle id="mly" class="lt" cx="272" cy="125" r="4" fill="#f1bd5a"/>
+<rect id="mhaze" width="520" height="250" fill="url(#mhazeg)" opacity="0"/>
+<rect width="520" height="250" fill="url(#mshine)"/>
+</g>
+<rect x=".5" y=".5" width="519" height="249" rx="16" fill="none" stroke="rgba(255,86,104,.4)"/>
+</svg>
+<div class="mchips" id="mchips"><span class="mchip" id="mc1"><span>🌡️ Temperature</span><b>32.0 °C</b><i>needs 31 °C or more</i></span><span class="mchip" id="mc2"><span>💧 Humidity</span><b>60 %</b><i>needs below 70 %</i></span><span class="mchip" id="mc3"><span>🌬️ Wind</span><b>2.0 m/s</b><i>needs 0–4 m/s</i></span></div>
               <div class="shedbar" id="shedbar" aria-live="polite"><span class="sdot"></span><span id="shedtxt">Misting OFF</span></div>
             </div>
         </div>
@@ -1406,8 +1507,8 @@ html{scrollbar-gutter:stable}
           <h3>Temperature and humidity</h3>
           <div class="body">
             <p class="hnote" style="margin-top:0">Demo only, not real data.</p>
-            <div class="slider"><label for="hT">Temperature <output id="hTo">33.0 °C</output></label><input id="hT" type="range" min="24" max="45" step="0.1" value="33"></div>
-            <div class="slider"><label for="hH">Humidity <output id="hHo">60 %</output></label><input id="hH" type="range" min="20" max="100" step="1" value="60"></div>
+            <div class="slider"><label for="hT">Temperature <output id="hTo">33.0 °C</output></label><input id="hT" class="heat" type="range" min="24" max="45" step="0.1" value="33"></div>
+            <div class="slider"><label for="hH">Humidity <output id="hHo">60 %</output></label><input id="hH" class="hum" type="range" min="20" max="100" step="1" value="60"></div>
             <details class="formula"><summary>Show the formula</summary>
 <pre>T = air temperature in °F, RH = humidity in %
 
@@ -1645,12 +1746,14 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
 
     <div class="ab-sec">
       <h2>ABOUT THE AUTHOR</h2><div class="bar"></div>
+      <div class="aw" id="aw"><div class="apk" id="apk" data-mood="hello"><div class="apk-in"></div><div class="apk-bub" id="apkBub">Hi! 👋</div></div>
       <div class="card authorcard">
         <img data-logo="author" alt="Photo of Henry Michael S. Libiran Jr.">
         <div class="nm">Henry Michael S. Libiran Jr.</div>
         <div class="pr">Diploma in Mechanical Engineering Technology (DMET)</div>
         <div class="role">Idea and prototype builder</div>
         <p>Henry came up with the main idea and developed the mechanical concept. He also designed and built the prototype and played a major role in making it work.</p>
+      </div>
       </div>
     </div>
 
@@ -2273,6 +2376,14 @@ RANGES.forEach(i=>{
     fillRange(i); sfx("tick",(+i.value-+i.min)/(+i.max-+i.min),demoState.active?.45:1);
     if(!demoState.active){ const card=i.closest(".card"); (card?card.querySelectorAll("input[type=range]"):[i]).forEach(x=>{ x.classList.remove("hintpulse"); x._used=true; }); }
   });
+});
+/* a small glass bubble follows the slider knob and shows its value */
+const BUBF={sT:v=>v.toFixed(1)+" °C",sH:v=>Math.round(v)+" %",sW:v=>v.toFixed(1)+" m/s",hT:v=>v.toFixed(1)+" °C",hH:v=>Math.round(v)+" %"};
+RANGES.forEach(i=>{
+  const wrap=i.closest(".slider"), sb=document.createElement("span"); sb.className="sbub"; wrap.appendChild(sb);
+  const upd=()=>{ const pct=(+i.value-+i.min)/(+i.max-+i.min); sb.style.left=(15+pct*(i.offsetWidth-30))+"px"; sb.textContent=(BUBF[i.id]||String)(+i.value);
+    sb.classList.add("on"); clearTimeout(sb._t); sb._t=setTimeout(()=>sb.classList.remove("on"),demoState.active?260:900); };
+  i.addEventListener("input",upd);
 });
 let demoRaf=0, demoHand=null, demoInput=null, demoRestore=null;
 function stopDemo(restore){
@@ -3225,7 +3336,7 @@ function sim(){
   const t=+$("#sT").value, h=+$("#sH").value, w=+$("#sW").value;
   $("#sTo").textContent=t.toFixed(1)+" °C"; $("#sHo").textContent=h+" %"; $("#sWo").textContent=w.toFixed(1)+" m/s";
   const tOK=t>=TH.tempMin, hOK=h<TH.rhMax, wOK=w>=TH.windMin&&w<=TH.windMax, all=tOK&&hOK&&wOK;
-  shedUpdate(all,t,w);
+  shedUpdate(all,t,w,h);
   const r=(n,ok)=>`<div class="r"><span>${n}</span>${ok?'<span class="pass">✓ YES</span>':'<span class="fail">✕ NO</span>'}</div>`;
   $("#simOut").innerHTML = r("Temperature",tOK)+r("Humidity",hOK)+r("Wind",wOK)+
     `<div class="result ${all?"on":"off"}">${all?"ALL THREE ARE TRUE → PUMP ON":"NOT ALL THREE ARE TRUE → PUMP OFF"}<small>${all?"The pump would run for 30 seconds, then rest for 3 minutes.":"The pump stays off until all three are true."}</small></div>`;
@@ -3242,17 +3353,26 @@ sim();
     c.setAttribute("cx",x+(k%2?1:-1)*(2+k*3)); c.setAttribute("cy",110+k*4); c.setAttribute("r",2.1-k*.28);
     c.style.animationDelay=(-(i*.37+k*.62)).toFixed(2)+"s"; g.appendChild(c); } });
 })();
-function shedUpdate(all,t,w){
+function shedUpdate(all,t,w,h){
   const sh=$("#mshed"); if(!sh) return;
   if(shedPrev!==undefined && shedPrev!==all) sfx(all?"mistOn":"mistOff"); shedPrev=all;
   sh.classList.toggle("on",all);
-  $("#mled").setAttribute("fill",all?"#62d48f":"#ff7b88");
+  const tOK=t>=TH.tempMin, hOK=h<TH.rhMax, wOK=w>=TH.windMin&&w<=TH.windMax, c=(tOK?1:0)+(hOK?1:0)+(wOK?1:0);
+  const lit=all?"mlg":(c===2?"mly":"mlr");                 /* green = all 3 true, yellow = 2 of 3, red = 1 or none */
+  ["mlr","mlg","mly"].forEach(id=>$("#"+id).classList.toggle("lit",id===lit));
   const bar=$("#shedbar"); bar.classList.toggle("on",all); $("#shedtxt").textContent = all ? "Misting ON: all three are true 💦" : "Misting OFF: not all three are true";
   const f=Math.min(1,Math.max(0,(t-20)/20)), sun=$("#msun");
   sun.setAttribute("r",(11+f*17).toFixed(1));
   sun.setAttribute("fill", t>=36?"#ff6b4a": t>=31?"#ff9a3c": t>=26?"#f1bd5a":"#f1d27a");
-  $("#msunGlow").setAttribute("opacity",(.18+f*.7).toFixed(2));
+  $("#msunGlow").setAttribute("opacity",(.2+f*.8).toFixed(2));
+  $("#msrays").style.scale=(.7+f*.8).toFixed(2);
+  $("#mskywarm").style.opacity=(f*.9).toFixed(2);
+  $("#mshim").style.opacity=(f>.45?(f-.45)/.55:0).toFixed(2);
+  $("#mhaze").style.opacity=(Math.max(0,(h-35)/65)*.6).toFixed(2);
   const wd=$("#mwind"); wd.setAttribute("class","mwind"+(w<0.15?"":(w>TH.windMax?" wstrong":" wok")));
+  sh.style.setProperty("--swa",Math.min(9,w*1.6).toFixed(1)+"deg"); sh.style.setProperty("--swd",Math.max(.5,2.4-w*.25).toFixed(2)+"s"); sh.style.setProperty("--cd",Math.max(14,40-w*3.5).toFixed(0)+"s");
+  const chip=(id,ok,val)=>{ const e=$("#"+id); e.className="mchip "+(ok?"ok":"no"); e.querySelector("b").textContent=val; };
+  chip("mc1",tOK,t.toFixed(1)+" °C"); chip("mc2",hOK,Math.round(h)+" %"); chip("mc3",wOK,w.toFixed(1)+" m/s");
 }
 const HI_LINES=["Feeling okay","Getting a little tired","Very uncomfortable","Struggling with the heat","Needs to cool down now"];
 function personUpdate(k){
@@ -3350,6 +3470,30 @@ function bootRun(){
   at(R+3500,finish);
 }
 if(rootEl.classList.contains("booting")) bootRun(); else { const bb=$("#boot"); if(bb) bb.remove(); }
+/* Misty peeks over the edge of the author's box when you scroll to it (Developer-free, works inside the dashboard) */
+(function(){
+  const aw=$("#aw"), apk=$("#apk"); if(!aw||!apk) return;
+  const svg=mchar.querySelector("svg").cloneNode(true); svg.querySelectorAll("[id]").forEach(n=>n.removeAttribute("id")); $(".apk-in",apk).appendChild(svg);
+  const bub=$("#apkBub"), SEQ=[["hello","Hi! 👋"],["wow","Wow, meet the builder! ✨"],["joy","Hello there! 😄"],["excited","Nice to meet you! 💦"]];
+  let timer=null,k=0,inView=false;
+  function step(){ const q=SEQ[k++%SEQ.length]; apk.dataset.mood=q[0]; bub.textContent=q[1]; bub.classList.remove("show"); void bub.offsetWidth; bub.classList.add("show"); sfx("mood_"+q[0]); timer=setTimeout(step,2300); }
+  function enter(){ if(inView) return; inView=true; k=0; apk.classList.add("up"); sfx("bootpeek",1); timer=setTimeout(step,550); }
+  function leave(){ inView=false; clearTimeout(timer); apk.classList.remove("up"); bub.classList.remove("show"); }
+  if("IntersectionObserver" in window && !reduceMotion) new IntersectionObserver(es=>es.forEach(e=>e.isIntersecting?enter():leave()),{threshold:.6}).observe(aw);
+})();
+
+/* the project video starts by itself (muted, as browsers require) when you reach it and pauses when you leave */
+(function(){
+  const v=$("#projVideo"), bt=$("#vunmute"); if(!v) return;
+  v.muted=true;
+  if("IntersectionObserver" in window) new IntersectionObserver(es=>es.forEach(e=>{
+    if(e.isIntersecting && e.intersectionRatio>=.5){ const pr=v.play(); if(pr&&pr.catch) pr.catch(()=>{}); }
+    else if(!e.isIntersecting && !v.paused) v.pause();
+  }),{threshold:[0,.5]}).observe(v);
+  v.addEventListener("play",()=>{ if(v.muted) bt.hidden=false; });
+  v.addEventListener("volumechange",()=>{ if(!v.muted) bt.hidden=true; });
+  bt.addEventListener("click",()=>{ v.muted=false; bt.hidden=true; });
+})();
 routeBuild(); routeFX();
 window.addEventListener("resize",()=>{ routeBuild(); routeFX(); });
 window.addEventListener("load",()=>{ routeBuild(); routeFX(); });
