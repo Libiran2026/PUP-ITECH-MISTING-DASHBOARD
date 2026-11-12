@@ -1880,7 +1880,7 @@ const SUPABASE_URL = "https://sjwhtdppsvdjiffvvbju.supabase.co/rest/v1/";
 const SUPABASE_KEY = "sb_publishable_A1pqlhoRsez27xDKXsAfhA_0lXQr4Eq"; // publishable (public, read-only via RLS)
 const TZ = "Asia/Manila";
 const TH = { tempMin: 31, rhMax: 70, windMin: 0.0, windMax: 4.0 };
-const POLL_MS = 2000, STALE_S = 20, LIVE_POINTS = 90;
+const POLL_MS = 2000, STALE_S = 60, LIVE_POINTS = 90;
 
 /* ================= HELPERS ================= */
 const $ = (s, r=document) => r.querySelector(s);
@@ -1895,7 +1895,7 @@ function fmtTime(iso, opts){
   return d.toLocaleString("en-PH", Object.assign({timeZone:TZ, year:"numeric", month:"short", day:"2-digit", hour:"2-digit", minute:"2-digit", second:"2-digit", hour12:true}, opts||{}));
 }
 function ago(iso){
-  const s = Math.max(0, Math.round((Date.now()-new Date(iso).getTime())/1000));
+const s = Math.max(0, Math.round((Date.now()+(srvOff||0)-new Date(iso).getTime())/1000));
   if(s<60) return s+" seconds ago"; if(s<3600) return Math.floor(s/60)+" min ago";
   if(s<86400) return Math.floor(s/3600)+" h ago"; return Math.floor(s/86400)+" d ago";
 }
@@ -2602,7 +2602,7 @@ const MO={state:"locked",pw:null,verified:false,lastAct:0,sentAt:0,startedAt:0,d
 const MO_RUN_S=30, MO_CONFIRM_MS=25000, MO_IDLE_MS=60000, MO_DONE_MS=6000;
 const moEl=id=>document.getElementById(id);
 function moLive(){
-  const r=liveRows[0], age=r?(Date.now()-new Date(r.recorded_at).getTime())/1000:Infinity, online=!!r&&age<=STALE_S;
+const r=liveRows[0], age=r?(Date.now()+(srvOff||0)-new Date(r.recorded_at).getTime())/1000:Infinity, online=isFreshRow(r);
   return {row:r,age,online,misting:online&&isOn(r.misting_status)};
 }
 function moSys(L){
@@ -3206,9 +3206,17 @@ function updateLiveCharts(rows){
 
 /* ================= LIVE RENDER ================= */
 let liveRows = [], livePump, seenFresh=false;
+let newestKey=null, newestSeenAt=0, newestChanged=false;
+function isFreshRow(row){
+  if(!row) return false;
+  const t=Date.parse(row.recorded_at);
+  const byClock=Number.isFinite(t)?Math.max(0,(Date.now()+(srvOff||0)-t)/1000):Infinity;
+  const byChange=newestChanged?(Date.now()-newestSeenAt)/1000:Infinity;
+  return Math.min(byClock,byChange)<=STALE_S;
+}
 function renderLive(){
   const row = liveRows[0];
-  const fresh = !!row && (Date.now()-new Date(row.recorded_at).getTime())/1000 <= STALE_S;
+const fresh = isFreshRow(row);
 
   $$("[data-link]").forEach(c=>{
     c.className = "chip "+(row?(fresh?"ok":"warn"):"");
@@ -3264,6 +3272,11 @@ async function poll(){
     const t0=performance.now();
     liveRows = await query("sensor_live",{select:"*", order:"recorded_at.desc", limit:LIVE_POINTS});
     devLat.push(performance.now()-t0); if(devLat.length>12) devLat.shift();
+if(liveRows[0]){
+  const k=liveRows[0].id!==undefined?liveRows[0].id:liveRows[0].recorded_at;
+  if(newestKey!==null && k!==newestKey){ newestChanged=true; newestSeenAt=Date.now(); }
+  newestKey=k;
+}
     failCount=0; $("#errBanner").classList.remove("show");
   }catch(err){
     failCount++; devFails++;
