@@ -3204,16 +3204,31 @@ function updateLiveCharts(rows){
   set(liveCharts.mist,[asc.map(r=>isOn(r.misting_status)?1:0)]);
 }
 
+
 /* ================= LIVE RENDER ================= */
-let liveRows = [], livePump, seenFresh=false;
-let newestKey=null, newestSeenAt=0, newestChanged=false;
-function isFreshRow(row){
-  if(!row) return false;
-  const t=Date.parse(row.recorded_at);
-  const byClock=Number.isFinite(t)?Math.max(0,(Date.now()+(srvOff||0)-t)/1000):Infinity;
-  const byChange=newestChanged?(Date.now()-newestSeenAt)/1000:Infinity;
-  return Math.min(byClock,byChange)<=STALE_S;
+let liveRows = [], livePump, seenFresh = false;
+let newestKey = null, newestSeenAt = 0, newestChanged = false;
+
+function isFreshRow(row) {
+  if (!row) return false;
+
+  const t = Date.parse(row.recorded_at);
+
+  const d = Number.isFinite(t)
+    ? (Date.now() + (srvOff || 0) - t) / 1000
+    : Infinity;
+
+  // Reject timestamps more than 5 seconds in the future
+  const byClock = (d < -5) ? Infinity : Math.max(0, d);
+
+  // Check when the newest database record actually changed
+  const byChange = newestChanged
+    ? (Date.now() - newestSeenAt) / 1000
+    : Infinity;
+
+  return Math.min(byClock, byChange) <= STALE_S;
 }
+
 function renderLive(){
   const row = liveRows[0];
 const fresh = isFreshRow(row);
