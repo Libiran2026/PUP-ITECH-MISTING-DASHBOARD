@@ -1134,6 +1134,10 @@ input[type=range]:active::-webkit-slider-thumb{transform:scale(1.18);box-shadow:
 .pcyc-txt span{display:block;font-size:.88rem;font-weight:700}.pcyc-txt .on{color:#62d48f}.pcyc-txt .rest{color:#a6aeb6}
 .pcyc-txt small{display:block;margin-top:6px;color:#8a929a;font-size:.76rem}
 @media (prefers-reduced-motion:reduce){.pc-hand,.pc-ton,.pc-trest,.dg-pump .imp,.dg-wires path{animation:none !important}.pc-trest{opacity:1}.pc-ton{opacity:0}}
+/* unvisited tab dot */
+nav.tabs button .newdot{display:inline-block;width:9px;height:9px;border-radius:50%;background:#ff6b7a;margin-left:7px;vertical-align:middle;animation:newpulse 1.6s ease-out infinite}
+@keyframes newpulse{0%{box-shadow:0 0 0 0 rgba(255,107,122,.7)}100%{box-shadow:0 0 0 9px rgba(255,107,122,0)}}
+@media (prefers-reduced-motion:reduce){nav.tabs button .newdot{animation:none}}
 </style>
 <script>(function(){var h=document.documentElement,x=/^#(dashboard|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>
 </head>
@@ -1685,7 +1689,6 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
         <div class="fade l"><button type="button" class="tarrow" data-dir="-1" aria-label="Show earlier sections">‹</button></div>
         <nav class="tabs" role="tablist" aria-label="Dashboard sections">
         <button role="tab" data-view="home" aria-selected="true">Dashboard</button>
-        <button role="tab" data-view="live" aria-selected="false">Live Data</button>
         <button role="tab" data-view="history" aria-selected="false">Historical Data</button>
         <button role="tab" data-view="about" aria-selected="false">About</button>
       </nav>
@@ -2138,7 +2141,7 @@ document.addEventListener("mouseover",e=>{ const c=e.target; if(c && c.classList
 updSndBtns();
 
 /* ================= NAVIGATION ================= */
-const HASH = {home:"dashboard", live:"live-data", history:"historical-data", about:"about"};
+const HASH = {home:"dashboard", history:"historical-data", about:"about"};
 let histLoaded=false;
 const dashEl = $("#dashboard");
 const dashTop = () => dashEl.getBoundingClientRect().top + window.scrollY;
@@ -2180,6 +2183,7 @@ function show(view, opts){
   $$("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.view===view));
   $$(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+view));
   hist("replaceState","#"+HASH[view]);
+markVisited(view);
   centerTab($('nav.tabs button[data-view="'+view+'"]'));
   if(window.scrollY > dashTop()+4) toDash(false);
   setTimeout(()=>{
@@ -2265,6 +2269,14 @@ $$(".readings .reading .lab").forEach((l,i)=>{ if(LAB_ICONS[i]) l.insertAdjacent
 $$(".pvgrid .pv .l").forEach((l,i)=>{ if(LAB_ICONS[i]) l.insertAdjacentHTML("afterbegin",'<span class="lico" aria-hidden="true">'+LAB_ICONS[i]+'</span>'); });
 const TAB_ICONS={home:"📊",live:"📈",history:"🗓️",about:"🎓"};
 $$("nav.tabs button").forEach(b=>b.insertAdjacentHTML("afterbegin",'<span class="tico" aria-hidden="true">'+TAB_ICONS[b.dataset.view]+'</span>'));
+  /* red dot on tabs the visitor has not opened yet (remembered on this device) */
+const VISITED=(()=>{ try{ return JSON.parse(localStorage.getItem("pupVisited")||"{}"); }catch(e){ return {}; } })();
+function markVisited(view){
+  VISITED[view]=1;
+  try{ localStorage.setItem("pupVisited",JSON.stringify(VISITED)); }catch(e){}
+  const d=document.querySelector('nav.tabs button[data-view="'+view+'"] .newdot'); if(d) d.remove();
+}
+$$("nav.tabs button").forEach(b=>{ if(!VISITED[b.dataset.view]) b.insertAdjacentHTML("beforeend",'<span class="newdot" aria-hidden="true" title="Not visited yet"></span>'); });
 const DASH_ICONS={"h-home":"🌡️","h-live":"📈","h-hist":"🗓️"};
 Object.keys(DASH_ICONS).forEach(id=>{ const h=document.getElementById(id); if(h) h.insertAdjacentHTML("beforeend",' <span class="ticon" aria-hidden="true">'+DASH_ICONS[id]+'</span>'); });
 
