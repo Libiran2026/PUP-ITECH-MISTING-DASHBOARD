@@ -1139,9 +1139,96 @@ nav.tabs button .newdot{display:inline-block;width:9px;height:9px;border-radius:
 @keyframes newpulse{0%{box-shadow:0 0 0 0 rgba(255,107,122,.7)}100%{box-shadow:0 0 0 9px rgba(255,107,122,0)}}
 @media (prefers-reduced-motion:reduce){nav.tabs button .newdot{animation:none}}
 </style>
-<script>(function(){var h=document.documentElement,x=/^#(dashboard|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>
+<style id="safety-css">
+html.safety-lock{overflow:hidden}
+html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
+#safety{position:fixed;inset:0;z-index:400;overflow:auto;background:radial-gradient(900px 520px at 50% -80px,rgba(176,25,42,.5),transparent 70%),#06080a;transition:opacity .7s,transform .7s}
+#safety.bye{opacity:0;transform:scale(1.05);pointer-events:none}
+.sf-st{display:none;min-height:100%;width:100%;max-width:980px;margin:0 auto;padding:18px;flex-direction:column;align-items:center;justify-content:center;gap:14px}
+.sf-st.on{display:flex;animation:sfin .6s ease both}
+@keyframes sfin{from{opacity:0;translate:0 14px}to{opacity:1;translate:0 0}}
+#sfGM{position:relative;width:min(190px,48vw);transform:translateY(120vh)}
+#sfGM.in{animation:sfent 1.6s cubic-bezier(.3,1.4,.5,1) forwards}
+#sfGM.out{animation:sfout .9s ease-in forwards}
+@keyframes sfent{0%{transform:translateY(110vh) scale(.5) rotate(-10deg)}60%{transform:translateY(-30px) scale(1.1)}80%{transform:translateY(8px) scale(.97)}100%{transform:none}}
+@keyframes sfout{to{transform:translateY(-60vh) scale(.4);opacity:0}}
+.sf-b{position:absolute;left:50%;top:calc(100% + 14px);transform:translate(-50%,8px) scale(.9);width:max-content;max-width:min(88vw,460px);padding:12px 20px;border-radius:16px;background:#242930;border:1px solid rgba(255,123,136,.6);font-weight:700;font-size:clamp(1.05rem,3.6vw,1.45rem);text-align:center;opacity:0;transition:opacity .3s,transform .45s cubic-bezier(.3,1.6,.5,1)}
+.sf-b.show{opacity:1;transform:translate(-50%,0) scale(1)}
+.sfm svg{width:100%;height:auto;display:block;overflow:visible;animation:mbob 2.6s ease-in-out infinite}
+.sfm .mf{display:none}
+.sfm[data-mood=hello] :is(.e-norm,.m-open,.x-spark),.sfm[data-mood=wow] :is(.e-wow,.m-o,.x-bang),.sfm[data-mood=happy] :is(.e-norm,.m-smile),.sfm[data-mood=excited] :is(.e-happy,.m-open,.x-spark),.sfm[data-mood=think] :is(.e-think,.m-flat,.x-bulb){display:inline}
+.sfm .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+.sfm .arm{transform-origin:55px 62px}
+.sfm[data-wave] .arm{animation:marm 1s ease-in-out infinite alternate}
+.sfm .tw{transform-box:fill-box;transform-origin:center;animation:twk2 1s ease-in-out infinite}
+.sf-top{display:flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;text-align:center}
+.sf-top img{height:44px;width:auto}
+#sfT{font-size:clamp(1.05rem,2.6vw,1.5rem);max-width:38ch}
+.sf-card{position:relative;width:100%;border-radius:16px;overflow:hidden;border:2px solid;background:#101318;animation:sfin .5s both}
+.sf-card.x{border-color:#ff5a6a;box-shadow:0 0 30px rgba(255,90,106,.3)}
+.sf-card.v{border-color:#62d48f;box-shadow:0 0 30px rgba(98,212,143,.25)}
+.sf-card.o{border:3px solid #f1bd5a;border-image:repeating-linear-gradient(-45deg,#f1bd5a 0 12px,#15171b 12px 24px) 3;background:#14100a}
+.sf-card svg{display:block;width:100%;height:auto;max-height:46vh}
+.sf-badge{position:absolute;left:12px;top:12px;z-index:2;padding:6px 16px;border-radius:8px;font:800 1.2rem var(--sans);letter-spacing:.06em;color:#fff;animation:sfst .6s cubic-bezier(.3,1.8,.5,1) both}
+.sf-badge.x{background:#d6232f}.sf-badge.v{background:#1f9d55}
+.sf-badge.o{position:static;display:inline-block;margin:10px 0 0 14px;background:#f1bd5a;color:#1b1500;font-size:.95rem}
+@keyframes sfst{from{scale:2.2;opacity:0;rotate:-8deg}to{scale:1;opacity:1;rotate:0deg}}
+.sf-cap{display:flex;gap:14px;align-items:flex-end;width:100%}
+.sf-cap .sfm{width:78px;flex:none}
+.sf-say{flex:1;padding:12px 16px;border-radius:14px 14px 14px 4px;background:#20252c;border:1px solid rgba(255,123,136,.5)}
+.sf-say b{font-family:var(--serif);font-size:1.15rem}.sf-say p{margin-top:4px;color:#d9dde1}
+.sf-ctl{display:flex;gap:14px;align-items:center}
+#sfDots{display:flex;gap:6px}#sfDots i{width:24px;height:6px;border-radius:3px;background:rgba(255,255,255,.18)}
+#sfDots i.p{background:#c4283a}#sfDots i.c{background:#fff}
+#safety.sf-paused *{animation-play-state:paused!important}
+.sf-bob{animation:sfb 1.6s ease-in-out infinite}@keyframes sfb{50%{transform:translateY(-4px)}}
+.sf-run{animation:sfr 1.5s ease-in-out infinite alternate}@keyframes sfr{from{transform:translateX(-80px)}to{transform:translateX(80px)}}
+.sf-walk{animation:sfw2 5s linear infinite}@keyframes sfw2{0%{transform:translate(-110px,0)}50%{transform:translate(0,-14px)}100%{transform:translate(110px,0)}}
+.sf-wig{animation:sfw .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:0 100%}@keyframes sfw{to{transform:rotate(-14deg)}}
+.sf-d{animation:sfd 1.3s ease-in infinite}@keyframes sfd{0%{transform:translateY(0);opacity:0}15%{opacity:1}100%{transform:translateY(110px);opacity:0}}
+.sf-ms{animation:sfm 1.2s ease-in-out infinite alternate}@keyframes sfm{from{opacity:.15}to{opacity:.4}}
+.sf-sp{animation:sfsp .35s steps(2) infinite}@keyframes sfsp{50%{opacity:.1}}
+.sf-pop{animation:sfpop .5s .4s cubic-bezier(.3,1.7,.5,1) both;transform-box:fill-box;transform-origin:50% 100%}@keyframes sfpop{from{scale:0}to{scale:1}}
+.sf-oh{display:flex;align-items:center;gap:12px;padding:0 14px;font-weight:800;letter-spacing:.08em;color:#f1bd5a}.sf-opf{height:70px;width:40px}
+.sf-og{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:14px}
+.sf-og h3{font-family:var(--sans);font-size:.95rem;letter-spacing:.06em;color:#f1bd5a;padding:0 0 8px}.sf-og .nv h3{color:#ff7b88}
+.sf-og ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.sf-og li{padding:8px 12px;border-radius:8px;border-left:4px solid #f1bd5a;background:rgba(241,189,90,.1);font-size:.95rem;animation:sfin .5s calc(var(--i)*.8s + .5s) both}
+.sf-og .nv li{border-left-color:#ff4a5c;background:rgba(255,74,92,.12)}
+@media(max-width:700px){.sf-og{grid-template-columns:1fr}.sf-cap .sfm{width:56px}}
+.sf-q{margin:0;padding:18px 22px;border-left:5px solid #c4283a;background:rgba(143,18,32,.25);border-radius:0 10px 10px 0;font-family:var(--serif);font-size:clamp(1.05rem,2.4vw,1.3rem);line-height:1.5}
+.sf-chk{display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border:1px solid rgba(255,255,255,.25);border-radius:10px;cursor:pointer;font-weight:600;width:100%}
+.sf-chk input{width:24px;height:24px;flex:none;accent-color:#c4283a}
+#sfGo:disabled{opacity:.4;cursor:not-allowed;filter:grayscale(.7)}
+@media(prefers-reduced-motion:reduce){#safety *{animation:none!important;transition:none!important}#sfGM{transform:none}.sf-b{transform:translate(-50%,0)}#sfGM.out{opacity:0}}
+.sf-card{display:flex;align-items:stretch}.sf-card #sfArt{flex:2 1 0;min-width:0}
+#sfPh{flex:1 1 0;margin:0;position:relative;background:#000;min-width:0}#sfPh img{width:100%;height:100%;object-fit:cover;display:block}
+#sfPh figcaption{position:absolute;left:0;right:0;bottom:0;padding:22px 8px 6px;font-size:.75rem;background:linear-gradient(transparent,rgba(0,0,0,.88));text-align:center}
+.sf-card.o #sfPh{display:none}.sf-card.o #sfArt{flex:1}
+@media(max-width:700px){.sf-card{flex-direction:column}#sfPh{height:150px}}
+#sfNext.rdy{animation:sfnx 1s ease-in-out infinite}@keyframes sfnx{50%{box-shadow:0 0 0 8px rgba(255,90,106,.4)}}
+#sfNext:disabled{opacity:.55;cursor:not-allowed}
+.sf-card #sfArt{flex:1 1 100%}
+</style>
+<script>document.documentElement.classList.add("safety-lock");window.__safetyLock=true;</script>
 </head>
 <body>
+<div id="safety" role="dialog" aria-modal="true" aria-labelledby="sfT">
+ <section class="sf-st on" id="sfG"><p class="hnote" style="position:absolute;bottom:18px;left:0;right:0;text-align:center">🔊 Tap anywhere for sound</p><div id="sfGM"><div class="sf-b" id="sfGB" aria-live="polite"></div><div class="sfm" id="sfGmi" data-mood="hello" data-wave="1"></div></div></section>
+ <section class="sf-st" id="sfP">
+  <div class="sf-top"><img data-logo="pup" alt=""><img data-logo="itech" alt=""><h1 id="sfT">Misting System Safety: Do’s and Don’ts of the PUP ITECH Waiting Shed</h1></div>
+  <div class="sf-card" id="sfC"><div class="sf-badge" id="sfBd"></div><div id="sfArt"></div></div>
+  <div class="sf-cap"><div class="sfm" id="sfPm" data-mood="wow"></div><div class="sf-say"><b id="sfH"></b><p id="sfX" aria-live="polite"></p></div></div>
+  <div class="sf-ctl"><div id="sfDots" aria-hidden="true"></div><button class="btn" id="sfNext" type="button" disabled>Next ▶</button></div>
+ </section>
+ <section class="sf-st" id="sfA">
+  <h2 style="font-size:clamp(1.6rem,4vw,2.4rem)">Safety Acknowledgment</h2>
+  <blockquote class="sf-q">“As a bona fide PUPian student, faculty member, or staff member, I acknowledge that I have read, understood, and will follow the Do’s and Don’ts for the safe use of the PUP ITECH Waiting Shed Misting System.”</blockquote>
+  <label class="sf-chk"><input type="checkbox" id="sfCk" required aria-describedby="sfHint"><span>I have read, understood, and acknowledge the safety guidelines of the misting system.</span></label>
+  <button class="btn big" id="sfGo" type="button" disabled>I Acknowledge – Continue</button>
+  <p class="hnote" id="sfHint">Tick the box above to enable the button.</p>
+ </section>
+</div>
 <div id="boot" aria-hidden="true">
   <div id="bootbg"></div>
   <div id="bootm" data-mood="wow"><div class="bm-in"></div></div>
@@ -1870,6 +1957,96 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
 <footer><div class="wrap">PUP ITECH Automated Misting System · Thesis project of the PUP ITECH research group · Public website: you can only view data here. Times are in Philippine Time.</div></footer>
 </div>
 
+<script>(function(){
+const $=s=>document.querySelector(s),reduceMotion=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches,rootEl=document.documentElement;
+const sfx=(...a)=>{ try{ if(window.__sfx) window.__sfx(...a); }catch(e){} };
+function cloneMisty(t){ const s=document.querySelector("#mchar svg"),d=document.createElement("div"); d.innerHTML=s.outerHTML.replace(/id="mg"/g,'id="mg_'+t+'"').replace(/url\(#mg\)/g,"url(#mg_"+t+")"); return d.firstChild; }
+window.addEventListener("error",e=>{ let b=document.getElementById("sfErr"); if(!b){ b=document.createElement("div"); b.id="sfErr"; b.style.cssText="position:fixed;left:8px;right:8px;bottom:8px;z-index:9999;background:#300;color:#fff;border:1px solid #f66;padding:8px 12px;font:13px monospace;border-radius:8px;white-space:pre-wrap"; document.body.appendChild(b); } b.textContent+="Script error: "+e.message+" (line "+e.lineno+")\n"; });
+function safetyInit(){
+const S=$("#safety"),G=$("#sfG"),P=$("#sfP"),A=$("#sfA"),lock=["intro","dashboard","topbar","prog"].map(i=>document.getElementById(i));
+lock.forEach(e=>{ if(e) e.inert=true; });
+$("#sfGmi").appendChild(cloneMisty("sfg")); $("#sfPm").appendChild(cloneMisty("sfp"));
+/* ---- scene art ---- */
+const FL='<rect width="400" height="230" fill="#161a20"/><g fill="#8b9199" opacity=".5"><rect x="26" y="146" width="14" height="54"/><rect x="96" y="146" width="14" height="54"/><rect x="166" y="146" width="14" height="54"/></g><rect x="250" y="172" width="140" height="28" rx="3" fill="#e9dcc3"/><rect x="250" y="168" width="140" height="7" rx="2" fill="#f6efe0"/><rect y="200" width="400" height="30" fill="#252a31"/><rect x="8" y="56" width="8" height="144" fill="#8a5a3c"/><rect x="384" y="56" width="8" height="144" fill="#8a5a3c"/><rect width="400" height="44" fill="#c4281c"/><path d="M0 11H400M0 22H400M0 33H400" stroke="#8f1220" stroke-width="2"/><rect x="0" y="44" width="400" height="12" fill="#6b4a3a"/><path d="M0 47H400" stroke="#8a5a3c" stroke-width="2" opacity=".7"/><path d="M0 58H400" stroke="#0b0b0d" stroke-width="3"/>';
+const NZ=(x,m)=>'<circle cx="'+(x-10)+'" cy="58" r="3.2" fill="#2f86cc"/><circle cx="'+(x+10)+'" cy="58" r="3.2" fill="#2f86cc"/><rect x="'+(x-7)+'" y="41" width="3" height="21" rx="1" fill="#f2f4f6"/><rect x="'+(x+4)+'" y="41" width="3" height="21" rx="1" fill="#f2f4f6"/><rect x="'+(x-4)+'" y="58" width="8" height="6" rx="2" fill="#e8ecef"/>'+(m?'<path class="sf-ms" d="M'+x+' 65 L'+(x-34)+' 150 Q'+x+' 162 '+(x+34)+' 150Z" fill="#bfe6ff" opacity=".3"/>':'');
+const DR=(x,y)=>'<g fill="#7cc4f5">'+[0,1,2].map(j=>'<circle class="sf-d" style="animation-delay:'+(j*.45)+'s" cx="'+(x+(j-1)*3)+'" cy="'+y+'" r="3"/>').join("")+'</g>';
+const PU=(x,w)=>'<ellipse cx="'+x+'" cy="206" rx="'+w+'" ry="7" fill="#3f86c4" opacity=".55"/>';
+const BB=(x,y,t)=>{const w=t.length*7+18;return '<g class="sf-pop"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="26" rx="10" fill="#fff"/><path d="M'+(x+14)+' '+(y+25)+'l6 10 4-10z" fill="#fff"/><text x="'+(x+w/2)+'" y="'+(y+18)+'" text-anchor="middle" font-size="13" font-weight="700" fill="#7a0f1c">'+t+'</text></g>';};
+const TX=(x,y,t,c)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+(c||"#f1bd5a")+'">'+t+'</text>';
+const SG='<g transform="translate(330 150)"><path d="M0 0l22 40H-22z" fill="#f1bd5a"/><text y="34" text-anchor="middle" font-size="22" font-weight="800" fill="#222">!</text></g>';
+function fig(x,c,s,o){o=o||{};const A_=o.a||[[-22,-34],[22,-34]],hair=o.hat||"#1b1b1f";
+return '<g class="'+(o.k||"")+'"><g transform="translate('+x+' '+(o.y===undefined?200:o.y)+')"><path d="M-7 -30V-2M7 -30V-2" stroke="#2a3140" stroke-width="10" stroke-linecap="round"/><rect x="-16" y="-72" width="32" height="46" rx="13" fill="'+c+'"/>'+
+A_.map((a,i)=>'<g class="'+(o.w===i?"sf-wig":"")+'"><path d="M'+(i?13:-13)+' -62L'+a[0]+' '+a[1]+'" stroke="'+c+'" stroke-width="9" stroke-linecap="round"/><circle cx="'+a[0]+'" cy="'+a[1]+'" r="5" fill="'+s+'"/></g>').join("")+
+'<g transform="rotate('+(o.t||0)+' 0 -74)"><circle cy="-90" r="16" fill="'+s+'"/><path d="M-16 -92Q-15 -110 0 -108Q15 -110 16 -92Q8 -100 0 -99Q-8 -100 -16 -92Z" fill="'+hair+'"/>'+(o.hat?'<rect x="-19" y="-98" width="38" height="5" rx="2" fill="'+o.hat+'"/>':"")+'<circle cx="-6" cy="-88" r="2" fill="#111"/><circle cx="6" cy="-88" r="2" fill="#111"/>'+(o.m?'<ellipse cy="-79" rx="4" ry="5" fill="#7a1030"/>':'<path d="M-5 -80Q0 -75 5 -80" stroke="#111" stroke-width="2" fill="none"/>')+'</g></g></g>';}
+const ART=[
+()=>FL+NZ(250,1)+fig(228,"#b0192a","#d9a77b",{t:22,m:1,k:"sf-bob"})+'<g class="sf-ms" fill="#bfe6ff"><circle cx="246" cy="112" r="4"/><circle cx="252" cy="122" r="3"/></g>',
+()=>FL+NZ(222,1)+fig(186,"#3a6ea5","#c68c63",{m:1,w:1,a:[[-22,-34],[28,-134]]}),
+()=>FL+PU(150,40)+PU(280,34)+'<g class="sf-run">'+fig(200,"#4a8f6b","#e0b48a",{t:10,m:1,a:[[-30,-48],[30,-80]]})+'</g><g fill="#7cc4f5" class="sf-sp"><circle cx="170" cy="196" r="3"/><circle cx="240" cy="198" r="3"/><circle cx="250" cy="190" r="2"/></g>',
+()=>FL+'<rect x="280" y="70" width="64" height="90" rx="6" fill="#2b3138" stroke="#9aa2aa"/><rect x="290" y="82" width="44" height="14" fill="#f1bd5a"/><text x="312" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#222">DANGER</text><path d="M280 130 C250 130 245 150 236 125" stroke="#ff7b88" stroke-width="3" fill="none"/><path class="sf-sp" d="M236 118l-8 8h7l-6 10 14-14h-8l5-4z" fill="#ffe066"/>'+fig(190,"#c98a2b","#b9825a",{m:1,w:1,t:-6,a:[[-22,-34],[40,-74]]}),
+()=>FL+NZ(200,0)+DR(200,70)+PU(200,36)+fig(200,"#3a6ea5","#e0b48a",{m:1,k:"sf-bob"}),
+()=>FL+NZ(310,1)+'<path d="M215 175H320" stroke="#62d48f" stroke-width="2" stroke-dasharray="4 3"/>'+TX(268,168,"safe distance","#62d48f")+fig(120,"#b0192a","#d9a77b",{k:"sf-bob",w:1,a:[[-22,-34],[26,-86]]})+fig(165,"#3a6ea5","#c68c63",{k:"sf-bob"}),
+()=>FL+NZ(310,0)+DR(310,70)+fig(130,"#b0192a","#d9a77b",{w:1,a:[[-22,-34],[44,-84]]})+fig(215,"#e8892b","#c68c63",{hat:"#f1bd5a"})+BB(100,60,"It’s leaking!"),
+()=>FL+PU(200,55)+'<g class="sf-walk">'+fig(200,"#4a8f6b","#e0b48a",{a:[[-26,-44],[26,-40]]})+'</g>'+SG+TX(200,226,"Walk carefully","#62d48f"),
+()=>FL+PU(280,45)+SG+fig(130,"#3a6ea5","#e0b48a",{w:1,a:[[-22,-34],[40,-80]]})+fig(215,"#e8892b","#c68c63",{hat:"#f1bd5a"})+BB(70,66,"The floor is slippery!"),
+()=>FL+NZ(262,0)+'<path d="M290 60V200M320 60V200M290 90h30M290 130h30M290 170h30" stroke="#8a929a" stroke-width="3"/>'+fig(240,"#e8892b","#b9825a",{hat:"#f1bd5a",w:1,a:[[-22,-34],[22,-136]]})+fig(100,"#b0192a","#d9a77b",{k:"sf-bob"})+TX(100,226,"Stay back","#62d48f")+BB(150,70,"Inspection in progress")
+];
+const OPA=["Inspect hoses, fittings, and connections before operating.","Check the water reservoir level.","Ensure the pump and electrical enclosure are properly secured.","Monitor temperature, humidity, and wind conditions.","Watch for abnormal pump noise, vibration, or overheating."],
+OPN=["Never operate the pump without sufficient water.","Never disconnect pressurized hoses.","Never open an energized electrical enclosure.","Never operate the system with damaged wiring or leaking electrical components.","Never bypass safety controls."];
+const li=(t,j)=>'<li style="--i:'+j+'">'+t+'</li>';
+const OP=()=>'<div class="sf-oh"><svg class="sf-opf" viewBox="-30 -125 60 130" aria-hidden="true">'+fig(0,"#e8892b","#c68c63",{hat:"#f1bd5a",y:0,k:"sf-bob"})+'</svg><span>FOR AUTHORIZED OPERATORS ONLY</span></div><div class="sf-og"><div><h3>✓ BEFORE &amp; DURING OPERATION</h3><ul>'+OPA.map(li).join("")+'</ul></div><div class="nv"><h3>⛔ NEVER</h3><ul>'+OPN.map(li).join("")+'</ul></div></div>';
+/* [type, title, explanation, Misty mood]  x = DON'T, v = DO, o = operator */
+const D=[
+["x","Don’t inhale mist from a nozzle","Never breathe in mist directly from a nozzle. Keep your face away from the spray.","wow"],
+["x","Don’t touch, pull, or adjust the nozzles","Nozzles are precision equipment under pressure. Only authorized personnel may handle them.","wow"],
+["x","Don’t run or play on wet floors","Puddles make the floor slippery. Walk calmly and never run or play in wet areas.","wow"],
+["x","Don’t touch exposed wires or electrical parts","Exposed wires and electrical components can cause serious shock. Keep away and tell the operator.","wow"],
+["x","Don’t stand under a leaking or faulty nozzle","A leaking or malfunctioning nozzle can drip or spray unpredictably. Move away and report it.","wow"],
+["v","Stay in the misting area, at a safe distance","Stay inside the designated misting area and keep a safe distance from the nozzles.","excited"],
+["v","Report leaks, odd sprays, or damage","Tell the operator right away about leaking nozzles, unusual spray patterns, or damaged equipment.","excited"],
+["v","Walk carefully around wet areas","Watch your step and go around puddles instead of through them.","happy"],
+["v","Tell the operator if the floor is too slippery","If the floor becomes excessively slippery, let the operator know so it can be made safe.","happy"],
+["v","Let authorized personnel handle the equipment","Allow authorized personnel to inspect and handle the misting equipment while you stay back.","excited"],
+["o","Extra reminders for operators","These rules are for authorized operators of the misting system. Everyone else: please stay clear.","think"]];
+const dots=$("#sfDots"); D.forEach(()=>dots.appendChild(document.createElement("i")));
+const pm=$("#sfPm"); let n=-1,el=0,paused=false,tm=null;
+const IMG={};
+const CP="Actual nozzle line under the shed roof",CR="3D model of the PUP ITECH waiting shed";
+const PHI=[["P3",CP],["P2",CP],["R",CR],["P1","Actual wiring and enclosure under the roof"],["P4",CP],["R",CR],["P3",CP],["R",CR],["R",CR],["P4",CP],null];
+const SN=["mistpuff","nozzle","splash","m_elec","glug","ding","pop","bloop","note","sparkle","sensor"];
+function scene(k){
+ n=k;el=0;const d=D[k],op=d[0]==="o",c=$("#sfC");
+ c.className="sf-card "+d[0]; c.style.animation="none"; void c.offsetWidth; c.style.animation="";
+ const b=$("#sfBd"); b.className="sf-badge "+d[0]; b.textContent=op?"⚠ OPERATOR SAFETY REMINDERS":d[0]==="x"?"✕ DON’T":"✓ DO";
+ $("#sfArt").innerHTML=op?OP():'<svg viewBox="0 0 400 230" role="img" aria-label="'+d[1]+' (illustration)">'+ART[k]()+'</svg>';
+ $("#sfH").textContent=d[1]; $("#sfX").textContent=d[2]; pm.dataset.mood=d[3];
+ [...dots.children].forEach((e,j)=>e.className=j<k?"p":j===k?"c":"");
+ sfx("slide"); setTimeout(()=>sfx(SN[k]),260); 
+}
+function play(){ scene(0); tm=setInterval(()=>{ el+=.1; const nx=$("#sfNext"),m=n===10?7:3; if(el<m){ nx.disabled=true; nx.classList.remove("rdy"); nx.textContent="Next in "+Math.ceil(m-el)+"…"; } else if(nx.disabled){ nx.disabled=false; nx.classList.add("rdy"); nx.textContent=n<10?"Next ▶":"Continue ▶"; sfx("sparkle"); } },100); }
+function endShow(){ clearInterval(tm); P.classList.remove("on"); A.classList.add("on"); sfx("sparkle"); setTimeout(()=>$("#sfCk").focus(),300); }
+$("#sfNext").addEventListener("click",()=>{ if(el<(n===10?7:3)) return; if(n<10) scene(n+1); else endShow(); });
+/* ---- greeting ---- */
+const T=[],at=(ms,f)=>T.push(setTimeout(f,ms)),gm=$("#sfGM"),gb=$("#sfGB"),gi=$("#sfGmi"),k=reduceMotion?.4:1;
+const say=t=>{ gb.textContent=t; gb.classList.remove("show"); void gb.offsetWidth; gb.classList.add("show"); };
+at(500*k,()=>{ gm.classList.add("in"); sfx("bootpop"); });
+at(1400*k,()=>{ say("Hello, PUPian!"); sfx("mood_hello"); });
+at(3000*k,()=>{ gi.dataset.mood="excited"; say("Before exploring our misting system, let’s learn how to use it safely!"); sfx("mood_excited"); });
+at(6600*k,()=>{ gb.classList.remove("show"); gm.classList.add("out"); sfx("bootwhoosh"); });
+at(7600*k,()=>{ G.classList.remove("on"); P.classList.add("on"); play(); });
+/* ---- acknowledgment ---- */
+const ck=$("#sfCk"),go=$("#sfGo"); ck.checked=false; go.disabled=true;
+ck.addEventListener("change",()=>{ go.disabled=!ck.checked; sfx(ck.checked?"ding":"pop"); });
+go.addEventListener("click",()=>{ if(!ck.checked) return; finish(); });
+function finish(){
+ go.disabled=true; S.classList.add("bye"); sfx("enter");
+ setTimeout(()=>{
+  S.hidden=true; rootEl.classList.remove("safety-lock"); window.__safetyLock=false; lock.forEach(e=>{ if(e) e.inert=false; });
+  document.dispatchEvent(new Event("safety-done"));
+ },750);
+}
+}
+safetyInit();
+})();</script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script>
 (function(){
@@ -2159,7 +2336,7 @@ function setMode(dash, tab){
 }
 let curtainBusy=false;
 (function(){ const bb=$("#cbub"); for(let i=0;i<20;i++){ const e=document.createElement("i"); e.style.cssText="--x:"+(Math.random()*96+2).toFixed(1)+"%;--s:"+(6+Math.random()*18).toFixed(0)+"px;--d:"+(Math.random()*0.9).toFixed(2)+"s;--t:"+(1.1+Math.random()*0.9).toFixed(2)+"s"; bb.appendChild(e); } })();
-function switchMode(dash, tab, push){
+function switchMode(dash, tab, push){ if(window.__safetyLock) return;
   if(push) hist("pushState", dash ? "#"+HASH[tab||"home"] : "#");
   if(reduceMotion || curtainBusy){ setMode(dash,tab); return; }
   curtainBusy=true;
@@ -2179,7 +2356,7 @@ window.addEventListener("hashchange",()=>{
   if(k){ if(!inDashMode()) switchMode(true,k,false); else show(k); }
   else if(inDashMode()) switchMode(false,null,false);
 });
-function show(view, opts){
+function show(view, opts){ if(window.__safetyLock) return;
   $$("nav.tabs button").forEach(b=>b.setAttribute("aria-selected", b.dataset.view===view));
   $$(".view").forEach(v=>v.classList.toggle("active", v.id==="view-"+view));
   hist("replaceState","#"+HASH[view]);
@@ -2951,7 +3128,7 @@ function routeFX(){
     if(on){ const now=performance.now(); if(now-RT.snd[i]>1500){ RT.snd[i]=now; sfx("r_"+i); } }
   });
 }
-let bootOn=document.documentElement.classList.contains("booting"); const bootQ=[];   /* hero reveals wait until the intro is over */
+let bootOn=true; const bootQ=[];   /* hero reveals wait until the intro is over */
 /* reveal helpers */
 function markIn(t){
   t.classList.add("in");
@@ -3523,7 +3700,7 @@ onScroll();
 // a link such as …/#historical-data opens that dashboard tab directly; otherwise start on the introduction
 const h = location.hash.slice(1);
 const hit = Object.keys(HASH).find(k=>HASH[k]===h);
-if(hit){ rootEl.classList.add("in-dash"); show(hit); updTabs(); }
+if(hit){ window.__pendHit=hit; }
 else { rootEl.classList.remove("in-dash"); }
 
 /* ================= START-UP INTRO: blank screen -> Misty bounces in BIG, waves -> shrinks and the welcome page appears ================= */
@@ -3584,7 +3761,9 @@ function bootRun(){
   at(R+1900,()=>{ mood("hello"); BUB.textContent="Hi PUP student! I'm Misty 👋"; BUB.classList.add("show"); sfx("bootjingle"); burst(); });
   at(R+3500,finish);
 }
-if(rootEl.classList.contains("booting")) bootRun(); else { const bb=$("#boot"); if(bb) bb.remove(); }
+{const bb=$("#boot"); if(bb) bb.remove();}
+window.__sfx=sfx;
+document.addEventListener("safety-done",()=>{ if(window.__pendHit){ rootEl.classList.add("in-dash"); show(window.__pendHit); updTabs(); } bootOn=false; bootQ.splice(0).forEach(markIn); window.scrollTo(0,0); mistyCur=""; mistyUpdate(); onScroll(); });
 /* Misty keeps peeking out of a random side of the author's box (normal colours, full body shape outside the edge) and reacts */
 function cloneMisty(tag){
   const c=mchar.querySelector("svg").cloneNode(true), map={};
