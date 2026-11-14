@@ -1209,6 +1209,16 @@ html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
 #sfNext.rdy{animation:sfnx 1s ease-in-out infinite}@keyframes sfnx{50%{box-shadow:0 0 0 8px rgba(255,90,106,.4)}}
 #sfNext:disabled{opacity:.55;cursor:not-allowed}
 .sf-card #sfArt{flex:1 1 100%}
+.sf-pns{display:flex;gap:10px;padding:48px 10px 10px}
+.sf-pn{margin:0;min-width:0;background:#0d1014;border-radius:10px;overflow:hidden;animation:sfin .5s calc(var(--i)*.35s) both}
+.sf-pn svg{width:100%;height:auto;display:block;max-height:34vh}
+.sf-pn figcaption{padding:8px 10px;font-weight:700;font-size:.92rem;display:flex;gap:7px;align-items:flex-start}
+.sf-pn i{font-style:normal;font-weight:800}.sf-card.x .sf-pn i{color:#ff5a6a}.sf-card.v .sf-pn i{color:#62d48f}
+.sf-card.g{border-color:#6bb8ee;box-shadow:0 0 30px rgba(107,184,238,.3)}.sf-badge.g{background:#2f6fb0}
+.sf-card.g svg{max-height:40vh}.sf-card.g #sfArt{padding-top:44px}
+.sf-hz{cursor:pointer;outline:none}.sf-hz:hover,.sf-hz:focus{stroke:#fff;stroke-width:2;stroke-dasharray:5 4;fill:rgba(255,255,255,.08)}
+.sf-hz.ok{stroke:#62d48f;stroke-width:3;stroke-dasharray:none;fill:rgba(98,212,143,.2)}.sf-hz.no{stroke:#ff5a6a;stroke-width:3;stroke-dasharray:none}
+@media(max-width:700px){.sf-pns{flex-direction:column}.sf-pn svg{max-height:200px}}
 </style>
 <script>document.documentElement.classList.add("safety-lock");window.__safetyLock=true;</script>
 </head>
@@ -1219,7 +1229,7 @@ html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
   <div class="sf-top"><img data-logo="pup" alt=""><img data-logo="itech" alt=""><h1 id="sfT">Misting System Safety: Do’s and Don’ts of the PUP ITECH Waiting Shed</h1></div>
   <div class="sf-card" id="sfC"><div class="sf-badge" id="sfBd"></div><div id="sfArt"></div></div>
   <div class="sf-cap"><div class="sfm" id="sfPm" data-mood="wow"></div><div class="sf-say"><b id="sfH"></b><p id="sfX" aria-live="polite"></p></div></div>
-  <div class="sf-ctl"><div id="sfDots" aria-hidden="true"></div><button class="btn" id="sfNext" type="button" disabled>Next ▶</button></div>
+  <div class="sf-ctl"><div id="sfDots" aria-hidden="true"></div><span id="sfStep" class="hnote"></span><button class="btn" id="sfNext" type="button" disabled>Next ▶</button></div>
  </section>
  <section class="sf-st" id="sfA">
   <h2 style="font-size:clamp(1.6rem,4vw,2.4rem)">Safety Acknowledgment</h2>
@@ -1994,37 +2004,41 @@ const OPA=["Inspect hoses, fittings, and connections before operating.","Check t
 OPN=["Never operate the pump without sufficient water.","Never disconnect pressurized hoses.","Never open an energized electrical enclosure.","Never operate the system with damaged wiring or leaking electrical components.","Never bypass safety controls."];
 const li=(t,j)=>'<li style="--i:'+j+'">'+t+'</li>';
 const OP=()=>'<div class="sf-oh"><svg class="sf-opf" viewBox="-30 -125 60 130" aria-hidden="true">'+fig(0,"#e8892b","#c68c63",{hat:"#f1bd5a",y:0,k:"sf-bob"})+'</svg><span>FOR AUTHORIZED OPERATORS ONLY</span></div><div class="sf-og"><div><h3>✓ BEFORE &amp; DURING OPERATION</h3><ul>'+OPA.map(li).join("")+'</ul></div><div class="nv"><h3>⛔ NEVER</h3><ul>'+OPN.map(li).join("")+'</ul></div></div>';
-/* [type, title, explanation, Misty mood]  x = DON'T, v = DO, o = operator */
-const D=[
-["x","Don’t inhale mist from a nozzle","Never breathe in mist directly from a nozzle. Keep your face away from the spray.","wow"],
-["x","Don’t touch, pull, or adjust the nozzles","Nozzles are precision equipment under pressure. Only authorized personnel may handle them.","wow"],
-["x","Don’t run or play on wet floors","Puddles make the floor slippery. Walk calmly and never run or play in wet areas.","wow"],
-["x","Don’t touch exposed wires or electrical parts","Exposed wires and electrical components can cause serious shock. Keep away and tell the operator.","wow"],
-["x","Don’t stand under a leaking or faulty nozzle","A leaking or malfunctioning nozzle can drip or spray unpredictably. Move away and report it.","wow"],
-["v","Stay in the misting area, at a safe distance","Stay inside the designated misting area and keep a safe distance from the nozzles.","excited"],
-["v","Report leaks, odd sprays, or damage","Tell the operator right away about leaking nozzles, unusual spray patterns, or damaged equipment.","excited"],
-["v","Walk carefully around wet areas","Watch your step and go around puddles instead of through them.","happy"],
-["v","Tell the operator if the floor is too slippery","If the floor becomes excessively slippery, let the operator know so it can be made safe.","happy"],
-["v","Let authorized personnel handle the equipment","Allow authorized personnel to inspect and handle the misting equipment while you stay back.","excited"],
-["o","Extra reminders for operators","These rules are for authorized operators of the misting system. Everyone else: please stay clear.","think"]];
-const dots=$("#sfDots"); D.forEach(()=>dots.appendChild(document.createElement("i")));
-const pm=$("#sfPm"); let n=-1,el=0,paused=false,tm=null;
-const IMG={};
-const CP="Actual nozzle line under the shed roof",CR="3D model of the PUP ITECH waiting shed";
-const PHI=[["P3",CP],["P2",CP],["R",CR],["P1","Actual wiring and enclosure under the roof"],["P4",CP],["R",CR],["P3",CP],["R",CR],["R",CR],["P4",CP],null];
-const SN=["mistpuff","nozzle","splash","m_elec","glug","ding","pop","bloop","note","sparkle","sensor"];
+const ST=[
+{t:"x",h:"Don’t do these 3 things",s:"Keep away from the nozzles and the spray.",m:"wow",min:2.5,snd:["mistpuff","nozzle","glug"],p:[[0,"140 0 200","Don’t inhale the mist"],[1,"105 0 200","Don’t touch the nozzles"],[4,"100 0 200","Don’t stand under a leak"]]},
+{t:"x",h:"Stay away from these 2 hazards",s:"Wet floors and wires can hurt you.",m:"wow",min:2,snd:["splash","m_elec"],p:[[2,"60 0 280","Don’t run on wet floors"],[3,"150 0 230","Don’t touch exposed wires"]]},
+{t:"v",h:"Do these 2 things",s:"Keep your distance and speak up.",m:"excited",min:2,snd:["ding","pop"],p:[[5,"90 0 260","Stay in the misting area, keep your distance"],[6,"90 0 260","Report leaks, odd sprays, or damage"]]},
+{t:"v",h:"Do these 3 things",s:"Walk carefully and let the experts handle it.",m:"happy",min:2.5,snd:["bloop","note","sparkle"],p:[[7,"60 0 280","Walk carefully around wet areas"],[8,"60 0 300","Tell the operator if the floor is slippery"],[9,"70 0 270","Let authorized personnel handle the equipment"]]},
+{t:"g",h:"Quick check: spot the 3 hazards!",s:"Tap the hazards in the picture.",m:"think",min:0},
+{t:"o",h:"Extra reminders for operators",s:"Operators: these extra rules keep everyone safe.",m:"think",min:6}];
+const RX=["Nice start! 💪","Great! Keep going 👍","Well done! 🎉","Awesome! Almost there ⭐","Sharp eyes! 👀"];
+const HZ=[{x:100,y:92,r:36,ok:1,m:"A leaking nozzle: move away and report it!"},{x:190,y:204,r:42,ok:1,m:"A puddle: slippery! Walk around it."},{x:272,y:128,r:32,ok:1,m:"An exposed wire: never touch it!"},{x:250,y:70,r:24,ok:0,m:"This nozzle works normally, but still don’t touch it."},{x:340,y:186,r:30,ok:0,m:"Just a table: perfectly safe."}];
+const GAME=()=>'<svg viewBox="0 0 400 230" role="group" aria-label="Spot the hazards: five tappable areas">'+FL+NZ(250,0)+NZ(100,0)+DR(100,70)+PU(190,36)+'<rect x="300" y="86" width="64" height="70" rx="6" fill="#2b3138" stroke="#9aa2aa"/><path d="M300 130 C280 130 276 150 270 128" stroke="#ff7b88" stroke-width="3" fill="none"/><path class="sf-sp" d="M270 120l-8 8h7l-6 10 14-14h-8l5-4z" fill="#ffe066"/>'+HZ.map((h,i)=>'<circle class="sf-hz" data-i="'+i+'" cx="'+h.x+'" cy="'+h.y+'" r="'+h.r+'" fill="transparent" tabindex="0" role="button" aria-label="Area '+(i+1)+'"/>').join("")+'</svg>';
+const panels=st=>'<div class="sf-pns">'+st.p.map((q,i)=>'<figure class="sf-pn" style="--i:'+i+';flex:'+q[1].split(" ")[2]+' 1 0"><svg viewBox="'+q[1]+' 230" role="img" aria-label="'+q[2]+' (illustration)">'+ART[q[0]]()+'</svg><figcaption><i>'+(st.t==="x"?"✕":"✓")+'</i><span>'+q[2]+'</span></figcaption></figure>').join("")+'</div>';
+const dots=$("#sfDots"); ST.forEach(()=>dots.appendChild(document.createElement("i")));
+const pm=$("#sfPm"); let n=-1,el=0,paused=false,tm=null,found=0,gdone=[],gameDone=false;
 function scene(k){
- n=k;el=0;const d=D[k],op=d[0]==="o",c=$("#sfC");
- c.className="sf-card "+d[0]; c.style.animation="none"; void c.offsetWidth; c.style.animation="";
- const b=$("#sfBd"); b.className="sf-badge "+d[0]; b.textContent=op?"⚠ OPERATOR SAFETY REMINDERS":d[0]==="x"?"✕ DON’T":"✓ DO";
- $("#sfArt").innerHTML=op?OP():'<svg viewBox="0 0 400 230" role="img" aria-label="'+d[1]+' (illustration)">'+ART[k]()+'</svg>';
- $("#sfH").textContent=d[1]; $("#sfX").textContent=d[2]; pm.dataset.mood=d[3];
+ n=k;el=0;const st=ST[k],c=$("#sfC");
+ c.className="sf-card "+st.t; c.style.animation="none"; void c.offsetWidth; c.style.animation="";
+ const b=$("#sfBd"); b.className="sf-badge "+st.t; b.textContent={x:"✕ DON’T",v:"✓ DO",g:"🎯 QUICK CHECK",o:"⚠ OPERATOR SAFETY REMINDERS"}[st.t];
+ found=0;gdone=[];gameDone=false;
+ $("#sfArt").innerHTML=st.t==="o"?OP():st.t==="g"?GAME():panels(st);
+ $("#sfH").textContent=st.h+(st.t==="g"?" (0/3)":""); $("#sfX").textContent=(k>0?RX[k-1]+" ":"")+st.s; pm.dataset.mood=st.m;
  [...dots.children].forEach((e,j)=>e.className=j<k?"p":j===k?"c":"");
- sfx("slide"); setTimeout(()=>sfx(SN[k]),260); 
+ $("#sfStep").textContent="Step "+(k+1)+" of "+ST.length;
+ sfx("slide"); (st.snd||[]).forEach((s,i)=>setTimeout(()=>sfx(s),260+i*500)); if(st.t==="o") setTimeout(()=>sfx("sensor"),300);
 }
-function play(){ scene(0); tm=setInterval(()=>{ el+=.1; const nx=$("#sfNext"),m=n===10?7:3; if(el<m){ nx.disabled=true; nx.classList.remove("rdy"); nx.textContent="Next in "+Math.ceil(m-el)+"…"; } else if(nx.disabled){ nx.disabled=false; nx.classList.add("rdy"); nx.textContent=n<10?"Next ▶":"Continue ▶"; sfx("sparkle"); } },100); }
+function hit(c){ const i=+c.dataset.i,h=HZ[i]; if(gdone[i]) return;
+ if(h.ok){ gdone[i]=1; found++; c.classList.add("ok"); sfx("ding"); pm.dataset.mood="excited"; $("#sfX").textContent=h.m+" ("+found+"/3)"; $("#sfH").textContent="Quick check: spot the 3 hazards! ("+found+"/3)"; if(found===3){ gameDone=true; sfx("sparkle"); $("#sfX").textContent="You found all 3 hazards! Great eye! 🎉"; } }
+ else{ sfx("pop"); pm.dataset.mood="think"; $("#sfX").textContent=h.m+" Look again!"; c.classList.add("no"); setTimeout(()=>c.classList.remove("no"),500); } }
+$("#sfArt").addEventListener("click",e=>{ const c=e.target.closest&&e.target.closest(".sf-hz"); if(c) hit(c); });
+$("#sfArt").addEventListener("keydown",e=>{ if(e.key!=="Enter"&&e.key!==" ") return; const c=e.target.closest&&e.target.closest(".sf-hz"); if(c){ e.preventDefault(); hit(c); } });
+const ready=()=>el>=ST[n].min&&(n!==4||gameDone);
+function play(){ scene(0); tm=setInterval(()=>{ el+=.1; const nx=$("#sfNext");
+ if(!ready()){ nx.disabled=true; nx.classList.remove("rdy"); nx.textContent=(n===4&&el>=ST[n].min)?"Find all 3 hazards":"Next in "+Math.max(1,Math.ceil(ST[n].min-el))+"…"; }
+ else if(nx.disabled){ nx.disabled=false; nx.classList.add("rdy"); nx.textContent=n<ST.length-1?"Next ▶":"Continue ▶"; sfx("sparkle"); } },100); }
 function endShow(){ clearInterval(tm); P.classList.remove("on"); A.classList.add("on"); sfx("sparkle"); setTimeout(()=>$("#sfCk").focus(),300); }
-$("#sfNext").addEventListener("click",()=>{ if(el<(n===10?7:3)) return; if(n<10) scene(n+1); else endShow(); });
+$("#sfNext").addEventListener("click",()=>{ if(!ready()) return; if(n<ST.length-1) scene(n+1); else endShow(); });
 /* ---- greeting ---- */
 const T=[],at=(ms,f)=>T.push(setTimeout(f,ms)),gm=$("#sfGM"),gb=$("#sfGB"),gi=$("#sfGmi"),k=reduceMotion?.4:1;
 const say=t=>{ gb.textContent=t; gb.classList.remove("show"); void gb.offsetWidth; gb.classList.add("show"); };
