@@ -3898,5 +3898,248 @@ function finish(){
 })();
 })();
 </script>
+  <!-- ===== PUP ITECH SAFETY ORIENTATION ADD-ON: paste this whole block right before </body>, AFTER the main </script> ===== -->
+<style>
+html.safety-lock{overflow:hidden}
+#safRoot{display:none;position:fixed;inset:0;z-index:400;overflow:auto;color:var(--ink);font-family:var(--sans);background:radial-gradient(900px 480px at 85% -80px,rgba(176,25,42,.38),transparent 70%),radial-gradient(700px 500px at -5% 95%,rgba(143,18,32,.26),transparent 70%),#06070a}
+html.safety-lock #safRoot,#safRoot.saf-closing{display:block}
+#safRoot.saf-closing{opacity:0;pointer-events:none;transition:opacity .9s ease}
+#safRoot [hidden]{display:none!important}
+#safRoot [tabindex="-1"]:focus{outline:none}
+#safGreet{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:26px;padding:24px;background:rgba(0,0,0,.5)}
+.saf-m{position:relative}.saf-m svg{width:100%;height:auto;display:block}
+.saf-m .mf{display:none}
+.saf-m[data-mood=happy] :is(.e-norm,.m-smile),.saf-m[data-mood=hello] :is(.e-norm,.m-open,.x-spark),.saf-m[data-mood=wow] :is(.e-wow,.m-o,.x-bang),.saf-m[data-mood=joy] :is(.e-happy,.m-open,.x-drops),.saf-m[data-mood=excited] :is(.e-happy,.m-open,.x-spark),.saf-m[data-mood=think] :is(.e-think,.m-flat){display:inline}
+.saf-m .eye{transform-box:fill-box;transform-origin:center;animation:blink 4.2s infinite}
+.saf-m .arm{transform-origin:55px 62px}
+.saf-m[data-mood=hello] .arm,.saf-m[data-mood=excited] .arm{animation:marm .5s ease-in-out infinite alternate}
+.saf-m .tw{transform-box:fill-box;transform-origin:center;animation:twk2 1s ease-in-out infinite}
+.saf-big-m{width:min(230px,52vw);opacity:0}
+.saf-big-m.in{animation:safEnter 1.3s cubic-bezier(.3,1.4,.5,1) forwards}
+.saf-big-m.in svg{animation:mbob 2.6s ease-in-out 1.3s infinite}
+.saf-big-m.out{animation:safExit .9s ease-in forwards}
+@keyframes safEnter{0%{opacity:0;translate:0 -70vh;scale:.5;rotate:-25deg}55%{opacity:1;translate:0 0;scale:1.12;rotate:8deg}75%{translate:0 -22px;scale:.96;rotate:-4deg}100%{opacity:1;translate:0 0;scale:1;rotate:0deg}}
+@keyframes safExit{from{opacity:1}to{opacity:0;translate:0 -40px;scale:.7}}
+.saf-bub{position:relative;max-width:min(580px,88vw);min-height:1.4em;text-align:center;padding:14px 24px;border-radius:18px;background:#fff;color:#7a0f1c;font-weight:800;font-size:clamp(1.1rem,3.4vw,1.7rem);line-height:1.3;opacity:0;scale:.8;transition:opacity .3s,scale .45s cubic-bezier(.3,1.6,.5,1)}
+.saf-bub::before{content:"";position:absolute;left:50%;top:-10px;margin-left:-10px;border:10px solid transparent;border-top:0;border-bottom-color:#fff}
+.saf-bub.show{opacity:1;scale:1}
+#safMain{max-width:1040px;margin:0 auto;padding:18px 18px 26px;min-height:100%;display:flex;flex-direction:column;gap:14px}
+.saf-eye{margin:0;letter-spacing:.14em;text-transform:uppercase;font-size:.78rem;font-weight:700;color:var(--accent)}
+#safTitle{font-size:clamp(1.05rem,2.6vw,1.5rem);margin:4px 0 10px;transition:font-size .4s}
+#safMain.saf-first #safTitle{font-size:clamp(1.7rem,5vw,2.9rem)}
+.saf-prog{height:5px;background:rgba(255,255,255,.1);border-radius:3px;overflow:hidden}
+.saf-prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,#8f1220,#ff6b7a);transition:width .5s}
+#safSlide{flex:1;display:flex;align-items:center}
+#safSlide>*{width:100%;animation:safIn .5s ease both}
+@keyframes safIn{from{opacity:0;translate:0 16px}to{opacity:1;translate:0 0}}
+.saf-card{display:grid;grid-template-columns:1.15fr .85fr;gap:22px;align-items:center;padding:16px;border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+.saf-card.dont{border:2px solid rgba(255,90,106,.75);box-shadow:0 0 38px rgba(255,60,80,.2)}
+.saf-card.do{border:2px solid rgba(98,212,143,.75);box-shadow:0 0 38px rgba(98,212,143,.18)}
+.saf-fig{position:relative}.saf-svg{display:block;width:100%;height:auto;border-radius:12px}
+.saf-badge{position:absolute;top:10px;left:10px;padding:8px 16px;border-radius:999px;font-weight:800;letter-spacing:.06em;font-size:1.05rem;color:#fff;box-shadow:0 6px 16px rgba(0,0,0,.5);animation:pop .5s cubic-bezier(.3,1.6,.5,1) .2s both}
+.saf-badge.dont{background:#d3202f}.saf-badge.do{background:#1f9d5c}
+.saf-cnt{margin:0 0 6px;font-weight:800;letter-spacing:.1em;font-size:.82rem}
+.dont .saf-cnt{color:#ff7b88}.do .saf-cnt{color:#62d48f}
+.saf-card h2,.saf-sec h2,.saf-ack h2,.saf-hero h2{margin:0 0 8px;font-size:clamp(1.3rem,3vw,1.9rem)}
+.saf-card p{margin:0;color:#d9dde1}
+.saf-guide{display:flex;gap:10px;align-items:center;margin-top:16px}
+.saf-gm{width:64px;flex:none}
+.saf-tip{padding:10px 14px;border-radius:14px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.14);font-size:.92rem;font-weight:600}
+.saf-sec,.saf-hero{text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;padding:10px}
+.saf-sec .saf-gm,.saf-hero .saf-gm{width:110px}
+.saf-sec p,.saf-hero p{margin:0;color:#d9dde1;max-width:56ch;font-size:1.1rem}
+.saf-big{font-size:3.4rem;width:96px;height:96px;display:grid;place-items:center;border-radius:50%;color:#fff;font-weight:800}
+.saf-sec.dont .saf-big{background:#d3202f;box-shadow:0 0 0 8px rgba(211,32,47,.25)}.saf-sec.do .saf-big{background:#1f9d5c;box-shadow:0 0 0 8px rgba(31,157,92,.25)}
+.saf-pills{list-style:none;display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:6px 0 0;padding:0}
+.saf-pills li{padding:6px 14px;border-radius:999px;font-weight:700;font-size:.9rem;border:1px solid currentColor}
+.saf-pills .d{color:#ff7b88}.saf-pills .o{color:#62d48f}.saf-pills .p{color:#f1bd5a}.saf-pills .a{color:#bfe6ff}
+.saf-ops{border:2px solid #f1bd5a;border-radius:16px;background:linear-gradient(160deg,#0e1b2b,#0b1119);overflow:hidden;padding-bottom:18px}
+.saf-hz{height:12px;background:repeating-linear-gradient(-45deg,#f1bd5a 0 12px,#15171b 12px 24px)}
+.saf-ophead{display:flex;gap:14px;align-items:center;padding:14px 18px 4px}.saf-ophead svg{width:96px;flex:none}
+.saf-opbadge{display:inline-block;background:#f1bd5a;color:#15171b;font-weight:800;letter-spacing:.08em;padding:5px 12px;border-radius:6px;font-size:.82rem}
+.saf-ophead h2{margin:6px 0 2px;font-size:clamp(1.2rem,2.8vw,1.7rem)}.saf-ophead p{margin:0;color:#b9c4d0;font-size:.92rem}
+.saf-cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;padding:8px 18px 0}
+.saf-col h3{margin:0 0 8px;padding:0;font-family:var(--sans);font-size:1rem;letter-spacing:.06em}
+.saf-col.ok h3{color:#8fd0ff}.saf-col.no h3{color:#ff7b88}
+.saf-col ul{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.saf-col li{display:flex;gap:10px;padding:9px 12px;border-radius:10px;font-size:.95rem;background:rgba(255,255,255,.05);animation:safIn .5s ease both;animation-delay:calc(var(--i)*.35s)}
+.saf-col.ok li{border-left:4px solid #8fd0ff}.saf-col.no li{border-left:4px solid #ff4a5c}
+.saf-ack{max-width:760px;margin:0 auto;padding:26px;border-radius:18px;border:1px solid rgba(255,86,104,.45);background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02))}
+.saf-ack blockquote{margin:0 0 6px;padding:16px 18px;border-left:5px solid var(--crimson);background:rgba(143,18,32,.28);border-radius:0 10px 10px 0;font-size:clamp(1.05rem,2.4vw,1.3rem);font-weight:500;color:#fff}
+.saf-chk{display:flex;gap:12px;align-items:flex-start;padding:14px;margin:18px 0;border:1px solid rgba(255,255,255,.22);border-radius:12px;cursor:pointer;font-weight:600}
+.saf-chk input{width:24px;height:24px;flex:none;accent-color:#ff6b7a;margin-top:1px}
+.saf-go{width:100%;padding:16px;border-radius:10px;border:0;font:800 1.1rem var(--sans);letter-spacing:.03em;color:#fff;background:linear-gradient(180deg,#a8162a,#7a0f1c);box-shadow:0 8px 22px rgba(143,18,32,.45);cursor:pointer}
+.saf-go:disabled{cursor:not-allowed;opacity:.4;box-shadow:none}
+.saf-nav{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.saf-step{color:var(--muted);font-size:.88rem}
+.saf-btn{padding:12px 22px;border-radius:10px;border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.06);color:#fff;font-weight:700;cursor:pointer}
+#safNext{background:linear-gradient(180deg,#a8162a,#7a0f1c);border-color:#ff6b7a}
+.saf-btn:disabled{opacity:.4;cursor:not-allowed}
+/* scene animation */
+.saf-svg .pr{transform-origin:0 0}.saf-svg .arm{transform-origin:0 -68px}.saf-svg .lg{transform-origin:0 -44px}
+.saf-svg .run .lg.a{animation:safleg .3s ease-in-out infinite alternate}.saf-svg .run .lg.b{animation:safleg .3s ease-in-out infinite alternate-reverse}
+.saf-svg .walk .lg.a{animation:safleg2 .8s ease-in-out infinite alternate}.saf-svg .walk .lg.b{animation:safleg2 .8s ease-in-out infinite alternate-reverse}
+@keyframes safleg{from{rotate:-38deg}to{rotate:38deg}}@keyframes safleg2{from{rotate:-16deg}to{rotate:16deg}}
+.saf-svg .run .sw1{animation:safarm .3s ease-in-out infinite alternate}.saf-svg .run .sw2{animation:safarm .3s ease-in-out infinite alternate-reverse}
+@keyframes safarm{from{rotate:-45deg}to{rotate:45deg}}
+.saf-svg .wave{animation:safwave .5s ease-in-out infinite alternate}@keyframes safwave{from{rotate:-172deg}to{rotate:-132deg}}
+.saf-svg .tug{animation:saftug .35s ease-in-out infinite alternate}@keyframes saftug{from{rotate:-146deg}to{rotate:-160deg}}
+.saf-svg .jit{animation:safjit .12s linear infinite}@keyframes safjit{0%,100%{translate:-2px 0}50%{translate:2px 0}}
+.saf-svg .bob{animation:safbob 1.8s ease-in-out infinite}@keyframes safbob{50%{translate:0 -2px}}
+.saf-svg .runner{animation:safrun 3.2s linear infinite}
+@keyframes safrun{0%{translate:-100px 0;rotate:0deg;opacity:0}8%{opacity:1}50%{translate:0 0;rotate:0deg}62%{translate:22px 0;rotate:-22deg}80%{translate:44px 6px;rotate:-75deg;opacity:1}95%{translate:56px 10px;rotate:-88deg;opacity:0}100%{opacity:0}}
+.saf-svg .walker{animation:safwalk 5s ease-in-out infinite}
+@keyframes safwalk{0%{translate:-50px 0;opacity:0}10%{opacity:1}70%{translate:60px 0;opacity:1}90%{translate:60px 0;opacity:0}100%{opacity:0}}
+.saf-svg .puff,.saf-svg .drip,.saf-svg .pud{transform-box:fill-box;transform-origin:center}
+.saf-svg .puff{animation:safpuff 1.8s ease-out infinite}@keyframes safpuff{0%{opacity:0;translate:0 0;scale:.5}20%{opacity:.85}100%{opacity:0;translate:var(--dx) var(--dy);scale:1.7}}
+.saf-svg .drip{animation:safdrip 1s ease-in infinite}@keyframes safdrip{0%{opacity:0;translate:0 0}15%{opacity:1}100%{opacity:0;translate:0 var(--h)}}
+.saf-svg .spk{animation:safspk .45s steps(2) infinite}@keyframes safspk{50%{opacity:0}}
+.saf-svg .pud{animation:safpud 2.4s ease-in-out infinite}@keyframes safpud{50%{scale:1.06 1.2}}
+.saf-svg .bub{transform-box:fill-box;transform-origin:50% 100%;animation:safb1 6s infinite;opacity:0}.saf-svg .bub.b2{animation-name:safb2}
+@keyframes safb1{0%{opacity:0;scale:.6}6%,44%{opacity:1;scale:1}50%,100%{opacity:0}}
+@keyframes safb2{0%,50%{opacity:0;scale:.6}56%,94%{opacity:1;scale:1}100%{opacity:0}}
+@media (max-width:760px){.saf-card,.saf-cols{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){#safRoot *{animation:none!important;transition:none!important}.saf-big-m{opacity:1}.saf-svg .bub{opacity:1}.saf-svg .b2{display:none}}
+</style>
+
+<div id="safRoot" role="dialog" aria-modal="true" aria-label="Misting system safety orientation">
+  <section id="safGreet" aria-live="polite"><div id="safBub" class="saf-bub"></div></section>
+  <section id="safMain" class="saf-first" hidden>
+    <header>
+      <p class="saf-eye">PUP ITECH · Safety orientation</p>
+      <h1 id="safTitle">Misting System Safety: Do’s and Don’ts of the PUP ITECH Waiting Shed</h1>
+      <div class="saf-prog" role="progressbar" aria-label="Safety orientation progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><i id="safBar"></i></div>
+    </header>
+    <div id="safSlide"></div>
+    <nav class="saf-nav" aria-label="Safety presentation">
+      <button id="safBack" class="saf-btn" type="button">← Back</button>
+      <span id="safStep" class="saf-step"></span>
+      <button id="safNext" class="saf-btn" type="button">Next →</button>
+    </nav>
+  </section>
+</div>
+
+<script>
+(function(){
+"use strict";
+var H=document.documentElement,R=document.getElementById("safRoot"),$=function(i){return document.getElementById(i);};
+if(!H.classList.contains("safety-lock")){ R.remove(); return; }   /* already acknowledged in this browser session */
+var RM=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+var LOCKED=["intro","dashboard","topbar","prog","misty","mistBanner"];
+LOCKED.forEach(function(i){var e=$(i); if(e) e.inert=true;});      /* keyboard/screen-reader users cannot reach the site behind the overlay */
+var uid=0,SRC=document.querySelector("#mchar svg").outerHTML;
+function misty(m,cls){var d=document.createElement("div");d.className="saf-m "+(cls||"");d.dataset.mood=m;d.innerHTML=SRC.replace(/\bmg\b/g,"safmg"+(++uid));return d;}
+var T=[]; function clr(){T.forEach(clearTimeout);T=[];} function after(f,ms){T.push(setTimeout(f,ms));}
+
+/* ---------- illustrated people + props (SVG) ---------- */
+function P(x,o){o=o||{};var s=o.shirt||"#b0192a",k=o.skin||"#d9a77b",h=o.hair||"#1b1b1f",pa=o.pants||"#2f3a4a",A=o.arms||[[8],[-8]],f=o.face||"ok";
+ function arm(a,dx){return '<g transform="translate('+dx+' 0)"><g class="arm '+(a[1]||"")+'" style="rotate:'+a[0]+'deg"><rect x="-3.5" y="-68" width="7" height="30" rx="3.5" fill="'+s+'"/><circle cy="-36" r="4.2" fill="'+k+'"/></g></g>';}
+ var m=f==="o"?'<ellipse cy="-81" rx="2.6" ry="3.4" fill="#7a1030"/>':f==="sad"?'<path d="M-4 -79 q4 -4 8 0" fill="none" stroke="#1b1d21" stroke-width="1.6" stroke-linecap="round"/>':'<path d="M-4.5 -82 q4.5 5 9 0" fill="none" stroke="#1b1d21" stroke-width="1.6" stroke-linecap="round"/>';
+ return '<g transform="translate('+x+' 160) scale('+(o.flip?-1:1)+' 1)"><g class="pr '+(o.cls||"")+'" style="'+(o.st||"")+'">'+
+ '<g class="lg a"><rect x="-7" y="-44" width="7" height="44" rx="3.5" fill="'+pa+'"/><ellipse cx="-1" cy="0" rx="7" ry="3" fill="#17191d"/></g>'+
+ '<g class="lg b"><rect x="0" y="-44" width="7" height="44" rx="3.5" fill="'+pa+'" opacity=".85"/><ellipse cx="2" cy="0" rx="7" ry="3" fill="#17191d"/></g>'+
+ '<rect x="-10" y="-72" width="20" height="32" rx="8" fill="'+s+'"/>'+(o.vest?'<rect x="-10" y="-72" width="20" height="32" rx="8" fill="#f1bd5a"/><rect x="-10" y="-60" width="20" height="4" fill="#fff" opacity=".8"/>':"")+
+ arm(A[0],-9)+'<circle cy="-86" r="10" fill="'+k+'"/>'+
+ (o.hat?'<path d="M-11 -88 a11 11 0 0 1 22 0z" fill="#f1bd5a"/><rect x="-13" y="-89" width="26" height="3.5" rx="1.7" fill="#d9a21b"/>':'<path d="M-10 -86 a10 10 0 0 1 20 0 q-10 -5 -20 0z" fill="'+h+'"/>')+
+ '<circle cx="-4" cy="-87" r="1.6" fill="#1b1d21"/><circle cx="4" cy="-87" r="1.6" fill="#1b1d21"/>'+m+arm(A[1],9)+'</g></g>';}
+var STU={shirt:"#3a6ea5",skin:"#c68c63",hair:"#241a14",pants:"#3b3f46"}, OPR={shirt:"#c98a2b",skin:"#e0b48a",hair:"#2a2118",pants:"#34404f",hat:1,vest:1};
+function mix(a,b){var r={},k;for(k in a)r[k]=a[k];for(k in b)r[k]=b[k];return r;}
+function N(x,l){return '<rect x="'+(x-1.5)+'" y="35" width="3" height="'+l+'" fill="#9aa2aa"/><circle cx="'+x+'" cy="'+(35+l)+'" r="3.6" fill="#dfe4e8"/>';}
+function mist(x,y,n,dx,dy){var o="";for(var i=0;i<n;i++)o+='<circle class="puff" cx="'+x+'" cy="'+y+'" r="'+(3+i%3)+'" fill="#bfe6ff" style="--dx:'+(dx+(i%3-1)*6)+'px;--dy:'+(dy+(i%2)*6)+'px;animation-delay:'+(i*.3).toFixed(1)+'s"/>';return o;}
+function drips(x,y,h,n){var o="";for(var i=0;i<n;i++)o+='<circle class="drip" cx="'+(x+(i-(n-1)/2)*5)+'" cy="'+y+'" r="2.4" fill="#8fd0ff" style="--h:'+h+'px;animation-delay:'+(i*.33).toFixed(2)+'s"/>';return o;}
+function pud(x,y,rx){return '<ellipse class="pud" cx="'+x+'" cy="'+y+'" rx="'+rx+'" ry="'+rx/4+'" fill="rgba(107,184,238,.4)" stroke="#8fd0ff" stroke-width="1"/>';}
+function bub(x,y,t,c){var w=t.length*6.4+16;return '<g class="bub '+(c||"b1")+'"><rect x="'+(x-w/2)+'" y="'+(y-22)+'" width="'+w+'" height="22" rx="9" fill="#fff"/><path d="M'+(x-4)+' '+(y-1)+' l4 8 l4 -8z" fill="#fff"/><text x="'+x+'" y="'+(y-7)+'" text-anchor="middle" font-size="12" font-weight="700" fill="#7a0f1c" font-family="Source Sans 3,Segoe UI,sans-serif">'+t+'</text></g>';}
+function line(x,t){return '<line x1="'+x+'" y1="160" x2="'+x+'" y2="200" stroke="#f1bd5a" stroke-width="3" stroke-dasharray="8 5"/>'+(t?'<text x="'+(x-90)+'" y="188" font-size="10" font-weight="700" fill="#f1bd5a">'+t+'</text>':"");}
+function frame(inner,label){return '<svg class="saf-svg" viewBox="0 0 320 200" role="img" aria-label="Illustration: '+label+'"><rect width="320" height="200" fill="#1a1f26"/><rect width="320" height="22" fill="#8f1220"/><rect y="22" width="320" height="4" fill="#650b15"/><rect x="6" y="26" width="8" height="134" fill="#a8694c"/><rect x="306" y="26" width="8" height="134" fill="#a8694c"/><rect x="14" y="30" width="292" height="5" rx="2.5" fill="#aab1b8"/><rect y="160" width="320" height="40" fill="#232830"/><rect y="160" width="320" height="3" fill="#2f3640"/>'+inner+'</svg>';}
+var SC={
+ d1:function(){return N(60,18)+'<rect x="236" y="70" width="8" height="90" fill="#6b727a"/><rect x="226" y="72" width="14" height="8" rx="3" fill="#dfe4e8"/>'+mist(224,76,7,-30,0)+P(190,{face:"o",cls:"bob",st:"rotate:12deg"});},
+ d2:function(){return N(167,27)+'<g class="jit">'+N(60,18)+'</g>'+P(141,{face:"o",st:"translate:0 -3px",arms:[[8],[-150,"tug"]]});},
+ d3:function(){return pud(150,164,34)+pud(215,166,26)+P(130,{cls:"run runner",face:"o",arms:[[0,"sw1"],[0,"sw2"]]});},
+ d4:function(){return '<rect x="228" y="84" width="64" height="76" rx="4" fill="#3a4049" stroke="#6b727a"/><rect x="236" y="92" width="48" height="40" fill="#14161a"/><path d="M228 84 l-16 8 v62 l16 6z" fill="#4a525a"/><path d="M244 98 q-30 2 -26 14" stroke="#ff7b88" stroke-width="3" fill="none" stroke-linecap="round"/><polyline class="spk" points="218,104 225,110 216,113 223,121" fill="none" stroke="#ffd85a" stroke-width="2.4" stroke-linejoin="round"/>'+P(170,{face:"o",cls:"jit",arms:[[8],[-85]]});},
+ d5:function(){return N(160,24)+'<path d="M160 62 l-15 16 h30z" fill="rgba(191,230,255,.25)"/>'+drips(160,62,16,4)+pud(160,164,40)+P(160,{face:"sad",cls:"bob"});},
+ o1:function(){return '<rect x="0" y="160" width="187" height="40" fill="rgba(98,212,143,.18)"/><text x="94" y="184" text-anchor="middle" font-size="11" font-weight="800" fill="#62d48f">DESIGNATED AREA</text>'+line(190)+N(250,18)+mist(250,56,7,0,70)+'<path d="M120 140 H244" stroke="#8fd0ff" stroke-dasharray="3 4"/><text x="182" y="134" text-anchor="middle" font-size="10" font-weight="700" fill="#8fd0ff">safe distance</text>'+P(110,{arms:[[8],[-165,"wave"]]});},
+ o2:function(){return N(270,24)+drips(270,60,60,3)+pud(270,164,22)+P(190,mix(STU,{face:"o",arms:[[8],[-120]]}))+bub(190,64,"It’s leaking!")+P(80,mix(OPR,{}))+bub(80,56,"Thanks, I’ll check it!","b2");},
+ o3:function(){return pud(190,165,30)+'<path d="M240 160 l10 -40 l10 40z" fill="#f1bd5a" stroke="#14161a"/><text x="250" y="152" text-anchor="middle" font-size="8" font-weight="800" fill="#14161a">WET</text>'+P(60,{cls:"walk walker"})+bub(120,70,"Slow and steady!");},
+ o4:function(){return pud(165,165,34)+'<line x1="203" y1="118" x2="218" y2="160" stroke="#a8694c" stroke-width="3"/><rect x="208" y="158" width="22" height="5" fill="#cfd6dd"/>'+P(100,mix(STU,{face:"o",arms:[[8],[-40]]}))+bub(100,62,"It’s slippery!")+P(246,mix(OPR,{flip:1}))+bub(246,54,"I’ll dry it now!","b2");},
+ o5:function(){return '<rect x="226" y="52" width="86" height="26" rx="4" fill="#14161a" stroke="#62d48f"/><text x="269" y="63" text-anchor="middle" font-size="8.5" font-weight="800" fill="#62d48f">AUTHORIZED</text><text x="269" y="73" text-anchor="middle" font-size="8.5" font-weight="800" fill="#62d48f">PERSONNEL ONLY</text>'+N(167,27)+line(95,"STAY BEHIND THE LINE")+P(141,mix(OPR,{arms:[[8],[-150,"tug"]]}))+'<rect x="171" y="58" width="12" height="4" rx="2" fill="#cfd6dd" transform="rotate(-35 171 60)"/>'+P(46,{arms:[[8],[-165,"wave"]]});}
+};
+var DON=[
+["Don’t inhale mist from a nozzle","Mist is meant to cool the air around you. Breathing it in directly from a nozzle can irritate your nose, throat and lungs.","Enjoy the cool air, not the nozzle!","d1"],
+["Don’t touch, pull or adjust the nozzles","Nozzles are set by the operator. Tampering can cause leaks, a wrong spray pattern or damage to the equipment.","Hands off! Only the operator adjusts nozzles.","d2"],
+["Don’t run or play on wet floors","Wet floors and puddles are slippery. Running or playing can lead to falls and injuries.","Whoa! Slow down, puddles are slippery.","d3"],
+["Don’t touch exposed wires or electrical parts","Water and electricity are a dangerous mix. Keep away from exposed wires and tell the operator right away.","Zap! Stay away and call the operator.","d4"],
+["Don’t stand under a leaking or faulty nozzle","A leaking or malfunctioning nozzle can drip or spray heavily. Move away from it and report it.","Step aside and report it!","d5"]];
+var DO=[
+["Stay in the designated misting area","Keep inside the marked area and stay at a safe distance from the nozzles.","Behind the yellow line, you’re safe!","o1"],
+["Report leaks, odd spray or damaged equipment","Tell the operator about leaking nozzles, unusual spray patterns or any damaged equipment.","Great job speaking up!","o2"],
+["Walk carefully around wet areas","Walk slowly, watch your step and avoid puddles.","Slow and steady wins the day!","o3"],
+["Tell the operator if the floor is too slippery","If the floor becomes excessively slippery, inform the operator so it can be dried or the system adjusted.","Thanks for looking out for everyone!","o4"],
+["Let authorized personnel handle the equipment","Only authorized personnel may inspect, adjust or repair the misting equipment.","Leave it to the trained team.","o5"]];
+var OK=["Inspect hoses, fittings and connections before operating.","Check the water reservoir level.","Ensure the pump and electrical enclosure are properly secured.","Monitor temperature, humidity and wind conditions.","Watch for abnormal pump noise, vibration or overheating."];
+var NO=["Never operate the pump without sufficient water.","Never disconnect pressurized hoses.","Never open an energized electrical enclosure.","Never operate the system with damaged wiring or leaking electrical components.","Never bypass safety controls."];
+
+/* ---------- slide list: title, DON'Ts, DO's, operators, acknowledgment ---------- */
+var S=[{k:"title"},{k:"sec",t:"dont"}];
+DON.forEach(function(d,n){S.push({k:"scene",t:"dont",n:n,d:d});});
+S.push({k:"sec",t:"do"});
+DO.forEach(function(d,n){S.push({k:"scene",t:"do",n:n,d:d});});
+S.push({k:"ops"},{k:"ack"});
+var cur=0,seen=0,GM='<span class="saf-gm" data-mm="';
+function slideHTML(s){
+ if(s.k==="title") return '<div class="saf-hero">'+GM+'hello"></span><h2 tabindex="-1">Welcome, PUPian!</h2><p>Every student, faculty member and staff member completes this short orientation before using or visiting the misting waiting shed. It only takes a few minutes.</p><ul class="saf-pills"><li class="d">5 Don’ts</li><li class="o">5 Do’s</li><li class="p">Operator reminders</li><li class="a">Acknowledgment</li></ul></div>';
+ if(s.k==="sec") return s.t==="dont"?'<div class="saf-sec dont"><span class="saf-big" aria-hidden="true">✕</span>'+GM+'wow"></span><h2 tabindex="-1">First, the DON’Ts</h2><p>Five unsafe behaviors to avoid around the misting system.</p></div>':'<div class="saf-sec do"><span class="saf-big" aria-hidden="true">✓</span>'+GM+'joy"></span><h2 tabindex="-1">Now, the DO’s</h2><p>Five safe habits that keep everyone comfortable and protected.</p></div>';
+ if(s.k==="scene"){var d=s.d,t=s.t,dn=t==="dont";
+  return '<article class="saf-card '+t+'"><div class="saf-fig">'+frame(SC[d[3]](),d[0])+'<span class="saf-badge '+t+'">'+(dn?"✕ DON’T":"✓ DO")+'</span></div><div class="saf-txt"><p class="saf-cnt">'+(dn?"DON’T":"DO")+' '+(s.n+1)+' OF 5</p><h2 tabindex="-1">'+d[0]+'</h2><p>'+d[1]+'</p><div class="saf-guide">'+GM+(dn?"wow":"joy")+'"></span><p class="saf-tip">'+d[2]+'</p></div></div></article>';}
+ if(s.k==="ops"){var li=function(a,ic){return a.map(function(x,i){return '<li style="--i:'+i+'"><span aria-hidden="true">'+ic+'</span><span>'+x+'</span></li>';}).join("");};
+  var op='<svg viewBox="0 56 130 112" aria-hidden="true">'+P(56,mix(OPR,{arms:[[8],[-70]],face:"ok",cls:"bob"}))+'<rect x="95" y="96" width="18" height="24" rx="2" fill="#fff"/><rect x="99" y="102" width="10" height="2" fill="#6b727a"/><rect x="99" y="107" width="10" height="2" fill="#6b727a"/><rect x="99" y="112" width="7" height="2" fill="#6b727a"/></svg>';
+  return '<section class="saf-ops"><div class="saf-hz"></div><div class="saf-ophead">'+op+'<div><span class="saf-opbadge">🛠 FOR OPERATORS ONLY</span><h2 tabindex="-1">Additional operator safety reminders</h2><p>Everyone should read this, but these steps are for the person running the system.</p></div></div><div class="saf-cols"><div class="saf-col ok"><h3>BEFORE &amp; DURING OPERATION</h3><ul>'+li(OK,"✔")+'</ul></div><div class="saf-col no"><h3>NEVER</h3><ul>'+li(NO,"⛔")+'</ul></div></div></section>';}
+ return '<section class="saf-ack"><h2 tabindex="-1">Safety Acknowledgment</h2><blockquote>“As a bona fide PUPian student, faculty member, or staff member, I acknowledge that I have read, understood, and will follow the Do’s and Don’ts for the safe use of the PUP ITECH Waiting Shed Misting System.”</blockquote><label class="saf-chk" for="safChk"><input type="checkbox" id="safChk" required aria-required="true"><span>I have read, understood, and acknowledge the safety guidelines of the misting system.</span></label><button id="safGo" class="saf-go" type="button" disabled>I Acknowledge – Continue</button></section>';
+}
+function render(n){
+ clr(); cur=n; var s=S[n],box=$("safSlide"),nx=$("safNext"),bk=$("safBack");
+ box.innerHTML=slideHTML(s);
+ box.querySelectorAll("[data-mm]").forEach(function(p){p.appendChild(misty(p.dataset.mm));});
+ $("safMain").classList.toggle("saf-first",n===0);
+ $("safBar").style.width=((n+1)/S.length*100)+"%"; $("safBar").parentNode.setAttribute("aria-valuenow",Math.round((n+1)/S.length*100));
+ $("safStep").textContent="Step "+(n+1)+" of "+S.length;
+ bk.hidden=n===0; nx.hidden=s.k==="ack";
+ nx.textContent=n===S.length-2?"Review & acknowledge →":"Next →";
+ if(n<seen){nx.disabled=false;} else { nx.disabled=true; after(function(){nx.disabled=false;},RM?900:(s.k==="ops"?6500:s.k==="scene"?3600:1800)); }
+ seen=Math.max(seen,n);
+ var hd=box.querySelector("h2"); if(hd) hd.focus({preventScroll:true});
+ R.scrollTop=0;
+ if(s.k==="ack"){var c=$("safChk"),g=$("safGo");
+  c.addEventListener("change",function(){g.disabled=!c.checked;});
+  g.addEventListener("click",function(){ if(c.checked) finish(); });}
+}
+$("safNext").addEventListener("click",function(){ if(!this.disabled&&cur<S.length-1) render(cur+1); });
+$("safBack").addEventListener("click",function(){ if(cur>0) render(cur-1); });
+
+/* ---------- finish: unlock the original site ---------- */
+function finish(){
+ var c=$("safChk"); if(!c||!c.checked) return;
+ try{ sessionStorage.setItem("pupSafetyAck","1"); }catch(e){}
+ R.classList.add("saf-closing");
+ H.classList.remove("safety-lock");
+ LOCKED.forEach(function(i){var e=$(i); if(e) e.inert=false;});
+ window.scrollTo(0,0);
+ if(window.__introStart) window.__introStart();           /* original intro animations start now */
+ if(/^#(dashboard|live-data|historical-data|about)$/.test(location.hash)) window.dispatchEvent(new HashChangeEvent("hashchange"));
+ setTimeout(function(){ R.classList.remove("saf-closing"); R.remove(); },1000);
+}
+
+/* ---------- opening greeting: dark screen, Misty enters centre, waves, introduces, exits ---------- */
+(function greet(){
+ var g=$("safGreet"),b=$("safBub"),m=misty("happy","saf-big-m");
+ g.insertBefore(m,b);
+ function say(t){b.textContent=t;b.classList.remove("show");void b.offsetWidth;b.classList.add("show");}
+ after(300,function(){m.classList.add("in");});
+ after(1600,function(){m.dataset.mood="hello";say("Hello, PUPian!");});
+ after(4300,function(){m.dataset.mood="excited";say("Before exploring our misting system, let’s learn how to use it safely!");});
+ after(8600,function(){b.classList.remove("show");m.classList.add("out");});
+ after(9600,function(){g.hidden=true;$("safMain").hidden=false;render(0);});
+})();
+})();
+</script>
 </body>
 </html>
