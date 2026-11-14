@@ -1139,7 +1139,7 @@ nav.tabs button .newdot{display:inline-block;width:9px;height:9px;border-radius:
 @keyframes newpulse{0%{box-shadow:0 0 0 0 rgba(255,107,122,.7)}100%{box-shadow:0 0 0 9px rgba(255,107,122,0)}}
 @media (prefers-reduced-motion:reduce){nav.tabs button .newdot{animation:none}}
 </style>
-<script>(function(){var h=document.documentElement,x=/^#(dashboard|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>
+<script>(function(){var h=document.documentElement,ok=false;try{ok=sessionStorage.getItem("pupSafetyAck")==="1"}catch(e){} if(!ok){h.classList.add("safety-lock");return;} var x=/^#(dashboard|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>|live-data|historical-data|about)$/.test(location.hash);if(x)h.classList.add("in-dash");else if(!(window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches))h.classList.add("booting");})();</script>
 </head>
 <body>
 <div id="boot" aria-hidden="true">
@@ -2172,8 +2172,9 @@ function switchMode(dash, tab, push){
   setTimeout(()=>{ curtain.classList.add("out"); sfx("waterDrain"); },1180);
   setTimeout(()=>{ curtain.className=""; curtainBusy=false; },1950);
 }
-function enterDash(tab){ if(!inDashMode()) switchMode(true,tab||"home",true); else show(tab||"home"); }
+function enterDash(tab){ if(rootEl.classList.contains("safety-lock")) return;if(!inDashMode()) switchMode(true,tab||"home",true); else show(tab||"home"); }
 function leaveDash(){ if(inDashMode()) switchMode(false,null,true); }
+  if(rootEl.classList.contains("safety-lock")) return;
 window.addEventListener("hashchange",()=>{
   const hh=location.hash.slice(1), k=Object.keys(HASH).find(x=>HASH[x]===hh);
   if(k){ if(!inDashMode()) switchMode(true,k,false); else show(k); }
@@ -2951,7 +2952,7 @@ function routeFX(){
     if(on){ const now=performance.now(); if(now-RT.snd[i]>1500){ RT.snd[i]=now; sfx("r_"+i); } }
   });
 }
-let bootOn=document.documentElement.classList.contains("booting"); const bootQ=[];   /* hero reveals wait until the intro is over */
+let bootOn=document.documentElement.classList.contains("booting")||document.documentElement.classList.contains("safety-lock"); const bootQ=[];   /* hero reveals wait until the intro is over */
 /* reveal helpers */
 function markIn(t){
   t.classList.add("in");
@@ -3522,9 +3523,15 @@ onScroll();
 
 // a link such as …/#historical-data opens that dashboard tab directly; otherwise start on the introduction
 const h = location.hash.slice(1);
-const hit = Object.keys(HASH).find(k=>HASH[k]===h);
-if(hit){ rootEl.classList.add("in-dash"); show(hit); updTabs(); }
-else { rootEl.classList.remove("in-dash"); }
+const hit = Object.keys(HASH).find(k => HASH[k] === h);
+
+if (hit && !rootEl.classList.contains("safety-lock")) {
+    rootEl.classList.add("in-dash");
+    show(hit);
+    updTabs();
+} else {
+    rootEl.classList.remove("in-dash");
+}
 
 /* ================= START-UP INTRO: blank screen -> Misty bounces in BIG, waves -> shrinks and the welcome page appears ================= */
 function bootRun(){
@@ -3584,6 +3591,7 @@ function bootRun(){
   at(R+1900,()=>{ mood("hello"); BUB.textContent="Hi PUP student! I'm Misty 👋"; BUB.classList.add("show"); sfx("bootjingle"); burst(); });
   at(R+3500,finish);
 }
+  window.__introStart=function(){ if(!bootOn) return; bootOn=false; setTimeout(function(){ bootQ.splice(0).forEach(markIn); mistySay(MISTY[0][1]); },250); };
 if(rootEl.classList.contains("booting")) bootRun(); else { const bb=$("#boot"); if(bb) bb.remove(); }
 /* Misty keeps peeking out of a random side of the author's box (normal colours, full body shape outside the edge) and reacts */
 function cloneMisty(tag){
