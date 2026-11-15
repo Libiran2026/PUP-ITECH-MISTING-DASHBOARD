@@ -1218,7 +1218,20 @@ html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
 .sf-card.g svg{max-height:40vh}.sf-card.g #sfArt{padding-top:44px}
 .sf-hz{cursor:pointer;outline:none}.sf-hz:hover,.sf-hz:focus{stroke:#fff;stroke-width:2;stroke-dasharray:5 4;fill:rgba(255,255,255,.08)}
 .sf-hz.ok{stroke:#62d48f;stroke-width:3;stroke-dasharray:none;fill:rgba(98,212,143,.2)}.sf-hz.no{stroke:#ff5a6a;stroke-width:3;stroke-dasharray:none}
-@media(max-width:700px){.sf-pns{flex-direction:column}.sf-pn svg{max-height:200px}}
+@media(max-width:700px){.sf-pns{flex-direction:column}.sf-pn{flex:none!important;width:100%}.sf-pn svg{max-height:230px}}
+.sf-bl{animation:sfbl 4s infinite;transform-box:fill-box;transform-origin:center}@keyframes sfbl{0%,94%,100%{transform:scaleY(1)}97%{transform:scaleY(.1)}}
+.sf-sw{animation:sfsw 1.2s ease-in infinite}@keyframes sfsw{0%{transform:translateY(-2px);opacity:0}30%{opacity:1}100%{transform:translateY(14px);opacity:0}}
+.sf-tr{animation:sftr .12s linear infinite alternate}@keyframes sftr{to{transform:translateX(1.2px)}}
+.sf-tk{animation:sftk .4s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:center}@keyframes sftk{to{transform:scaleY(.45)}}
+.sf-em{animation:sfb 1.1s ease-in-out infinite}.sf-z{animation:sfsp .25s steps(2) infinite}
+.sf-idle{animation:sfb 2.4s ease-in-out infinite}
+.sf-al{display:grid;grid-template-columns:1fr 1fr;gap:14px;width:100%}
+.sf-al h3{font-family:var(--sans);font-size:1rem;letter-spacing:.06em;padding:0 0 6px}
+.sf-al>div{padding:12px 14px;border-radius:12px;border:1px solid}
+.sf-al .x{border-color:rgba(255,90,106,.6);background:rgba(255,90,106,.08)}.sf-al .x h3{color:#ff7b88}
+.sf-al .v{border-color:rgba(98,212,143,.6);background:rgba(98,212,143,.08)}.sf-al .v h3{color:#62d48f}
+.sf-al ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:.92rem}
+@media(max-width:700px){.sf-al{grid-template-columns:1fr}}
 </style>
 <script>document.documentElement.classList.add("safety-lock");window.__safetyLock=true;</script>
 </head>
@@ -1233,6 +1246,7 @@ html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
  </section>
  <section class="sf-st" id="sfA">
   <h2 style="font-size:clamp(1.6rem,4vw,2.4rem)">Safety Acknowledgment</h2>
+  <div class="sf-al"><div class="x"><h3>✕ DON’T</h3><ul><li>Deliberately inhaling mist directly from a nozzle.</li><li>Touching, pulling, or adjusting the misting nozzles.</li><li>Running or playing on wet floors and puddles.</li><li>Touching exposed electrical wires or electrical components.</li><li>Standing directly underneath a leaking or malfunctioning nozzle.</li></ul></div><div class="v"><h3>✓ DO</h3><ul><li>Stay within the designated misting area and maintain a safe distance from the nozzles.</li><li>Report leaking nozzles, unusual spray patterns, or damaged equipment to the operator.</li><li>Walk carefully around wet areas and avoid puddles.</li><li>Inform the operator if the floor becomes excessively slippery.</li><li>Allow authorized personnel to inspect and handle the misting equipment.</li></ul></div></div>
   <blockquote class="sf-q">“As a bona fide PUPian student, faculty member, or staff member, I acknowledge that I have read, understood, and will follow the Do’s and Don’ts for the safe use of the PUP ITECH Waiting Shed Misting System.”</blockquote>
   <label class="sf-chk"><input type="checkbox" id="sfCk" required aria-describedby="sfHint"><span>I have read, understood, and acknowledge the safety guidelines of the misting system.</span></label>
   <button class="btn big" id="sfGo" type="button" disabled>I Acknowledge – Continue</button>
@@ -1984,21 +1998,47 @@ const PU=(x,w)=>'<ellipse cx="'+x+'" cy="206" rx="'+w+'" ry="7" fill="#3f86c4" o
 const BB=(x,y,t)=>{const w=t.length*7+18;return '<g class="sf-pop"><rect x="'+x+'" y="'+y+'" width="'+w+'" height="26" rx="10" fill="#fff"/><path d="M'+(x+14)+' '+(y+25)+'l6 10 4-10z" fill="#fff"/><text x="'+(x+w/2)+'" y="'+(y+18)+'" text-anchor="middle" font-size="13" font-weight="700" fill="#7a0f1c">'+t+'</text></g>';};
 const TX=(x,y,t,c)=>'<text x="'+x+'" y="'+y+'" text-anchor="middle" font-size="12" font-weight="700" fill="'+(c||"#f1bd5a")+'">'+t+'</text>';
 const SG='<g transform="translate(330 150)"><path d="M0 0l22 40H-22z" fill="#f1bd5a"/><text y="34" text-anchor="middle" font-size="22" font-weight="800" fill="#222">!</text></g>';
-function fig(x,c,s,o){o=o||{};const A_=o.a||[[-22,-34],[22,-34]],hair=o.hat||"#1b1b1f";
-return '<g class="'+(o.k||"")+'"><g transform="translate('+x+' '+(o.y===undefined?200:o.y)+')"><path d="M-7 -30V-2M7 -30V-2" stroke="#2a3140" stroke-width="10" stroke-linecap="round"/><rect x="-16" y="-72" width="32" height="46" rx="13" fill="'+c+'"/>'+
+const L=d=>'<path d="'+d+'" stroke="#2a1a14" stroke-width="1.8" fill="none" stroke-linecap="round"/>';
+const DE=(cx,cy,r)=>'<circle cx="'+cx+'" cy="'+cy+'" r="'+r+'" fill="#1a1a1a"/><circle cx="'+(cx+.8)+'" cy="'+(cy-.8)+'" r=".8" fill="#fff"/>';
+const BL='<circle cx="-11" cy="-84" r="3" fill="#ff8a9a" opacity=".45"/><circle cx="11" cy="-84" r="3" fill="#ff8a9a" opacity=".45"/>';
+const SW='<path class="sf-sw" d="M14 -102q4 6 0 9q-4 -3 0 -9z" fill="#bfe6ff" stroke="#6bb8ee" stroke-width=".6"/>';
+const WE='<circle cx="-6" cy="-90" r="4" fill="#fff"/><circle cx="6" cy="-90" r="4" fill="#fff"/>'+DE(-6,-90,1.8)+DE(6,-90,1.8);
+const BE='<g class="sf-bl">'+DE(-6,-90,2.4)+DE(6,-90,2.4)+'</g>';
+const EX={
+smile:BE+L("M-9 -97Q-6 -99 -3 -97")+L("M3 -97Q6 -99 9 -97")+L("M-5 -83Q0 -78 5 -83")+BL,
+grin:L("M-9 -89Q-6 -93 -3 -89")+L("M3 -89Q6 -93 9 -89")+'<path d="M-6 -83Q0 -73 6 -83Z" fill="#7a1030"/><path d="M-5 -82.5H5" stroke="#fff" stroke-width="2"/>'+BL,
+shock:WE+L("M-10 -99Q-6 -103 -2 -99")+L("M2 -99Q6 -103 10 -99")+'<ellipse cy="-80" rx="3" ry="4" fill="#7a1030"/>',
+worry:BE+L("M-10 -96L-3 -99")+L("M10 -96L3 -99")+L("M-5 -81Q-2.5 -84 0 -81T5 -81")+SW,
+scared:WE+L("M-10 -97L-3 -101")+L("M10 -97L3 -101")+'<path class="sf-tr" d="M-6 -83Q0 -72 6 -83Z" fill="#7a1030"/>'+SW+'<path class="sf-sw" style="animation-delay:.5s" d="M-16 -96q4 6 0 9q-4 -3 0 -9z" fill="#bfe6ff"/>',
+cough:L("M-9 -92L-4 -89L-9 -86")+L("M9 -92L4 -89L9 -86")+'<ellipse cy="-81" rx="4" ry="3.2" fill="#7a1030" class="sf-tk"/>',
+zap:L("M-9 -93L-3 -87M-3 -93L-9 -87")+L("M3 -93L9 -87M9 -93L3 -87")+L("M-6 -81L-3 -84L0 -81L3 -84L6 -81"),
+proud:L("M-9 -89Q-6 -93 -3 -89")+L("M3 -89Q6 -93 9 -89")+L("M-5 -83Q2 -77 6 -85")+BL,
+talk:BE+L("M-9 -98Q-6 -100 -3 -98")+L("M3 -98Q6 -100 9 -98")+'<ellipse cy="-81" rx="3.5" ry="3" fill="#7a1030" class="sf-tk"/>'};
+function fig(x,c,s,o){o=o||{};const A_=o.a||[[-22,-34],[22,-34]],hair=o.hr||"#1b1b1f",ps=o.p||"#2a3140";let h="";
+if(o.hs==="l") h+='<path d="M-16 -92Q-19 -72 -12 -70L-9 -88ZM16 -92Q19 -72 12 -70L9 -88Z" fill="'+hair+'"/>';
+if(o.hs==="b") h+='<circle cy="-110" r="7" fill="'+hair+'"/>';
+const top=o.hat?'<path d="M-17 -93Q-17 -113 0 -113Q17 -113 17 -93Z" fill="'+o.hat+'"/><rect x="-20" y="-95" width="40" height="5" rx="2" fill="'+o.hat+'"/><rect x="-3" y="-113" width="6" height="12" fill="#fff" opacity=".5"/>':'<path d="M-16 -92Q-15 -110 0 -108Q15 -110 16 -92Q8 -100 0 -99Q-8 -100 -16 -92Z" fill="'+hair+'"/>';
+return '<g class="'+(o.k||"sf-idle")+'"><g transform="translate('+x+' '+(o.y===undefined?200:o.y)+')"><ellipse cy="2" rx="22" ry="4" fill="#000" opacity=".3"/>'+
+(o.bag?'<rect x="-22" y="-66" width="10" height="32" rx="4" fill="#3b3f46"/>':'')+
+'<path d="M-7 -30V-4M7 -30V-4" stroke="'+ps+'" stroke-width="10" stroke-linecap="round"/><ellipse cx="-8" cy="-1" rx="9" ry="4" fill="#111"/><ellipse cx="8" cy="-1" rx="9" ry="4" fill="#111"/>'+
+'<rect x="-16" y="-72" width="32" height="46" rx="13" fill="'+c+'"/>'+
+(o.vest?'<path d="M-16 -66H16V-30H-16Z" fill="#f08a24"/><path d="M-16 -52H16M-16 -42H16" stroke="#e8f0f2" stroke-width="3"/>':'<path d="M-5 -72L0 -64L5 -72" fill="#fff" opacity=".8"/>')+
+(o.id?'<path d="M-4 -70L0 -50L4 -70" stroke="#f1bd5a" stroke-width="1.5" fill="none"/><rect x="-4" y="-52" width="8" height="10" rx="1" fill="#fff"/><rect x="-3" y="-50" width="6" height="3" fill="#8f1220"/>':'')+
 A_.map((a,i)=>'<g class="'+(o.w===i?"sf-wig":"")+'"><path d="M'+(i?13:-13)+' -62L'+a[0]+' '+a[1]+'" stroke="'+c+'" stroke-width="9" stroke-linecap="round"/><circle cx="'+a[0]+'" cy="'+a[1]+'" r="5" fill="'+s+'"/></g>').join("")+
-'<g transform="rotate('+(o.t||0)+' 0 -74)"><circle cy="-90" r="16" fill="'+s+'"/><path d="M-16 -92Q-15 -110 0 -108Q15 -110 16 -92Q8 -100 0 -99Q-8 -100 -16 -92Z" fill="'+hair+'"/>'+(o.hat?'<rect x="-19" y="-98" width="38" height="5" rx="2" fill="'+o.hat+'"/>':"")+'<circle cx="-6" cy="-88" r="2" fill="#111"/><circle cx="6" cy="-88" r="2" fill="#111"/>'+(o.m?'<ellipse cy="-79" rx="4" ry="5" fill="#7a1030"/>':'<path d="M-5 -80Q0 -75 5 -80" stroke="#111" stroke-width="2" fill="none"/>')+'</g></g></g>';}
+'<g transform="rotate('+(o.t||0)+' 0 -74)">'+h+'<circle cx="-16" cy="-89" r="3.5" fill="'+s+'"/><circle cx="16" cy="-89" r="3.5" fill="'+s+'"/><circle cy="-90" r="16" fill="'+s+'"/>'+top+EX[o.e||"smile"]+(o.e==="zap"?'<path class="sf-z" d="M-24 -110l-8 -8M24 -110l8 -8M0 -122v-10M-28 -92h-10M28 -92h10" stroke="#ffe066" stroke-width="2.5" stroke-linecap="round"/>':'')+'</g></g></g>';}
+const EMO=(x,y,t,c)=>'<text class="sf-em" x="'+x+'" y="'+y+'" text-anchor="middle" font-size="22" font-weight="800" fill="'+c+'">'+t+'</text>';
+const RD="#ff5a6a",GR="#62d48f",OP_={hat:"#f1bd5a",vest:1,id:0};
 const ART=[
-()=>FL+NZ(250,1)+fig(228,"#b0192a","#d9a77b",{t:22,m:1,k:"sf-bob"})+'<g class="sf-ms" fill="#bfe6ff"><circle cx="246" cy="112" r="4"/><circle cx="252" cy="122" r="3"/></g>',
-()=>FL+NZ(222,1)+fig(186,"#3a6ea5","#c68c63",{m:1,w:1,a:[[-22,-34],[28,-134]]}),
-()=>FL+PU(150,40)+PU(280,34)+'<g class="sf-run">'+fig(200,"#4a8f6b","#e0b48a",{t:10,m:1,a:[[-30,-48],[30,-80]]})+'</g><g fill="#7cc4f5" class="sf-sp"><circle cx="170" cy="196" r="3"/><circle cx="240" cy="198" r="3"/><circle cx="250" cy="190" r="2"/></g>',
-()=>FL+'<rect x="280" y="70" width="64" height="90" rx="6" fill="#2b3138" stroke="#9aa2aa"/><rect x="290" y="82" width="44" height="14" fill="#f1bd5a"/><text x="312" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#222">DANGER</text><path d="M280 130 C250 130 245 150 236 125" stroke="#ff7b88" stroke-width="3" fill="none"/><path class="sf-sp" d="M236 118l-8 8h7l-6 10 14-14h-8l5-4z" fill="#ffe066"/>'+fig(190,"#c98a2b","#b9825a",{m:1,w:1,t:-6,a:[[-22,-34],[40,-74]]}),
-()=>FL+NZ(200,0)+DR(200,70)+PU(200,36)+fig(200,"#3a6ea5","#e0b48a",{m:1,k:"sf-bob"}),
-()=>FL+NZ(310,1)+'<path d="M215 175H320" stroke="#62d48f" stroke-width="2" stroke-dasharray="4 3"/>'+TX(268,168,"safe distance","#62d48f")+fig(120,"#b0192a","#d9a77b",{k:"sf-bob",w:1,a:[[-22,-34],[26,-86]]})+fig(165,"#3a6ea5","#c68c63",{k:"sf-bob"}),
-()=>FL+NZ(310,0)+DR(310,70)+fig(130,"#b0192a","#d9a77b",{w:1,a:[[-22,-34],[44,-84]]})+fig(215,"#e8892b","#c68c63",{hat:"#f1bd5a"})+BB(100,60,"It’s leaking!"),
-()=>FL+PU(200,55)+'<g class="sf-walk">'+fig(200,"#4a8f6b","#e0b48a",{a:[[-26,-44],[26,-40]]})+'</g>'+SG+TX(200,226,"Walk carefully","#62d48f"),
-()=>FL+PU(280,45)+SG+fig(130,"#3a6ea5","#e0b48a",{w:1,a:[[-22,-34],[40,-80]]})+fig(215,"#e8892b","#c68c63",{hat:"#f1bd5a"})+BB(70,66,"The floor is slippery!"),
-()=>FL+NZ(262,0)+'<path d="M290 60V200M320 60V200M290 90h30M290 130h30M290 170h30" stroke="#8a929a" stroke-width="3"/>'+fig(240,"#e8892b","#b9825a",{hat:"#f1bd5a",w:1,a:[[-22,-34],[22,-136]]})+fig(100,"#b0192a","#d9a77b",{k:"sf-bob"})+TX(100,226,"Stay back","#62d48f")+BB(150,70,"Inspection in progress")
+()=>FL+NZ(250,1)+fig(228,"#b0192a","#d9a77b",{t:22,e:"cough",hs:"l",hr:"#2a1a14",id:1,k:"sf-bob"})+'<g class="sf-ms" fill="#bfe6ff"><circle cx="246" cy="112" r="4"/><circle cx="252" cy="122" r="3"/><circle cx="240" cy="104" r="2.5"/></g>'+EMO(284,104,"✕",RD),
+()=>FL+NZ(222,1)+fig(186,"#3a6ea5","#c68c63",{e:"talk",w:1,a:[[-22,-34],[28,-134]],bag:1,id:1})+EMO(252,112,"✕",RD),
+()=>FL+PU(150,40)+PU(280,34)+'<g class="sf-run">'+fig(200,"#4a8f6b","#e0b48a",{t:10,e:"scared",a:[[-30,-48],[30,-80]],bag:1})+'</g><g fill="#7cc4f5" class="sf-sp"><circle cx="170" cy="196" r="3"/><circle cx="240" cy="198" r="3"/><circle cx="250" cy="190" r="2"/></g>'+EMO(200,84,"✕",RD),
+()=>FL+'<rect x="280" y="70" width="64" height="90" rx="6" fill="#2b3138" stroke="#9aa2aa"/><rect x="290" y="82" width="44" height="14" fill="#f1bd5a"/><text x="312" y="93" text-anchor="middle" font-size="10" font-weight="800" fill="#222">DANGER</text><path d="M280 130 C250 130 245 150 236 125" stroke="#ff7b88" stroke-width="3" fill="none"/><path class="sf-sp" d="M236 118l-8 8h7l-6 10 14-14h-8l5-4z" fill="#ffe066"/>'+fig(190,"#c98a2b","#b9825a",{e:"zap",w:1,t:-6,a:[[-22,-34],[40,-74]],hr:"#17120f"})+EMO(250,170,"✕",RD),
+()=>FL+NZ(200,0)+DR(200,70)+PU(200,36)+fig(200,"#3a6ea5","#e0b48a",{e:"worry",hs:"b",hr:"#241a14",k:"sf-bob"})+EMO(240,120,"✕",RD),
+()=>FL+NZ(310,1)+'<path d="M215 175H320" stroke="#62d48f" stroke-width="2" stroke-dasharray="4 3"/>'+TX(268,168,"safe distance","#62d48f")+fig(120,"#b0192a","#d9a77b",{k:"sf-bob",w:1,a:[[-22,-34],[26,-86]],e:"grin",hs:"l",hr:"#2a1a14",id:1})+fig(165,"#3a6ea5","#c68c63",{e:"smile",bag:1,id:1})+EMO(215,150,"✓",GR),
+()=>FL+NZ(310,0)+DR(310,70)+fig(130,"#b0192a","#d9a77b",{e:"talk",w:1,a:[[-22,-34],[44,-84]],hs:"l",hr:"#2a1a14",id:1})+fig(215,"#e8892b","#c68c63",{e:"smile",hat:"#f1bd5a",vest:1})+BB(100,60,"It’s leaking!")+EMO(330,150,"✓",GR),
+()=>FL+PU(200,55)+'<g class="sf-walk">'+fig(200,"#4a8f6b","#e0b48a",{e:"smile",a:[[-26,-44],[26,-40]],hs:"b",hr:"#241a14",bag:1})+'</g>'+SG+TX(200,226,"Walk carefully","#62d48f")+EMO(200,70,"✓",GR),
+()=>FL+PU(280,45)+SG+'<path d="M258 200L276 118" stroke="#8a5a3c" stroke-width="4"/><path d="M250 200Q266 214 282 200Z" fill="#d9d9d9"/>'+fig(130,"#3a6ea5","#e0b48a",{e:"worry",w:1,a:[[-22,-34],[40,-80]],bag:1})+fig(215,"#e8892b","#c68c63",{e:"proud",hat:"#f1bd5a",vest:1})+BB(70,66,"The floor is slippery!"),
+()=>FL+NZ(262,0)+'<path d="M290 60V200M320 60V200M290 90h30M290 130h30M290 170h30" stroke="#8a929a" stroke-width="3"/>'+fig(240,"#e8892b","#b9825a",{e:"proud",hat:"#f1bd5a",vest:1,w:1,a:[[-22,-34],[22,-136]]})+fig(100,"#b0192a","#d9a77b",{k:"sf-bob",e:"grin",hs:"l",hr:"#2a1a14",id:1,a:[[-22,-34],[24,-70]]})+TX(100,226,"Stay back","#62d48f")+BB(150,70,"Inspection in progress")+EMO(180,110,"✓",GR)
 ];
 const OPA=["Inspect hoses, fittings, and connections before operating.","Check the water reservoir level.","Ensure the pump and electrical enclosure are properly secured.","Monitor temperature, humidity, and wind conditions.","Watch for abnormal pump noise, vibration, or overheating."],
 OPN=["Never operate the pump without sufficient water.","Never disconnect pressurized hoses.","Never open an energized electrical enclosure.","Never operate the system with damaged wiring or leaking electrical components.","Never bypass safety controls."];
@@ -2009,16 +2049,17 @@ const ST=[
 {t:"x",h:"Stay away from these 2 hazards",s:"Wet floors and wires can hurt you.",m:"wow",min:2,snd:["splash","m_elec"],p:[[2,"60 0 280","Don’t run on wet floors"],[3,"150 0 230","Don’t touch exposed wires"]]},
 {t:"v",h:"Do these 2 things",s:"Keep your distance and speak up.",m:"excited",min:2,snd:["ding","pop"],p:[[5,"90 0 260","Stay in the misting area, keep your distance"],[6,"90 0 260","Report leaks, odd sprays, or damage"]]},
 {t:"v",h:"Do these 3 things",s:"Walk carefully and let the experts handle it.",m:"happy",min:2.5,snd:["bloop","note","sparkle"],p:[[7,"60 0 280","Walk carefully around wet areas"],[8,"60 0 300","Tell the operator if the floor is slippery"],[9,"70 0 270","Let authorized personnel handle the equipment"]]},
-{t:"g",h:"Quick check: spot the 3 hazards!",s:"Tap the hazards in the picture.",m:"think",min:0},
-{t:"o",h:"Extra reminders for operators",s:"Operators: these extra rules keep everyone safe.",m:"think",min:6}];
+{t:"g",h:"Quick check: spot the 3 hazards!",s:"Tap the hazards in the picture.",m:"think",min:0}];
 const RX=["Nice start! 💪","Great! Keep going 👍","Well done! 🎉","Awesome! Almost there ⭐","Sharp eyes! 👀"];
 const HZ=[{x:100,y:92,r:36,ok:1,m:"A leaking nozzle: move away and report it!"},{x:190,y:204,r:42,ok:1,m:"A puddle: slippery! Walk around it."},{x:272,y:128,r:32,ok:1,m:"An exposed wire: never touch it!"},{x:250,y:70,r:24,ok:0,m:"This nozzle works normally, but still don’t touch it."},{x:340,y:186,r:30,ok:0,m:"Just a table: perfectly safe."}];
 const GAME=()=>'<svg viewBox="0 0 400 230" role="group" aria-label="Spot the hazards: five tappable areas">'+FL+NZ(250,0)+NZ(100,0)+DR(100,70)+PU(190,36)+'<rect x="300" y="86" width="64" height="70" rx="6" fill="#2b3138" stroke="#9aa2aa"/><path d="M300 130 C280 130 276 150 270 128" stroke="#ff7b88" stroke-width="3" fill="none"/><path class="sf-sp" d="M270 120l-8 8h7l-6 10 14-14h-8l5-4z" fill="#ffe066"/>'+HZ.map((h,i)=>'<circle class="sf-hz" data-i="'+i+'" cx="'+h.x+'" cy="'+h.y+'" r="'+h.r+'" fill="transparent" tabindex="0" role="button" aria-label="Area '+(i+1)+'"/>').join("")+'</svg>';
 const panels=st=>'<div class="sf-pns">'+st.p.map((q,i)=>'<figure class="sf-pn" style="--i:'+i+';flex:'+q[1].split(" ")[2]+' 1 0"><svg viewBox="'+q[1]+' 230" role="img" aria-label="'+q[2]+' (illustration)">'+ART[q[0]]()+'</svg><figcaption><i>'+(st.t==="x"?"✕":"✓")+'</i><span>'+q[2]+'</span></figcaption></figure>').join("")+'</div>';
 const dots=$("#sfDots"); ST.forEach(()=>dots.appendChild(document.createElement("i")));
 const pm=$("#sfPm"); let n=-1,el=0,paused=false,tm=null,found=0,gdone=[],gameDone=false;
+const MU={x:[0,2,1,3,0,2,4,1],v:[4,6,5,7,6,8,5,7],g:[3,5,4,6,5,7,6,8]};let mi=0,mt=null;
+function music(ty){ clearInterval(mt); mt=setInterval(()=>sfx("note",MU[ty][mi++%8]),ty==="x"?900:650); }
 function scene(k){
- n=k;el=0;const st=ST[k],c=$("#sfC");
+ n=k;el=0;music(ST[k].t);const st=ST[k],c=$("#sfC");
  c.className="sf-card "+st.t; c.style.animation="none"; void c.offsetWidth; c.style.animation="";
  const b=$("#sfBd"); b.className="sf-badge "+st.t; b.textContent={x:"✕ DON’T",v:"✓ DO",g:"🎯 QUICK CHECK",o:"⚠ OPERATOR SAFETY REMINDERS"}[st.t];
  found=0;gdone=[];gameDone=false;
@@ -2037,7 +2078,7 @@ const ready=()=>el>=ST[n].min&&(n!==4||gameDone);
 function play(){ scene(0); tm=setInterval(()=>{ el+=.1; const nx=$("#sfNext");
  if(!ready()){ nx.disabled=true; nx.classList.remove("rdy"); nx.textContent=(n===4&&el>=ST[n].min)?"Find all 3 hazards":"Next in "+Math.max(1,Math.ceil(ST[n].min-el))+"…"; }
  else if(nx.disabled){ nx.disabled=false; nx.classList.add("rdy"); nx.textContent=n<ST.length-1?"Next ▶":"Continue ▶"; sfx("sparkle"); } },100); }
-function endShow(){ clearInterval(tm); P.classList.remove("on"); A.classList.add("on"); sfx("sparkle"); setTimeout(()=>$("#sfCk").focus(),300); }
+function endShow(){ clearInterval(mt); clearInterval(tm); P.classList.remove("on"); A.classList.add("on"); sfx("sparkle"); setTimeout(()=>$("#sfCk").focus(),300); }
 $("#sfNext").addEventListener("click",()=>{ if(!ready()) return; if(n<ST.length-1) scene(n+1); else endShow(); });
 /* ---- greeting ---- */
 const T=[],at=(ms,f)=>T.push(setTimeout(f,ms)),gm=$("#sfGM"),gb=$("#sfGB"),gi=$("#sfGmi"),k=reduceMotion?.4:1;
