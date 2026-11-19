@@ -1232,26 +1232,32 @@ html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
 .sf-al .v{border-color:rgba(98,212,143,.6);background:rgba(98,212,143,.08)}.sf-al .v h3{color:#62d48f}
 .sf-al ul{margin:0;padding-left:18px;display:grid;gap:5px;font-size:.92rem}
 @media(max-width:700px){.sf-al{grid-template-columns:1fr}}
+#view-safety .sf-st{min-height:0;padding:0;justify-content:flex-start}
+.sf-start,.sf-done{display:flex;gap:22px;align-items:center;padding:24px;border-radius:18px;background:linear-gradient(145deg,rgba(255,255,255,.08),rgba(255,255,255,.02));border:1px solid rgba(255,86,104,.4);width:100%;max-width:820px}
+.sf-start .sfm,.sf-done .sfm{width:120px;flex:none}
+.sf-start h3,.sf-done h3{font-size:1.4rem;padding:0 0 6px}.sf-start p,.sf-done p{color:#d4d8dc;margin-bottom:12px}
+.sf-done .bt{display:flex;gap:10px;flex-wrap:wrap}
+@media(max-width:600px){.sf-start,.sf-done{flex-direction:column;text-align:center}.sf-done .bt{justify-content:center}}
+.sfbang{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#ff4a5c;color:#fff;font:800 .8rem var(--sans);margin-left:7px;vertical-align:middle;animation:sfbg 1.2s ease-out infinite}
+@keyframes sfbg{0%{box-shadow:0 0 0 0 rgba(255,74,92,.8)}100%{box-shadow:0 0 0 11px rgba(255,74,92,0)}}
+nav.tabs button[data-view="safety"]{color:#ffd9dc}
+html:not(.in-dash) #sfPop{display:none}
+#sfPop{position:fixed;left:50%;top:78px;z-index:90;width:min(520px,calc(100vw - 24px));transform:translate(-50%,-170%);opacity:0;pointer-events:none;transition:transform .5s cubic-bezier(.3,1.5,.5,1),opacity .3s;display:flex;gap:12px;align-items:flex-start;padding:14px 16px;border-radius:16px;background:#2a1014;border:2px solid #ff4a5c;box-shadow:0 14px 36px rgba(0,0,0,.6),0 0 0 6px rgba(255,74,92,.18)}
+#sfPop.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+#sfPop .ex{width:42px;height:42px;flex:none;border-radius:50%;background:#ff4a5c;color:#fff;display:grid;place-items:center;font:800 1.5rem var(--sans);animation:sfbg 1.2s ease-out infinite}
+#sfPop b{display:block;font-size:1.05rem}#sfPop p{color:#e3c9cd;font-size:.92rem;margin:3px 0 10px}#sfPop .row{display:flex;gap:8px}
+.sfban{display:flex;gap:12px;align-items:center;flex-wrap:wrap;padding:12px 16px;margin-bottom:14px;border-radius:12px;background:rgba(255,74,92,.12);border:1px solid #ff4a5c}
+.sfban .ex{width:30px;height:30px;border-radius:50%;background:#ff4a5c;color:#fff;display:grid;place-items:center;font:800 1.1rem var(--sans);animation:sfbg 1.2s ease-out infinite}
+.sfban .t{flex:1;min-width:200px;font-weight:600}
+@media(prefers-reduced-motion:reduce){.sfbang,#sfPop .ex,.sfban .ex{animation:none}#view-safety *{animation:none!important}}
 </style>
 <script>document.documentElement.classList.add("safety-lock");window.__safetyLock=true;</script>
 </head>
 <body>
-<div id="safety" role="dialog" aria-modal="true" aria-labelledby="sfT">
+<div id="safety" role="dialog" aria-modal="true" aria-label="Welcome">
  <section class="sf-st on" id="sfG"><p class="hnote" style="position:absolute;bottom:18px;left:0;right:0;text-align:center">🔊 Tap anywhere for sound</p><div id="sfGM"><div class="sf-b" id="sfGB" aria-live="polite"></div><div class="sfm" id="sfGmi" data-mood="hello" data-wave="1"></div></div></section>
- <section class="sf-st" id="sfP">
-  <div class="sf-top"><img data-logo="pup" alt=""><img data-logo="itech" alt=""><h1 id="sfT">Misting System Safety: Do’s and Don’ts of the PUP ITECH Waiting Shed</h1></div>
-  <div class="sf-card" id="sfC"><div class="sf-badge" id="sfBd"></div><div id="sfArt"></div></div>
-  <div class="sf-cap"><div class="sfm" id="sfPm" data-mood="wow"></div><div class="sf-say"><b id="sfH"></b><p id="sfX" aria-live="polite"></p></div></div>
-  <div class="sf-ctl"><div id="sfDots" aria-hidden="true"></div><span id="sfStep" class="hnote"></span><button class="btn" id="sfNext" type="button" disabled>Next ▶</button></div>
- </section>
- <section class="sf-st" id="sfA">
-  <h2 style="font-size:clamp(1.6rem,4vw,2.4rem)">Safety Acknowledgment</h2>
-  <div class="sf-al"><div class="x"><h3>✕ DON’T</h3><ul><li>Deliberately inhaling mist directly from a nozzle.</li><li>Touching, pulling, or adjusting the misting nozzles.</li><li>Running or playing on wet floors and puddles.</li><li>Touching exposed electrical wires or electrical components.</li><li>Standing directly underneath a leaking or malfunctioning nozzle.</li></ul></div><div class="v"><h3>✓ DO</h3><ul><li>Stay within the designated misting area and maintain a safe distance from the nozzles.</li><li>Report leaking nozzles, unusual spray patterns, or damaged equipment to the operator.</li><li>Walk carefully around wet areas and avoid puddles.</li><li>Inform the operator if the floor becomes excessively slippery.</li><li>Allow authorized personnel to inspect and handle the misting equipment.</li></ul></div></div>
-  <blockquote class="sf-q">“As a bona fide PUPian student, faculty member, or staff member, I acknowledge that I have read, understood, and will follow the Do’s and Don’ts for the safe use of the PUP ITECH Waiting Shed Misting System.”</blockquote>
-  <label class="sf-chk"><input type="checkbox" id="sfCk" required aria-describedby="sfHint"><span>I have read, understood, and acknowledge the safety guidelines of the misting system.</span></label>
-  <button class="btn big" id="sfGo" type="button" disabled>I Acknowledge – Continue</button>
-  <p class="hnote" id="sfHint">Tick the box above to enable the button.</p>
- </section>
+ 
+ 
 </div>
 <div id="boot" aria-hidden="true">
   <div id="bootbg"></div>
@@ -1340,6 +1346,7 @@ html.safety-lock :is(#misty,#topbar,#prog,#mistBanner){display:none!important}
   <span class="mbi" aria-hidden="true">💦</span><span class="mbt">Misting is active now</span>
   <button class="mbell" id="mbell" type="button" hidden>🔔 Notify me</button>
 </div>
+<div id="sfPop" role="alertdialog" aria-labelledby="sfPopT"><div class="ex" aria-hidden="true">!</div><div><b id="sfPopT">Important: Safety Precautions</b><p>Before using the misting area, please read the Do’s and Don’ts. It only takes about a minute.</p><div class="row"><button class="btn sm" data-gosafety type="button">View now</button><button class="btn sm ghost" id="sfPopX" type="button">Later</button></div></div></div>
 <div id="fx" aria-hidden="true"></div>
 <div id="misty" data-mood="hello">
   <button class="mx" id="mx" type="button" aria-label="Hide Misty">×</button>
@@ -1802,6 +1809,7 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
         <button role="tab" data-view="home" aria-selected="true">Dashboard</button>
         <button role="tab" data-view="history" aria-selected="false">Historical Data</button>
         <button role="tab" data-view="about" aria-selected="false">About</button>
+        <button role="tab" data-view="safety" aria-selected="false">Safety Precautions</button>
       </nav>
         <div class="fade r"><button type="button" class="tarrow" data-dir="1" aria-label="Show more sections">›</button></div>
       </div>
@@ -1818,6 +1826,7 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
     <span class="updated" data-updated>Last updated: –</span>
   </div>
   <div class="banner" id="errBanner"></div>
+  <div class="sfban" id="sfBan"><span class="ex" aria-hidden="true">!</span><span class="t">Important: please read the Safety Precautions for the PUP ITECH waiting shed misting system.</span><button class="btn sm" data-gosafety type="button">Read now</button></div>
 
   <div class="readings">
     <div class="card reading"><div class="lab">Temperature</div><div class="val"><span data-v="temp">–</span><small>°C</small></div><div class="sub" data-s="temp"></div></div>
@@ -1976,6 +1985,26 @@ The formula is adjusted for very dry or very humid air. Below 80 °F the heat in
   </div>
 </section>
 
+<section id="view-safety" class="view" aria-labelledby="h-safety">
+  <div class="statusline"><h2 id="h-safety">SAFETY PRECAUTIONS</h2></div>
+  <p class="vintro">Everyone who uses the PUP ITECH waiting shed should read these Do’s and Don’ts of the misting system.</p>
+  <section class="sf-st on" id="sfS"><div class="sf-start"><div class="sfm" id="sfSm" data-mood="hello" data-wave="1"></div><div><h3 class="srf">Do’s and Don’ts of the Waiting Shed</h3><p>Learn how to stay safe around the PUP ITECH misting system. It takes about one minute.</p><button class="btn big" id="sfStart" type="button">▶ Start safety orientation</button><p class="hnote" id="sfSt" style="margin-top:10px"></p></div></div></section>
+  <section class="sf-st" id="sfP">
+  <div class="sf-top"><img data-logo="pup" alt=""><img data-logo="itech" alt=""><h1 id="sfT">Misting System Safety: Do’s and Don’ts of the PUP ITECH Waiting Shed</h1></div>
+  <div class="sf-card" id="sfC"><div class="sf-badge" id="sfBd"></div><div id="sfArt"></div></div>
+  <div class="sf-cap"><div class="sfm" id="sfPm" data-mood="wow"></div><div class="sf-say"><b id="sfH"></b><p id="sfX" aria-live="polite"></p></div></div>
+  <div class="sf-ctl"><div id="sfDots" aria-hidden="true"></div><span id="sfStep" class="hnote"></span><button class="btn" id="sfNext" type="button" disabled>Next ▶</button></div>
+ </section>
+  <section class="sf-st" id="sfA">
+  <h2 style="font-size:clamp(1.6rem,4vw,2.4rem)">Safety Acknowledgment</h2>
+  <div class="sf-al"><div class="x"><h3>✕ DON’T</h3><ul><li>Deliberately inhaling mist directly from a nozzle.</li><li>Touching, pulling, or adjusting the misting nozzles.</li><li>Running or playing on wet floors and puddles.</li><li>Touching exposed electrical wires or electrical components.</li><li>Standing directly underneath a leaking or malfunctioning nozzle.</li></ul></div><div class="v"><h3>✓ DO</h3><ul><li>Stay within the designated misting area and maintain a safe distance from the nozzles.</li><li>Report leaking nozzles, unusual spray patterns, or damaged equipment to the operator.</li><li>Walk carefully around wet areas and avoid puddles.</li><li>Inform the operator if the floor becomes excessively slippery.</li><li>Allow authorized personnel to inspect and handle the misting equipment.</li></ul></div></div>
+  <blockquote class="sf-q">“As a bona fide PUPian student, faculty member, or staff member, I acknowledge that I have read, understood, and will follow the Do’s and Don’ts for the safe use of the PUP ITECH Waiting Shed Misting System.”</blockquote>
+  <label class="sf-chk"><input type="checkbox" id="sfCk" required aria-describedby="sfHint"><span>I have read, understood, and acknowledge the safety guidelines of the misting system.</span></label>
+  <button class="btn big" id="sfGo" type="button" disabled>I Acknowledge – Continue</button>
+  <p class="hnote" id="sfHint">Tick the box above to enable the button.</p>
+ </section>
+  <section class="sf-st" id="sfD"><div class="sf-done"><div class="sfm" id="sfDm" data-mood="excited" data-wave="1"></div><div><h3 class="srf">✓ Thank you, PUPian!</h3><p>You have read and acknowledged the safety precautions. Please follow them whenever you use the waiting shed.</p><div class="bt"><button class="btn" id="sfBack" type="button">← Back to dashboard</button><button class="btn ghost" id="sfAgain" type="button">↻ Watch again</button></div></div></div></section>
+</section>
 </div></main>
 
 <footer><div class="wrap">PUP ITECH Automated Misting System · Thesis project of the PUP ITECH research group · Public website: you can only view data here. Times are in Philippine Time.</div></footer>
@@ -2075,25 +2104,31 @@ function hit(c){ const i=+c.dataset.i,h=HZ[i]; if(gdone[i]) return;
 $("#sfArt").addEventListener("click",e=>{ const c=e.target.closest&&e.target.closest(".sf-hz"); if(c) hit(c); });
 $("#sfArt").addEventListener("keydown",e=>{ if(e.key!=="Enter"&&e.key!==" ") return; const c=e.target.closest&&e.target.closest(".sf-hz"); if(c){ e.preventDefault(); hit(c); } });
 const ready=()=>el>=ST[n].min&&(n!==4||gameDone);
-function play(){ scene(0); tm=setInterval(()=>{ el+=.1; const nx=$("#sfNext");
+function play(){ clearInterval(tm); scene(0); tm=setInterval(()=>{ if(!$("#view-safety").classList.contains("active")){ clearInterval(mt); mt=null; return; } if(!mt) music(ST[n].t); el+=.1; const nx=$("#sfNext");
  if(!ready()){ nx.disabled=true; nx.classList.remove("rdy"); nx.textContent=(n===4&&el>=ST[n].min)?"Find all 3 hazards":"Next in "+Math.max(1,Math.ceil(ST[n].min-el))+"…"; }
  else if(nx.disabled){ nx.disabled=false; nx.classList.add("rdy"); nx.textContent=n<ST.length-1?"Next ▶":"Continue ▶"; sfx("sparkle"); } },100); }
 function endShow(){ clearInterval(mt); clearInterval(tm); P.classList.remove("on"); A.classList.add("on"); sfx("sparkle"); setTimeout(()=>$("#sfCk").focus(),300); }
 $("#sfNext").addEventListener("click",()=>{ if(!ready()) return; if(n<ST.length-1) scene(n+1); else endShow(); });
+$("#sfSm").appendChild(cloneMisty("sfs")); $("#sfDm").appendChild(cloneMisty("sfd"));
+const SS=$("#sfS"),DD=$("#sfD"); let was=false; try{ was=localStorage.getItem("pupSafetyDone")==="1"; }catch(e){}
+if(was) $("#sfSt").textContent="✓ You completed this before. You can watch it again anytime.";
+function startShow(){ clearInterval(tm); SS.classList.remove("on"); DD.classList.remove("on"); A.classList.remove("on"); $("#sfCk").checked=false; $("#sfGo").disabled=true; P.classList.add("on"); play(); }
+function ackDone(){ clearInterval(mt); clearInterval(tm); try{ localStorage.setItem("pupSafetyDone","1"); }catch(e){} A.classList.remove("on"); DD.classList.add("on"); sfx("enter"); document.dispatchEvent(new Event("safety-complete")); }
+$("#sfStart").addEventListener("click",startShow); $("#sfAgain").addEventListener("click",startShow);
+$("#sfBack").addEventListener("click",()=>{ const b=document.querySelector('nav.tabs button[data-view="home"]'); if(b) b.click(); DD.classList.remove("on"); SS.classList.add("on"); $("#sfSt").textContent="✓ You completed this. You can watch it again anytime."; });
 /* ---- greeting ---- */
 const T=[],at=(ms,f)=>T.push(setTimeout(f,ms)),gm=$("#sfGM"),gb=$("#sfGB"),gi=$("#sfGmi"),k=reduceMotion?.4:1;
 const say=t=>{ gb.textContent=t; gb.classList.remove("show"); void gb.offsetWidth; gb.classList.add("show"); };
 at(500*k,()=>{ gm.classList.add("in"); sfx("bootpop"); });
 at(1400*k,()=>{ say("Hello, PUPian!"); sfx("mood_hello"); });
-at(3000*k,()=>{ gi.dataset.mood="excited"; say("Before exploring our misting system, let’s learn how to use it safely!"); sfx("mood_excited"); });
-at(6600*k,()=>{ gb.classList.remove("show"); gm.classList.add("out"); sfx("bootwhoosh"); });
-at(7600*k,()=>{ G.classList.remove("on"); P.classList.add("on"); play(); });
+at(3300*k,()=>{ gb.classList.remove("show"); gm.classList.add("out"); sfx("bootwhoosh"); });
+at(4300*k,()=>finish());
 /* ---- acknowledgment ---- */
 const ck=$("#sfCk"),go=$("#sfGo"); ck.checked=false; go.disabled=true;
 ck.addEventListener("change",()=>{ go.disabled=!ck.checked; sfx(ck.checked?"ding":"pop"); });
-go.addEventListener("click",()=>{ if(!ck.checked) return; finish(); });
+go.addEventListener("click",()=>{ if(!ck.checked) return; ackDone(); });
 function finish(){
- go.disabled=true; S.classList.add("bye"); sfx("enter");
+ S.classList.add("bye"); sfx("enter");
  setTimeout(()=>{
   S.hidden=true; rootEl.classList.remove("safety-lock"); window.__safetyLock=false; lock.forEach(e=>{ if(e) e.inert=false; });
   document.dispatchEvent(new Event("safety-done"));
@@ -2373,7 +2408,7 @@ document.addEventListener("mouseover",e=>{ const c=e.target; if(c && c.classList
 updSndBtns();
 
 /* ================= NAVIGATION ================= */
-const HASH = {home:"dashboard", history:"historical-data", about:"about"};
+const HASH = {home:"dashboard", history:"historical-data", about:"about", safety:"safety-precautions"};
 let histLoaded=false;
 const dashEl = $("#dashboard");
 const dashTop = () => dashEl.getBoundingClientRect().top + window.scrollY;
@@ -2386,7 +2421,7 @@ function setMode(dash, tab){
   rootEl.classList.toggle("in-dash", dash);
   if(!dash) mistyReplace();
   window.scrollTo({top:0,left:0,behavior:"instant"});
-  if(dash){ show(tab||"home"); updTabs(); nudgeTabs(); }
+  if(dash){ show(tab||"home"); updTabs(); nudgeTabs(); sfPopMaybe(); }
   onScroll();
 }
 let curtainBusy=false;
@@ -2499,7 +2534,7 @@ if(!reduceMotion) $$(".cnt").forEach(c=>{ c.textContent=c.dataset.from; });
 const LAB_ICONS=["🌡️","💧","☀️","🌬️","💦"];
 $$(".readings .reading .lab").forEach((l,i)=>{ if(LAB_ICONS[i]) l.insertAdjacentHTML("afterbegin",'<span class="lico" aria-hidden="true">'+LAB_ICONS[i]+'</span>'); });
 $$(".pvgrid .pv .l").forEach((l,i)=>{ if(LAB_ICONS[i]) l.insertAdjacentHTML("afterbegin",'<span class="lico" aria-hidden="true">'+LAB_ICONS[i]+'</span>'); });
-const TAB_ICONS={home:"📊",live:"📈",history:"🗓️",about:"🎓"};
+const TAB_ICONS={home:"📊",live:"📈",history:"🗓️",about:"🎓",safety:"⚠️"};
 $$("nav.tabs button").forEach(b=>b.insertAdjacentHTML("afterbegin",'<span class="tico" aria-hidden="true">'+TAB_ICONS[b.dataset.view]+'</span>'));
   /* red dot on tabs the visitor has not opened yet (remembered on this device) */
 const VISITED=(()=>{ try{ return JSON.parse(localStorage.getItem("pupVisited")||"{}"); }catch(e){ return {}; } })();
@@ -2508,7 +2543,16 @@ function markVisited(view){
   try{ localStorage.setItem("pupVisited",JSON.stringify(VISITED)); }catch(e){}
   const d=document.querySelector('nav.tabs button[data-view="'+view+'"] .newdot'); if(d) d.remove();
 }
-$$("nav.tabs button").forEach(b=>{ if(!VISITED[b.dataset.view]) b.insertAdjacentHTML("beforeend",'<span class="newdot" aria-hidden="true" title="Not visited yet"></span>'); });
+$$("nav.tabs button").forEach(b=>{ if(b.dataset.view!=="safety" && !VISITED[b.dataset.view]) b.insertAdjacentHTML("beforeend",'<span class="newdot" aria-hidden="true" title="Not visited yet"></span>'); });
+const sfDone=()=>{ try{ return localStorage.getItem("pupSafetyDone")==="1"; }catch(e){ return false; } };
+if(sfDone()){ const bn=document.getElementById("sfBan"); if(bn) bn.remove(); }
+else { const sb=$('nav.tabs button[data-view="safety"]'); if(sb) sb.insertAdjacentHTML("beforeend",'<span class="sfbang" aria-hidden="true" title="Important">!</span>'); }
+function sfPopMaybe(){ const p=document.getElementById("sfPop"); if(!p||sfDone()) return;
+  setTimeout(()=>{ if(inDashMode() && !sfDone() && !$("#view-safety").classList.contains("active")){ p.classList.add("show"); sfx("ding"); setTimeout(()=>p.classList.remove("show"),14000); } },1400); }
+$$("[data-gosafety]").forEach(b=>b.addEventListener("click",()=>{ $("#sfPop").classList.remove("show"); show("safety"); }));
+$("#sfPopX").addEventListener("click",()=>$("#sfPop").classList.remove("show"));
+$$("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{ if(b.dataset.view==="safety") $("#sfPop").classList.remove("show"); }));
+document.addEventListener("safety-complete",()=>{ [".sfbang","#sfBan","#sfPop"].forEach(s=>{ const e=$(s); if(e&&s!=="#sfPop") e.remove(); }); $("#sfPop").classList.remove("show"); });
 const DASH_ICONS={"h-home":"🌡️","h-live":"📈","h-hist":"🗓️"};
 Object.keys(DASH_ICONS).forEach(id=>{ const h=document.getElementById(id); if(h) h.insertAdjacentHTML("beforeend",' <span class="ticon" aria-hidden="true">'+DASH_ICONS[id]+'</span>'); });
 
@@ -3818,7 +3862,7 @@ function bootRun(){
 }
 {const bb=$("#boot"); if(bb) bb.remove();}
 window.__sfx=sfx;
-document.addEventListener("safety-done",()=>{ if(window.__pendHit){ rootEl.classList.add("in-dash"); show(window.__pendHit); updTabs(); } bootOn=false; bootQ.splice(0).forEach(markIn); window.scrollTo(0,0); mistyCur=""; mistyUpdate(); onScroll(); });
+document.addEventListener("safety-done",()=>{ if(window.__pendHit){ rootEl.classList.add("in-dash"); show(window.__pendHit); updTabs(); sfPopMaybe(); } bootOn=false; bootQ.splice(0).forEach(markIn); window.scrollTo(0,0); mistyCur=""; mistyUpdate(); onScroll(); });
 /* Misty keeps peeking out of a random side of the author's box (normal colours, full body shape outside the edge) and reacts */
 function cloneMisty(tag){
   const c=mchar.querySelector("svg").cloneNode(true), map={};
